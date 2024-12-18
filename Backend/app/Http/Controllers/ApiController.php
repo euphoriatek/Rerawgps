@@ -17,9 +17,8 @@ class ApiController extends Controller
      */
     public function register(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => [
                 'required',
@@ -35,7 +34,6 @@ class ApiController extends Controller
             'password.confirmed' => 'The password confirmation does not match.',
         ]);
 
-
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
@@ -43,9 +41,8 @@ class ApiController extends Controller
         }
 
         try {
-
             $user = User::create([
-                'name' => $request->name,
+                'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
@@ -62,13 +59,14 @@ class ApiController extends Controller
         }
     }
 
+
     //login 
     public function login(Request $request)
     {
         try {
-         
+
             $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
+                'username' => 'required|string',
                 'password' => 'required|string',
             ]);
             if ($validator->fails()) {
@@ -77,7 +75,7 @@ class ApiController extends Controller
                 ], 400);
             }
 
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
                 $user = Auth::user();
                 return response()->json([
                     'message' => 'Login successful!',
@@ -87,7 +85,7 @@ class ApiController extends Controller
             return response()->json([
                 'message' => 'Invalid credentials.',
             ], 401);
-
+  
         } catch (\Exception $e) {
     
             return response()->json([
