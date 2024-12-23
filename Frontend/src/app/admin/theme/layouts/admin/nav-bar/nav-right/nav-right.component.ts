@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-nav-right',
   templateUrl: './nav-right.component.html',
   styleUrls: ['./nav-right.component.scss']
 })
 export class NavRightComponent {
+    constructor(private translate: TranslateService){
+  
+    }
   // public method
   profile = [
     {
@@ -26,7 +29,8 @@ export class NavRightComponent {
     },
     {
       icon: 'ti ti-power',
-      title: 'Logout'
+      title: 'Logout',
+      url: '/admin/admin-logout',
     }
   ];
 
@@ -52,4 +56,8 @@ export class NavRightComponent {
       title: 'History'
     }
   ];
+  switchLanguage(event) {
+    const selectedLanguage = event.value;
+    this.translate.use(selectedLanguage);
+  }
 }

@@ -8,6 +8,8 @@ import { AdminAppComponent } from './admin-app.component';
 import { GuestComponent } from './theme/layouts/guest/guest.component';
 import { authGuard } from './guard/auth.guard';
 import { unAuthGuard } from './guard/un-auth.guard';
+import { AddUserComponent } from './demo/component/add-user/add-user.component';
+import { LogoutComponent } from './demo/component/logout/logout.component';
 const routes: Routes = [
   {
     path: '',
@@ -22,6 +24,16 @@ const routes: Routes = [
         path: 'dashboard/default',
         loadComponent: () => import('./demo/default/dashboard/dashboard.component'),
         canActivate:[authGuard]
+      },
+      {
+        path: 'add-user',
+        component: AddUserComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'admin-logout',
+        component: LogoutComponent,
+        // canActivate:[authGuard]
       }
     ]
   },
@@ -32,7 +44,7 @@ const routes: Routes = [
       {
         path: 'login',
         loadComponent: () => import('./demo/authentication/login/login.component'),
-        canActivate:[unAuthGuard]
+        // canActivate:[unAuthGuard]
       },
       {
         path: 'register',

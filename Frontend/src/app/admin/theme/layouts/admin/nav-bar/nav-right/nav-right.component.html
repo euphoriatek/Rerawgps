@@ -1,5 +1,12 @@
 <!-- [Mobile Media Block end] -->
 <ul class="list-unstyled">
+  <div class="mt-4 pull-right">
+    <select (change)="switchLanguage($event.target)">
+      <option value="en">English</option>
+      <option value="ar">Arabic</option>
+      <option value="ku">Kurdish</option>
+    </select>
+  </div> 
   <li class="pc-h-item header-user-profile">
     <a class="arrow-none me-0" title="Github" href="https://github.com/codedthemes/mantis-free-angular-admin-template" target="_blank">
       <img src="assets/images/github.svg" alt="github icon" />
@@ -99,7 +106,7 @@
             <h6 class="mb-1">Stebin Ben</h6>
             <span>UI/UX Designer</span>
           </div>
-          <a href="javascript:" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
+          <a  [routerLink]="['/admin/admin-logout']" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
         </div>
       </div>
       <ul ngbNav #nav="ngbNav" class="nav drp-tabs nav-fill nav-tabs">
@@ -107,9 +114,9 @@
           <a ngbNavLink><i class="ti ti-user"></i> Profile</a>
           <ng-template ngbNavContent>
             <div *ngFor="let task of profile">
-              <a href="javascript:" class="dropdown-item">
+              <a class="dropdown-item">
                 <i class="{{ task.icon }}"></i>
-                <span>{{ task.title }}</span>
+                <span [routerLink]="[task.url]">{{ task.title }}</span>
               </a>
             </div>
           </ng-template>
@@ -118,7 +125,7 @@
           <a ngbNavLink><i class="ti ti-settings"></i> Setting</a>
           <ng-template ngbNavContent>
             <div *ngFor="let task of setting">
-              <a href="javascript:" class="dropdown-item">
+              <a class="dropdown-item">
                 <i class="{{ task.icon }}"></i>
                 <span>{{ task.title }}</span>
               </a>

@@ -2,75 +2,65 @@
   <div class="auth-wrapper v3">
     <div class="auth-form">
       <div class="auth-header">
-        <a href="javascript:"><img src="assets/images/logo-dark.svg" alt="logo" /></a>
+        <a href="javascript:"><img src="assets/images/regayKar-logo.png" alt="logo" /></a>
       </div>
       <div class="card my-5">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-end mb-4">
-            <h3 class="mb-0"><b>Login</b></h3>
-            <a [routerLink]="['/register']" class="link-primary">Don't have an account?</a>
+            <h3 class="mb-0"><b>{{ 'admin_login' | translate}}</b></h3>
           </div>
-          <div class="form-group mb-3">
-            <label class="form-label" for="email">Email Address</label>
-            <input type="email" class="form-control" id="email" placeholder="Email Address" value="info@codedthemes.com" />
-          </div>
-          <div class="form-group mb-3">
-            <label class="form-label" for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password" value="123456789" />
-          </div>
-          <div class="d-flex mt-1 justify-content-between">
-            <div class="form-check">
-              <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
-              <label class="form-check-label text-muted" for="customCheckc1">Keep me sign in</label>
-            </div>
-            <h5 class="text-secondary f-w-400"><a href="javascript:">Forgot Password?</a></h5>
-          </div>
-          <div class="d-grid mt-4">
-            <button type="button" class="btn btn-primary">Login</button>
-          </div>
-          <div class="saprator mt-3">
-            <span>Login with</span>
-          </div>
-          <div class="row">
-            <div class="col-4">
-              <div class="d-grid">
-                <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
-                  <img src="assets/images/authentication/google.svg" alt="google img" />
-                  <span class="d-none d-sm-inline-block"> Google</span>
-                </button>
+          <form method="post" (ngSubmit)="Login()" [formGroup]="LoginForm">
+            <div class="form-group mb-3">
+              <label class="form-label" for="email">{{ 'email_address' | translate}}</label>
+              <input formControlName="email" type="email" class="form-control" id="email" placeholder="{{ 'email_address' | translate}}" />
+              <div *ngIf="
+                LoginForm?.get('email')?.hasError('required') &&
+                LoginForm?.get('email')?.touched">
+                <span class="error-message">{{ 'email_error' | translate}}</span>
               </div>
             </div>
-            <div class="col-4">
-              <div class="d-grid">
-                <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
-                  <img src="assets/images/authentication/twitter.svg" alt="twitter img" />
-                  <span class="d-none d-sm-inline-block"> Twitter</span>
-                </button>
+            <div class="form-group mb-3">
+              <label class="form-label" for="password">{{ 'password' | translate}}</label>
+              <input formControlName="password" type="password" class="form-control" id="password"
+                placeholder="{{ 'password' | translate}}" value="123456789" />
+              <div *ngIf="
+              LoginForm?.get('password')?.hasError('required') &&
+              LoginForm?.get('password')?.touched">
+                <span class="error-message">{{ 'password_error' | translate}}</span>
               </div>
             </div>
-            <div class="col-4">
-              <div class="d-grid">
-                <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
-                  <img src="assets/images/authentication/facebook.svg" alt="facebook img" />
-                  <span class="d-none d-sm-inline-block"> Facebook</span>
-                </button>
+            <div class="d-flex mt-1 justify-content-between">
+              <div class="form-check">
+                <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
+                <label class="form-check-label text-muted" for="customCheckc1">{{ 'remember_me' | translate}}</label>
               </div>
+              <h5 class="text-secondary f-w-400"><a href="javascript:">{{ 'forgot_password' | translate}}?</a></h5>
             </div>
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary">{{ 'login' | translate}}</button>
+            </div>
+          </form>
+          <div class="mt-4 pull-right">
+            <select (change)="switchLanguage($event.target)">
+              <option value="en">English</option>
+              <option value="ar">Arabic</option>
+              <option value="ku">Kurdish</option>
+            </select>
           </div>
         </div>
       </div>
       <div class="auth-footer row">
         <!-- <div class=""> -->
         <div class="col my-1">
-          <p class="m-0">Copyright © <a href="https://codedthemes.com/" target="_blank">CodedThemes</a></p>
+          <p class="m-0">Copyright © <a href="" target="_blank"></a></p>
         </div>
-        <div class="col-auto my-1">
+        <!-- <div class="col-auto my-1">
           <ul class="list-inline footer-link mb-0">
             <li class="list-inline-item"><a href="https://codedthemes.com/" target="_blank">Home</a></li>
             <li class="list-inline-item"><a href="https://codedthemes.com/privacy-policy/" target="_blank">Privacy Policy</a></li>
             <li class="list-inline-item"><a href="https://codedthemes.support-hub.io/" target="_blank">Contact us</a></li>
           </ul>
-        </div>
+        </div> -->
         <!-- </div> -->
       </div>
     </div>

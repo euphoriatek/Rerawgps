@@ -17,6 +17,8 @@ import { NavCollapseComponent } from './theme/layouts/admin/navigation/nav-conte
 import { NavGroupComponent } from './theme/layouts/admin/navigation/nav-content/nav-group/nav-group.component';
 import { NavItemComponent } from './theme/layouts/admin/navigation/nav-content/nav-item/nav-item.component';
 import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
+import { InterceptorInterceptor } from './services/interceptor.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,13 @@ import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
     NavItemComponent
   ],
   imports: [UserAppRoutingModule, SharedModule],
-  providers: [NavigationItem],
+  providers: [NavigationItem,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorInterceptor,
+      multi: true, 
+    },
+  ],
   bootstrap: [UserAppComponent]
 })
 export class UserAppModule {}

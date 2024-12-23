@@ -15,23 +15,16 @@ class ApiController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => [
-                'required',
-                'min:8',
-                'confirmed',
-                'regex:/[A-Z]/',
-                'regex:/[a-z]/',
-                'regex:/[0-9]/',
-            ],
-        ], [
-            'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one number.',
-            'password.min' => 'The password must be at least 8 characters long.',
-            'password.confirmed' => 'The password confirmation does not match.',
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'domain_name' => 'required|string|max:255',
+            'mobile_number' => 'required|numeric|min:10',
+            'password' => 'required|string|min:8',
+            'address' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -41,53 +34,71 @@ class ApiController extends Controller
         }
 
         try {
-            $user = User::create([
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
+            $user = $this->createUser($input);
 
             return response()->json([
-                'message' => 'User successfully registered!',
-                'user' => $user,
+                'status' => true,
+                'message' => 'User added successfully!',
+                'data' => $user,
             ], 200);
+
         } catch (\Exception $e) {
             return response()->json([
+                'status' => false,
                 'message' => 'An error occurred while registering the user.',
                 'error' => $e->getMessage(),
             ], 500);
         }
     }
 
-
+    public function createUser($data)
+    {
+        $user = User::create([
+            'domain_name' => $data['domain_name'],
+            'mobile_number' => $data['mobile_number'],
+            'password' => Hash::make($data['password']),
+            'address' => $data['address'],
+        ]);
+        return $user;
+    }
     //login 
+
     public function login(Request $request)
     {
         try {
 
             $validator = Validator::make($request->all(), [
-                'username' => 'required|string',
+                'email' => 'required|email',
                 'password' => 'required|string',
             ]);
+
             if ($validator->fails()) {
                 return response()->json([
+                    'status' => false,
                     'errors' => $validator->errors(),
                 ], 400);
             }
 
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $user = Auth::user();
+                $token = $user->createToken('remember_token')->plainTextToken;
+                $user->remember_token = $token;
+                $user->save();
                 return response()->json([
-                    'message' => 'Login successful!',
-                    'user' => $user,
+                    'status' => true,
+                    'message' => 'Logged in Successfully!',
+                    'data' => $user,
+                    'token' => $token,
                 ], 200);
             }
+
             return response()->json([
-                'message' => 'Invalid credentials.',
+                'status' => false,
+                'message' => 'Invalid username and Password!',
             ], 401);
-  
+
         } catch (\Exception $e) {
-    
+
             return response()->json([
                 'message' => 'An error occurred. Please try again later.',
                 'error' => $e->getMessage(),
@@ -100,13 +111,13 @@ class ApiController extends Controller
             // Log the user out
             Auth::logout();
 
-            // Optionally invalidate the user's tokens if using token-based authentication
             // $request->user()->tokens->each(function ($token) {
             //     $token->delete();
             // });
 
             return response()->json([
-                'message' => 'Successfully logged out.',
+                'status' => true,
+                'message' => 'success'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -115,8 +126,20 @@ class ApiController extends Controller
             ], 500);
         }
     }
-    
 
-
-
+    public function UsersList(){
+        try{
+            $users = User::where('role', 'user')->get();
+            return response()->json([
+                'status' => true,
+                'data' => $users,
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while logging out.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

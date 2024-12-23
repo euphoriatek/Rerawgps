@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\TranslationController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\SaleAgentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,6 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/register', [ApiController::class, 'register']);
-
 Route::post('/login', [ApiController::class, 'login']);
-Route::post('/logout', [ApiController::class, 'logout']);
+Route::post('/admin-logout', [ApiController::class, 'logout']);
+Route::get('/get-translation', [TranslationController::class, 'getTranslation']);
+Route::post('/store_translations', [TranslationController::class, 'store']);
+Route::post('/languages', [LanguageController::class, 'store']);
+Route::post('/sale-agents', [SaleAgentController::class, 'store']);
+
+Route::get('/users-list', [ApiController::class, 'UsersList']);

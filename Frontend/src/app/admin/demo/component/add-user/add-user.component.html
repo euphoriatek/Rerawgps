@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="row">
+        <form action="" [formGroup]="UserForm" (ngSubmit)="addUser()">
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label for="">Domain Name</label>
+                    <input type="text" formControlName="domain_name" class="form-control" autocomplete="false">
+                    <div
+                      *ngIf="
+                        UserForm?.get('domain_name')?.hasError('required') &&
+                        UserForm?.get('domain_name')?.touched">
+                      <span class="error-message">Domain Name is required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="">Password</label>
+                            <input type="password" class="form-control" formControlName="password">
+                            <div
+                            *ngIf="
+                                UserForm?.get('password')?.hasError('required') &&
+                                UserForm?.get('password')?.touched">
+                                <span class="error-message">Password is required</span>
+                            </div>
+                            <div
+                            *ngIf="
+                                UserForm?.get('password')?.hasError('minlength')">
+                                <span class="error-message">Password must be at least 8 characters.</span>
+                            </div>
+                            <div
+                            *ngIf="
+                                UserForm?.get('password')?.hasError('pattern')">
+                                <span class="error-message">Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="">Mobile Number</label>
+                            <input type="text" class="form-control" formControlName="mobile_number" maxlength="12">
+                            <div
+                            *ngIf="
+                                UserForm?.get('mobile_number')?.hasError('required') &&
+                                UserForm?.get('mobile_number')?.touched">
+                                <span class="error-message">Mobile number is required</span>
+                            </div>
+                            <div
+                            *ngIf="
+                                UserForm?.get('mobile_number')?.hasError('pattern')">
+                                <span class="error-message">Mobile number must be 10 digits.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label for="">Address</label>
+                 <textarea class="form-control" formControlName="address"></textarea>
+                 <div
+                      *ngIf="
+                        UserForm?.get('address')?.hasError('required') &&
+                        UserForm?.get('address')?.touched">
+                      <span class="error-message">Address Name is required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input type="submit" class="form-control" value="Save">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <input (click)="resetForm()" type="button" class="form-control" value="Reset">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </form>
+       
+    </div>
+</div>

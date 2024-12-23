@@ -39,3 +39,4 @@ $pc-secondary: map-get($preset-colors, 'preset-1', 'secondary');
 
 // font
 @import 'scss/fonts/tabler-icons.min.css';
+@import "../node_modules/ngx-spinner/animations/square-jelly-box.css";

@@ -17,7 +17,11 @@ import { NavCollapseComponent } from './theme/layouts/admin/navigation/nav-conte
 import { NavGroupComponent } from './theme/layouts/admin/navigation/nav-content/nav-group/nav-group.component';
 import { NavItemComponent } from './theme/layouts/admin/navigation/nav-content/nav-item/nav-item.component';
 import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
-
+import { InterceptorInterceptor } from './services/interceptor.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AddUserComponent } from './demo/component/add-user/add-user.component';
+import { LogoutComponent } from './demo/component/logout/logout.component';
+import { TranslateModule } from '@ngx-translate/core'; 
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -30,10 +34,18 @@ import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
     NavContentComponent,
     NavCollapseComponent,
     NavGroupComponent,
-    NavItemComponent
+    NavItemComponent,
+    AddUserComponent,
+    LogoutComponent
   ],
-  imports: [AdminAppRoutingModule, SharedModule],
-  providers: [NavigationItem],
+  imports: [AdminAppRoutingModule, SharedModule,TranslateModule],
+  providers: [NavigationItem,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorInterceptor,
+      multi: true, 
+    },
+  ],
   bootstrap: [AdminAppComponent]
 })
 export class AdminAppModule {}

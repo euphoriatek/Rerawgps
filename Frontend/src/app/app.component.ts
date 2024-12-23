@@ -1,5 +1,6 @@
-// angular import
 import { Component } from '@angular/core';
+// import { TranslationService } from './services/translation.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  // public props
-  title = 'mantis-free-version';
+  constructor(private translate: TranslateService) {
+    // Set initial language
+    this.translate.setDefaultLang('en');
+  }
+
+  changeLanguage(language: string): void {
+    this.translate.use(language);
+  }
 }
