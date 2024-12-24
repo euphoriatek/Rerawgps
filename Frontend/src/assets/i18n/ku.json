@@ -36,5 +36,13 @@
     "user_added_success": "Bikarhêner bi serfirazî zêde kir!",
     "try_again": "Di heman demê de hîn bibînin!",
     "user_added_error": "Bikarhêner nayê zêdekirin",
-    "user_added_error_ex": "Şewateke çûyî di dema zêdekirinê de çêbû"
+    "user_added_error_ex": "Şewateke çûyî di dema zêdekirinê de çêbû",
+    "add_sales_agent": "Agentê Firotanê zêde bike",
+    "users": "Bikarhêneran hilbijêre",
+    "name": "Nav",
+    "imei": "IMEI",
+    "user_required": "Bikarhêner hewce ye",
+    "imei_requied": "IMEI hewce ye",
+    "name_required": "Nav hewce ye"
+    
 }

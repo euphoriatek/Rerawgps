@@ -23,6 +23,12 @@ import { AddUserComponent } from './demo/component/add-user/add-user.component';
 import { LogoutComponent } from './demo/component/logout/logout.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sales-agent.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -40,7 +46,7 @@ import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sal
     LogoutComponent,
     AddSalesAgentComponent
   ],
-  imports: [AdminAppRoutingModule, SharedModule,TranslateModule],
+  imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
   providers: [NavigationItem,
     {
       provide: HTTP_INTERCEPTORS,

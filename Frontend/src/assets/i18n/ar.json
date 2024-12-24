@@ -36,5 +36,14 @@
     "user_added_success": "تم إضافة المستخدم بنجاح!",
     "try_again": "حاول مرة أخرى!",
     "user_added_error": "تعذر إضافة المستخدم",
-    "user_added_error_ex": "حدث خطأ أثناء الإضافة في"
+    "user_added_error_ex": "حدث خطأ أثناء الإضافة في",
+    "add_sales_agent": "إضافة وكيل مبيعات",
+    "users": "اختر المستخدمين",
+    "name": "الاسم",
+    "imei": "الـIMEI",
+    "user_required": "المستخدم مطلوب",
+    "imei_requied": "الـIMEI مطلوب",
+    "name_required": "الاسم مطلوب"
+
+
 }

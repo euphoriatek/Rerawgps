@@ -38,5 +38,15 @@
     "user_added_error":"User could not be added",
     "user_added_error_ex":"An error occurred while adding in",
     "created_at":"Created At",
-    "add_sales_agent":"Add Sales Agent"
+    "add_sales_agent":"Add Sales Agent",
+    "users":"Select Users",
+    "name": "Name",
+    "imei":"IMEI",
+    "user_required":"User is required",
+    "imei_requied":"IMEI is required",
+    "name_required":"Name is required"
+
+   
+
+
 }

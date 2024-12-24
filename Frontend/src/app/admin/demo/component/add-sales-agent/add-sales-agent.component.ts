@@ -6,6 +6,8 @@ import { AdminCookiesService } from 'src/app/admin/services/admincookies.service
 import { ToasterService } from 'src/app/services/toster.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { TranslateService } from '@ngx-translate/core';
+
+
 @Component({
   selector: 'app-add-sales-agent',
   templateUrl: './add-sales-agent.component.html',
@@ -15,32 +17,22 @@ export class AddSalesAgentComponent {
   UserForm!: FormGroup;
   isSubmitted = false;
   usersData: any;
+  imei_number: string = '';
+  expireStatus: boolean = false;
+  
   constructor(public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
 
   }
   ngOnInit(): void {
     this.UserForm = this.fb.group({
       user: ['', [Validators.required]],
-      api_key:['', [Validators.required]],
-      username:['', [Validators.required]],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
-        ],
-      ],
-      mobile_number: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^\d{10}$/),
-        ],
-      ],
-      address: ['', Validators.required],
+      imei:['', [Validators.required]],
+      name:['', [Validators.required]],
+      expires:[''],
+      expires_at:[''],
     });
     this.getUsers();
+    this.generateIMEI();
   }
 
   getUsers(){
@@ -91,6 +83,21 @@ export class AddSalesAgentComponent {
     }else{
       this.UserForm.markAllAsTouched();
     }
+  }
+
+  generateIMEI() {
+    // Generate a random 15-digit IMEI number
+    this.imei_number = this.generateRandomIMEI();
+    // Set the IMEI value in the form control
+    this.UserForm.controls['imei'].setValue(this.imei_number);
+  }
+
+  generateRandomIMEI(): string {
+    let imei_number = '';
+    for (let i = 0; i < 15; i++) {
+      imei_number += Math.floor(Math.random() * 10).toString();
+    }
+    return imei_number;
   }
 
   resetForm(){

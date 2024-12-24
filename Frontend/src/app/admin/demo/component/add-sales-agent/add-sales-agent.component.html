@@ -4,7 +4,7 @@
 
             <div class="col-lg-8">
                 <div class="form-group">
-                    <label for="">{{'server_url' | translate}}</label>
+                    <label for="">{{'users' | translate}}</label>
                     <select class="form-control" formControlName="user">
                         <option value="" disabled selected>Select User</option>
                         <option *ngFor="let data of usersData" value="{{data.id}}">{{data.username}}</option>
@@ -12,11 +12,64 @@
                     <div *ngIf="
                         UserForm?.get('user')?.hasError('required') &&
                         UserForm?.get('user')?.touched">
-                        <span class="error-message">{{'server_url_required' | translate}}</span>
+                        <span class="error-message">{{'user_required' | translate}}</span>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-8">
+                <div class="form-group">
+                    <label for="">{{'imei' | translate}}</label>
+                    <input type="text" class="form-control" formControlName="imei" [value]="imei_number" readonly>
+                    <div *ngIf="
+                        UserForm?.get('imei')?.hasError('required') &&
+                        UserForm?.get('imei')?.touched">
+                        <span class="error-message">{{'imei_requied' | translate}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-8">
+                <div class="form-group">
+                    <label for="">{{'name' | translate}}</label>
+                    <input type="text" class="form-control" formControlName="name">
+                    <div *ngIf="
+                        UserForm?.get('name')?.hasError('required') &&
+                        UserForm?.get('name')?.touched">
+                        <span class="error-message">{{'name_required' | translate}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-8">
+                <div class="form-group toogle">
+                  <label for="expire" class="toggle-label">{{ 'are_you_sure_want_to_expires' | translate }}</label>
+                  <mat-slide-toggle [(ngModel)]="expireStatus" formControlName="expires">{{ 'Slide me!' | translate }}</mat-slide-toggle>
+                </div>
+            </div>
+              
+
+            <mat-form-field *ngIf="expireStatus">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="expires_at">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <!-- <mat-form-field *ngIf="expireStatus">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field> -->
+            
+
+
+            <!-- <div class="col-lg-8">
                 <div class="form-group">
                     <label for="">{{'username' | translate}}</label>
                     <input type="text" class="form-control" formControlName="username">
@@ -27,6 +80,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-4">
@@ -103,7 +157,8 @@
                     </div>
                 </div>
 
-            </div>
+            </div> -->
+
         </form>
 
     </div>
