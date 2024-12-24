@@ -5,10 +5,13 @@
             <div class="col-lg-8">
                 <div class="form-group">
                     <label for="">{{'server_url' | translate}}</label>
-                    <input type="text" formControlName="site_url" class="form-control" autocomplete="false">
+                    <select class="form-control" formControlName="user">
+                        <option value="" disabled selected>Select User</option>
+                        <option *ngFor="let data of usersData" value="{{data.id}}">{{data.username}}</option>
+                    </select>
                     <div *ngIf="
-                        UserForm?.get('site_url')?.hasError('required') &&
-                        UserForm?.get('site_url')?.touched">
+                        UserForm?.get('user')?.hasError('required') &&
+                        UserForm?.get('user')?.touched">
                         <span class="error-message">{{'server_url_required' | translate}}</span>
                     </div>
                 </div>

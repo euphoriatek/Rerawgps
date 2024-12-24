@@ -21,7 +21,9 @@ class ApiController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'domain_name' => 'required|string|max:255',
+            'site_url' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'api_key' => 'required',
             'mobile_number' => 'required|numeric|min:10',
             'password' => 'required|string|min:8',
             'address' => 'required|string|max:255',
@@ -54,9 +56,11 @@ class ApiController extends Controller
     public function createUser($data)
     {
         $user = User::create([
-            'domain_name' => $data['domain_name'],
+            'site_url' => $data['site_url'],
             'mobile_number' => $data['mobile_number'],
             'password' => Hash::make($data['password']),
+            'username' => $data['username'],
+            'api_key' => $data['api_key'],
             'address' => $data['address'],
         ]);
         return $user;
@@ -130,6 +134,22 @@ class ApiController extends Controller
     public function UsersList(){
         try{
             $users = User::where('role', 'user')->get();
+            return response()->json([
+                'status' => true,
+                'data' => $users,
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while logging out.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function Users(){
+        try{
+            $users = User::select('id', 'username')->where('role', 'user')->get();
             return response()->json([
                 'status' => true,
                 'data' => $users,

@@ -18,6 +18,10 @@ export class ApiService {
     return this.http.get(this.BaseUrl + 'users-list');
   }
 
+  getUsers(){
+    return this.http.get(this.BaseUrl + 'users');
+  }
+
   logout(){
     return this.http.post(this.BaseUrl + 'admin-logout','');
   }

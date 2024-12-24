@@ -10,16 +10,18 @@ import { ToasterService } from 'src/app/services/toster.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { TranslateModule } from '@ngx-translate/core'; 
 import { TranslateService } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslateModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export default class LoginComponent {
   LoginForm!: FormGroup;
   submitted = true;
+  defaultLanguage:any;
   constructor(public route:Router,public fb:FormBuilder,public spinner :NgxSpinnerService,public api:ApiService,public cookiesService:AdminCookiesService, public toaster:ToasterService,private translate: TranslateService){
 
   }
@@ -28,6 +30,7 @@ export default class LoginComponent {
       email: ['', [Validators.required]],
       password: ['', Validators.required],
     });
+    this.defaultLanguage = localStorage.getItem('admin_language') ?? 'en';
   }
     
 
@@ -48,15 +51,15 @@ export default class LoginComponent {
             const AdminInfo = response.data;
             this.cookiesService.setCookie('AdminUser', AdminInfo);
             this.route.navigate(['/admin/dashboard/default']);
-            this.toaster.success(response.message, 'Login');
+            this.toaster.success(this.translate.instant('login_success'), this.translate.instant('login'));
           } else {
-            this.toaster.error(response.message || 'Login failed', 'Login');
+            this.toaster.error(this.translate.instant('invalid_user_password') || this.translate.instant('login_failed'), this.translate.instant('login'));
           }
         },
         error: (err) => {
           this.spinner.hide();
           this.submitted = false;
-          this.toaster.error('An error occurred while logging in', 'Login');
+          this.toaster.error(this.translate.instant('invalid_user_password'), this.translate.instant('login'));
           console.error(err); 
         }
       });
@@ -68,6 +71,7 @@ export default class LoginComponent {
     // const selectElement = event.target as HTMLSelectElement;
     const selectedLanguage = event.value;
     this.translate.use(selectedLanguage);
+    localStorage.setItem("admin_language", selectedLanguage);
   }
   
 

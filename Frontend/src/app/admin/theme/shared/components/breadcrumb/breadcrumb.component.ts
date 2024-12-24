@@ -7,11 +7,11 @@ import { Title } from '@angular/platform-browser';
 
 // project import
 import { NavigationItem } from 'src/app/admin/theme/layouts/admin/navigation/navigation';
-
+import { TranslateModule } from '@ngx-translate/core'; 
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss']
 })

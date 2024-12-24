@@ -6,7 +6,7 @@
 
         <div class="row">
           <div class="col-lg-8">
-            <h3 class="mb-0">Users List</h3>
+            <h3 class="mb-0">{{ 'users_list' | translate}}</h3>
           </div>
           <div class="col-lg-4">
             <div class="row ">
@@ -15,7 +15,7 @@
                   <input class="search" type="search" id="gsearch" name="gsearch" placeholder="Search">
                   <i class="fa fa-search"></i>
                 </div>
-                <button class="btn add_user_btn" [routerLink]="['/admin/add-user']">{{'welcome_message' | translate }}</button>
+                <button class="btn add_user_btn" [routerLink]="['/admin/add-user']">{{'add_users' | translate }}</button>
               </div>
             </div>
           </div>
@@ -25,17 +25,21 @@
           <table class="table table-hover table-borderless mb-0">
             <thead>
               <tr>
-                <th><input class="checkbox" type="checkbox">Domain Name</th>
-                <th>Mobile Number</th>
-                <th>Address</th>
-                <th>Created At</th>
+                <th>{{ 'server_url' | translate}}</th>
+                <th>{{ 'username' | translate}}</th>
+                <th>{{ 'mobile_number' | translate}}</th>
+                <th>{{ 'address' | translate}}</th>
+                <th>{{ 'api_key' | translate}}</th>
+                <th>{{ 'created_at' | translate}}</th>
               </tr>
             </thead>
             <tbody *ngIf="usersData">
               <tr *ngFor="let data of usersData;">
-                <td>{{data.domain_name}}</td>
+                <td>{{data.site_url}}</td>
+                <td>{{data.username}}</td>
                 <td>{{data.mobile_number}}</td>
                 <td>{{data.address}}</td>
+                <td>{{data.api_key}}</td>
                 <td>{{data.created_at | date}}</td>
               </tr>
             </tbody>

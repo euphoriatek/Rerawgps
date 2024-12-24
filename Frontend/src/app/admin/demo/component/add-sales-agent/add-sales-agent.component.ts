@@ -7,19 +7,20 @@ import { ToasterService } from 'src/app/services/toster.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { TranslateService } from '@ngx-translate/core';
 @Component({
-  selector: 'app-add-user',
-  templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.scss']
+  selector: 'app-add-sales-agent',
+  templateUrl: './add-sales-agent.component.html',
+  styleUrls: ['./add-sales-agent.component.scss']
 })
-export class AddUserComponent {
+export class AddSalesAgentComponent {
   UserForm!: FormGroup;
   isSubmitted = false;
+  usersData: any;
   constructor(public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
 
   }
   ngOnInit(): void {
     this.UserForm = this.fb.group({
-      site_url: ['', [Validators.required]],
+      user: ['', [Validators.required]],
       api_key:['', [Validators.required]],
       username:['', [Validators.required]],
       password: [
@@ -39,9 +40,27 @@ export class AddUserComponent {
       ],
       address: ['', Validators.required],
     });
+    this.getUsers();
   }
 
-
+  getUsers(){
+    this.spinner.show();
+    this.api.getUsers().subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        if (response && response.status) {
+          this.usersData = response.data;
+          this.spinner.hide();
+        }else{
+          this.spinner.hide();
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err); 
+      }
+    });
+  }
   addUser(): void {
     if (this.UserForm.invalid) {
       this.isSubmitted = true;

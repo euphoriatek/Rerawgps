@@ -21,7 +21,8 @@ import { InterceptorInterceptor } from './services/interceptor.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AddUserComponent } from './demo/component/add-user/add-user.component';
 import { LogoutComponent } from './demo/component/logout/logout.component';
-import { TranslateModule } from '@ngx-translate/core'; 
+import { TranslateModule } from '@ngx-translate/core';
+import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sales-agent.component';
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -36,7 +37,8 @@ import { TranslateModule } from '@ngx-translate/core';
     NavGroupComponent,
     NavItemComponent,
     AddUserComponent,
-    LogoutComponent
+    LogoutComponent,
+    AddSalesAgentComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,TranslateModule],
   providers: [NavigationItem,

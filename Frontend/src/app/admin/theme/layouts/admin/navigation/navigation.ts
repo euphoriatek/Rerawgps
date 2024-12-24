@@ -19,21 +19,28 @@ export interface Navigation extends NavigationItem {
 const NavigationItems = [
   {
     id: 'dashboard',
-    title: 'Dashboard',
+    title: 'dashboard',
     type: 'item',
     url: '/admin/dashboard/default',
     icon: 'ti ti-dashboard',
   },
   {
     id: 'adduser',
-    title: 'Add Users',
+    title: 'add_users',
     type: 'item',
     url: '/admin/add-user',
     icon: 'ti ti-user-plus',
   },
   {
+    id: 'addsalesagent',
+    title: 'add_sales_agent',
+    type: 'item',
+    url: '/admin/add-sales-agent',
+    icon: 'ti ti-user-plus',
+  },
+  {
     id: 'setting',
-    title: 'Setting',
+    title: 'setting',
     type: 'item',
     url: '/admin/dashboard/defaults',
     icon: 'ti ti-settings',

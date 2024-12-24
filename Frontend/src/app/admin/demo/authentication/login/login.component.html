@@ -41,7 +41,7 @@
             </div>
           </form>
           <div class="mt-4 pull-right">
-            <select (change)="switchLanguage($event.target)">
+            <select (change)="switchLanguage($event.target)" [(ngModel)]="defaultLanguage">
               <option value="en">English</option>
               <option value="ar">Arabic</option>
               <option value="ku">Kurdish</option>

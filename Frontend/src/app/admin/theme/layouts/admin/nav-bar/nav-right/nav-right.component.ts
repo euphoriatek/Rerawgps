@@ -6,8 +6,9 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./nav-right.component.scss']
 })
 export class NavRightComponent {
+  defaultLanguage: string;
     constructor(private translate: TranslateService){
-  
+      this.defaultLanguage = localStorage.getItem('admin_language') ?? 'en';
     }
   // public method
   profile = [
@@ -59,5 +60,6 @@ export class NavRightComponent {
   switchLanguage(event) {
     const selectedLanguage = event.value;
     this.translate.use(selectedLanguage);
+    localStorage.setItem("admin_language", selectedLanguage);
   }
 }

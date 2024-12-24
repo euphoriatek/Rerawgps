@@ -5,14 +5,14 @@
         <div class="col-md-12">
           <ul class="breadcrumb">
             <li class="breadcrumb-item">
-              <a [routerLink]="['/sample-page']">Home</a>
+              <a [routerLink]="['/sample-page']">{{ 'home' | translate}}</a>
             </li>
             <ng-container *ngFor="let breadcrumb of navigationList">
               <li class="breadcrumb-item" *ngIf="breadcrumb.url !== false">
-                <a [routerLink]="breadcrumb.url">{{ breadcrumb.title }}</a>
+                <a [routerLink]="breadcrumb.url">{{ breadcrumb.title | translate }}</a>
               </li>
               <li class="breadcrumb-item" *ngIf="breadcrumb.url === false">
-                <a>{{ breadcrumb.title }}</a>
+                <a>{{ breadcrumb.title | translate }}</a>
               </li>
             </ng-container>
           </ul>

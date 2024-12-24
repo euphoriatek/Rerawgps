@@ -30,3 +30,4 @@ Route::post('/languages', [LanguageController::class, 'store']);
 Route::post('/sale-agents', [SaleAgentController::class, 'store']);
 
 Route::get('/users-list', [ApiController::class, 'UsersList']);
+Route::get('/users', [ApiController::class, 'Users']);
