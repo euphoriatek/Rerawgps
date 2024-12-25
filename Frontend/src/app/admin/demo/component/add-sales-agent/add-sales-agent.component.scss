@@ -7,7 +7,7 @@
 .toggle-label {
     margin-right: 10px; 
     font-size: 14px;
-    font-weight: normal;
+    // font-weight: bold;
 }
 
 mat-slide-toggle {
@@ -15,7 +15,7 @@ mat-slide-toggle {
 }
 
 .mat-slide-toggle-label {
-    font-weight: normal;
+
     font-size: 14px; 
 }
 
@@ -32,4 +32,8 @@ mat-slide-toggle:hover {
 
 mat-slide-toggle .mat-slide-toggle-bar {
     background-color: #2196f3; 
+}
+
+.full-width {
+    width: 100%;
 }

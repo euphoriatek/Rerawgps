@@ -1,12 +1,12 @@
 <div class="container">
     <div class="row">
-        <form action="" [formGroup]="UserForm" (ngSubmit)="addUser()">
+        <form action="" [formGroup]="UserForm" (ngSubmit)="addSalesAgent()">
 
             <div class="col-lg-8">
                 <div class="form-group">
                     <label for="">{{'users' | translate}}</label>
                     <select class="form-control" formControlName="user">
-                        <option value="" disabled selected>Select User</option>
+                        <option value="" disabled selected>{{'select_user_option' | translate}}</option>
                         <option *ngFor="let data of usersData" value="{{data.id}}">{{data.username}}</option>
                     </select>
                     <div *ngIf="
@@ -33,7 +33,7 @@
             <div class="col-lg-8">
                 <div class="form-group">
                     <label for="">{{'name' | translate}}</label>
-                    <input type="text" class="form-control" formControlName="name">
+                    <input type="text" class="form-control" placeholder="{{'name' | translate}}" formControlName="name">
                     <div *ngIf="
                         UserForm?.get('name')?.hasError('required') &&
                         UserForm?.get('name')?.touched">
@@ -45,104 +45,26 @@
 
             <div class="col-lg-8">
                 <div class="form-group toogle">
-                  <label for="expire" class="toggle-label">{{ 'are_you_sure_want_to_expires' | translate }}</label>
-                  <mat-slide-toggle [(ngModel)]="expireStatus" formControlName="expires">{{ 'Slide me!' | translate }}</mat-slide-toggle>
+                  <label for="" class="toggle-label">{{ 'are_you_sure_want_to_expires' | translate }}</label>
+                  <mat-slide-toggle [(ngModel)]="expireStatus" formControlName="expire"></mat-slide-toggle>
                 </div>
             </div>
               
 
-            <mat-form-field *ngIf="expireStatus">
-                <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="expires_at">
-                <mat-hint>MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            <!-- <mat-form-field *ngIf="expireStatus">
-                <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="picker">
-                <mat-hint>MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field> -->
-            
-
-
-            <!-- <div class="col-lg-8">
+            <div class="col-lg-8" *ngIf="expireStatus">
                 <div class="form-group">
-                    <label for="">{{'username' | translate}}</label>
-                    <input type="text" class="form-control" formControlName="username">
-                    <div *ngIf="
-                        UserForm?.get('username')?.hasError('required') &&
-                        UserForm?.get('username')?.touched">
-                        <span class="error-message">{{'username_required' | translate}}</span>
-                    </div>
+                  <label for="expire_date">{{'expire_date' | translate}}</label>
+                  <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="expire_date" [min]="today">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
                 </div>
             </div>
 
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label for="">{{'password' | translate}}</label>
-                            <input type="password" class="form-control" formControlName="password">
-                            <div *ngIf="
-                                UserForm?.get('password')?.hasError('required') &&
-                                UserForm?.get('password')?.touched">
-                                <span class="error-message">{{ 'password_error' | translate}}</span>
-                            </div>
-                            <div *ngIf="
-                                UserForm?.get('password')?.hasError('minlength')">
-                                <span class="error-message">{{ 'password_length_error' | translate}}</span>
-                            </div>
-                            <div *ngIf="
-                                UserForm?.get('password')?.hasError('pattern')">
-                                <span class="error-message">{{ 'strong_password_error' | translate}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label for="">{{ 'mobile_number' | translate}}</label>
-                            <input type="text" class="form-control" formControlName="mobile_number" maxlength="12">
-                            <div *ngIf="
-                                UserForm?.get('mobile_number')?.hasError('required') &&
-                                UserForm?.get('mobile_number')?.touched">
-                                <span class="error-message">{{'mobile_required' | translate}}</span>
-                            </div>
-                            <div *ngIf="
-                                UserForm?.get('mobile_number')?.hasError('pattern')">
-                                <span class="error-message">{{'mobile_length_required' | translate}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-lg-8">
-                <div class="form-group">
-                    <label for="">{{ 'api_key' | translate}}</label>
-                    <input type="text" formControlName="api_key" class="form-control" autocomplete="false">
-                    <div *ngIf="
-                        UserForm?.get('api_key')?.hasError('required') &&
-                        UserForm?.get('api_key')?.touched">
-                        <span class="error-message">{{ 'api_key_required' | translate}}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-8">
-                <div class="form-group">
-                    <label for="">{{ 'address' | translate}}</label>
-                    <textarea class="form-control" formControlName="address"></textarea>
-                    <div *ngIf="
-                        UserForm?.get('address')?.hasError('required') &&
-                        UserForm?.get('address')?.touched">
-                        <span class="error-message">{{ 'address_required' | translate}}</span>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-8">
                 <div class="row">
                     <div class="col-lg-2">
@@ -156,9 +78,7 @@
                         </div>
                     </div>
                 </div>
-
-            </div> -->
-
+            </div>
         </form>
 
     </div>

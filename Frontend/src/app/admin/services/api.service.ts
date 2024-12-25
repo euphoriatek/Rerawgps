@@ -25,4 +25,8 @@ export class ApiService {
   logout(){
     return this.http.post(this.BaseUrl + 'admin-logout','');
   }
+
+  addSalesAgent(data:any){
+    return this.http.post(this.BaseUrl + 'add-object',data);
+  }
 }

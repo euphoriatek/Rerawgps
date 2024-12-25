@@ -44,8 +44,15 @@
     "imei":"IMEI",
     "user_required":"User is required",
     "imei_requied":"IMEI is required",
-    "name_required":"Name is required"
-
+    "name_required":"Name is required",
+    "expire_date":"Expire Date",
+    "are_you_sure_want_to_expires":"Are you sure want to expire",
+    "sales_agent":"Sales Agent",
+    "sales_agent_added_error":"Sales Agent could not be Added",
+    "sales_agent_added_success":"Sales Agent added successfully!",
+    "sales_agent_added_error_ex":"An error occurred while adding in",
+    "select_user_option":"Select User",
+    "search_here":"Search here"
    
 
 

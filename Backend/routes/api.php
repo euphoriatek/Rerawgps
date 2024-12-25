@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\SaleAgentController;
+use App\Http\Controllers\SalesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,6 +29,9 @@ Route::get('/get-translation', [TranslationController::class, 'getTranslation'])
 Route::post('/store_translations', [TranslationController::class, 'store']);
 Route::post('/languages', [LanguageController::class, 'store']);
 Route::post('/sale-agents', [SaleAgentController::class, 'store']);
+Route::get('/sale-agents', [SaleAgentController::class, 'getRecods']);
+Route::post('/add-object',  [SalesController::class, 'store']);
+Route::get('/get-object-list', [SalesController::class, 'getObjectList']);
 
 Route::get('/users-list', [ApiController::class, 'UsersList']);
 Route::get('/users', [ApiController::class, 'Users']);

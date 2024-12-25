@@ -43,6 +43,14 @@
     "imei": "IMEI",
     "user_required": "Bikarhêner hewce ye",
     "imei_requied": "IMEI hewce ye",
-    "name_required": "Nav hewce ye"
+    "name_required": "Nav hewce ye",
+    "expire_date": "Dema qediya",
+    "are_you_sure_want_to_expires": "Ma tu pêşniyar dikî ku bêyî qediya",
+    "sales_agent": "Agentê firotanê",
+    "sales_agent_added_error": "Agentê firotanê nehat zêdekirin",
+    "sales_agent_added_success": "Agentê firotanê bi serfirazî zêde kir!",
+    "sales_agent_added_error_ex": "Di dema zêdekirinê de xeletî çêbû",
+    "select_user_option": "Bikarhênerê hilbijêre",
+    "search_here": "Li vir lêgerîn"
     
 }

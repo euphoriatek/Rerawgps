@@ -19,6 +19,7 @@ export class AddSalesAgentComponent {
   usersData: any;
   imei_number: string = '';
   expireStatus: boolean = false;
+  today: Date;
   
   constructor(public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
 
@@ -28,11 +29,13 @@ export class AddSalesAgentComponent {
       user: ['', [Validators.required]],
       imei:['', [Validators.required]],
       name:['', [Validators.required]],
-      expires:[''],
-      expires_at:[''],
+      expire:[''],
+      expire_date:[''],
     });
     this.getUsers();
     this.generateIMEI();
+    this.today = new Date();
+    this.today.setHours(0, 0, 0, 0);
   }
 
   getUsers(){
@@ -53,7 +56,8 @@ export class AddSalesAgentComponent {
       }
     });
   }
-  addUser(): void {
+
+  addSalesAgent(): void {
     if (this.UserForm.invalid) {
       this.isSubmitted = true;
       this.UserForm.markAllAsTouched();
@@ -62,21 +66,21 @@ export class AddSalesAgentComponent {
     }else if(this.UserForm.valid){
       this.spinner.show();
       const data = this.UserForm.value;
-      this.api.addUser(data).subscribe({
+      this.api.addSalesAgent(data).subscribe({
         next: (response: any) => {
           if (response && response.status) {
             this.route.navigate(['/admin/dashboard/default']);
-            this.toaster.success(this.translate.instant('user_added_success'), this.translate.instant('user'));
+            this.toaster.success(this.translate.instant('sales_agent_added_success'), this.translate.instant('sales_agent'));
             this.spinner.hide();
             this.isSubmitted = false;
           } else {
-            this.toaster.error(this.translate.instant('user_added_error') || this.translate.instant('try_again'), this.translate.instant('user'));
+            this.toaster.error(this.translate.instant('sales_agent_added_error') || this.translate.instant('try_again'), this.translate.instant('sales_agent'));
           }
         },
         error: (err) => {
           this.spinner.hide();
           this.isSubmitted = false;
-          this.toaster.error(this.translate.instant('user_added_error_ex') || this.translate.instant('try_again'), this.translate.instant('user'));
+          this.toaster.error(this.translate.instant('sales_agent_added_error_ex') || this.translate.instant('try_again'), this.translate.instant('sales_agent'));
           console.error(err);
         }
       });
@@ -86,9 +90,7 @@ export class AddSalesAgentComponent {
   }
 
   generateIMEI() {
-    // Generate a random 15-digit IMEI number
     this.imei_number = this.generateRandomIMEI();
-    // Set the IMEI value in the form control
     this.UserForm.controls['imei'].setValue(this.imei_number);
   }
 
@@ -103,4 +105,5 @@ export class AddSalesAgentComponent {
   resetForm(){
     this.UserForm.reset();
   }
+
 }

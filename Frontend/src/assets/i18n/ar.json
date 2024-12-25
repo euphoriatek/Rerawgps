@@ -43,7 +43,15 @@
     "imei": "الـIMEI",
     "user_required": "المستخدم مطلوب",
     "imei_requied": "الـIMEI مطلوب",
-    "name_required": "الاسم مطلوب"
+    "name_required": "الاسم مطلوب",
+    "expire_date": "تاريخ الانتهاء",
+    "are_you_sure_want_to_expires": "هل أنت متأكد أنك تريد الانتهاء؟",
+    "sales_agent": "وكيل المبيعات",
+    "sales_agent_added_error": "تعذر إضافة وكيل المبيعات",
+    "sales_agent_added_success": "تم إضافة وكيل المبيعات بنجاح!",
+    "sales_agent_added_error_ex": "حدث خطأ أثناء الإضافة في",
+    "select_user_option": "اختر المستخدم",
+    "search_here": "ابحث هنا"
 
 
 }
