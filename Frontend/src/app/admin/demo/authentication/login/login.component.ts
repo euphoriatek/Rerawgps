@@ -27,7 +27,7 @@ export default class LoginComponent {
   }
   ngOnInit(): void {
     this.LoginForm = this.fb.group({
-      email: ['', [Validators.required]],
+      username: ['', [Validators.required]],
       password: ['', Validators.required],
     });
     this.defaultLanguage = localStorage.getItem('admin_language') ?? 'en';

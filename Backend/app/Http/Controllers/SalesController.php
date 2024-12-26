@@ -54,16 +54,18 @@ class SalesController extends Controller
     }
     public function getObjectList(Request $request)
     {
+  
         try {
-            // Retrieve all records from the SalesModel table
+          
             $objects = SalesModel::all();
+        
             return response()->json([
                 'status' => true,
                 'message' => 'Sales records fetched successfully!',
                 'data' => $objects,
             ], 200);
         } catch (\Exception $e) {
-            // If there is an error, return a failure response
+          
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred while fetching sales records.',

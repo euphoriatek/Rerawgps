@@ -5,7 +5,7 @@
     "remember_me":"Remember Me",
     "forgot_password":"Forgot Password",
     "login":"Login",
-    "email_error":"Email is required",
+    "username_error":"User name is required",
     "password_error":"Password is required",
     "loading":"Loading...",
     "login_success":"Logged in Successfully!",
@@ -52,8 +52,8 @@
     "sales_agent_added_success":"Sales Agent added successfully!",
     "sales_agent_added_error_ex":"An error occurred while adding in",
     "select_user_option":"Select User",
-    "search_here":"Search here"
-   
-
-
+    "search_here":"Search here",
+    "user_login":"User Login",
+    "keep_me_sign_in":"Keep me sign in",
+    "copyright_©":"Copyright ©"
 }

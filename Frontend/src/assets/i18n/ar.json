@@ -51,7 +51,11 @@
     "sales_agent_added_success": "تم إضافة وكيل المبيعات بنجاح!",
     "sales_agent_added_error_ex": "حدث خطأ أثناء الإضافة في",
     "select_user_option": "اختر المستخدم",
-    "search_here": "ابحث هنا"
+    "search_here": "ابحث هنا",
+    "user_login": "تسجيل الدخول",
+    "keep_me_sign_in": "ابقني مسجلاً",
+    "copyright_©": "حقوق الطبع والنشر ©"
+    
 
 
 }

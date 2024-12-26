@@ -51,6 +51,10 @@
     "sales_agent_added_success": "Agentê firotanê bi serfirazî zêde kir!",
     "sales_agent_added_error_ex": "Di dema zêdekirinê de xeletî çêbû",
     "select_user_option": "Bikarhênerê hilbijêre",
-    "search_here": "Li vir lêgerîn"
+    "search_here": "Li vir lêgerîn",
+    "user_login": "Têkevinê Bikarhêner",
+    "keep_me_sign_in": "Bimînin têkevin",
+    "copyright_©": "Mîhenganên çap û belavkirin ©"
+    
     
 }

@@ -57,12 +57,14 @@ class ApiController extends Controller
     {
         $user = User::create([
             'site_url' => $data['site_url'],
-            'mobile_number' => $data['mobile_number'],
-            'password' => Hash::make($data['password']),
             'username' => $data['username'],
-            'api_key' => $data['api_key'],
+            'password' => Hash::make($data['password']),
+            'mobile_number' => $data['mobile_number'],
             'address' => $data['address'],
+            'api_key' => $data['api_key'],
+           
         ]);
+    
         return $user;
     }
     //login 
@@ -72,7 +74,7 @@ class ApiController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
+                'username' => 'required|string',
                 'password' => 'required|string',
             ]);
 
@@ -83,16 +85,17 @@ class ApiController extends Controller
                 ], 400);
             }
 
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
                 $user = Auth::user();
                 $token = $user->createToken('remember_token')->plainTextToken;
                 $user->remember_token = $token;
                 $user->save();
+                $user->token = $token;
                 return response()->json([
                     'status' => true,
                     'message' => 'Logged in Successfully!',
                     'data' => $user,
-                    'token' => $token,
+                   
                 ], 200);
             }
 

@@ -11,12 +11,12 @@
           </div>
           <form method="post" (ngSubmit)="Login()" [formGroup]="LoginForm">
             <div class="form-group mb-3">
-              <label class="form-label" for="email">{{ 'email_address' | translate}}</label>
-              <input formControlName="email" type="email" class="form-control" id="email" placeholder="{{ 'email_address' | translate}}" />
+              <label class="form-label" for="username">{{ 'username' | translate}}</label>
+              <input formControlName="username" type="text" class="form-control" id="username" placeholder="{{ 'username' | translate}}" />
               <div *ngIf="
-                LoginForm?.get('email')?.hasError('required') &&
-                LoginForm?.get('email')?.touched">
-                <span class="error-message">{{ 'email_error' | translate}}</span>
+                LoginForm?.get('username')?.hasError('required') &&
+                LoginForm?.get('username')?.touched">
+                <span class="error-message">{{ 'username_error' | translate}}</span>
               </div>
             </div>
             <div class="form-group mb-3">
