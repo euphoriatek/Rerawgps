@@ -6,27 +6,28 @@ import { environment } from 'src/environments/environment';
 })
 export class ApiService {
   BaseUrl = environment.basePath;
+  AdminBaseUrl = environment.AdminbasePath;
   constructor(public http:HttpClient) { }
   login(data:any){
-    return this.http.post(this.BaseUrl + 'login', data);
+    return this.http.post(this.AdminBaseUrl + 'login', data);
   }
 
   addUser(data:any){
-    return this.http.post(this.BaseUrl + 'register', data);
+    return this.http.post(this.AdminBaseUrl + 'register', data);
   }
   getUserList(){
-    return this.http.get(this.BaseUrl + 'users-list');
+    return this.http.get(this.AdminBaseUrl + 'users-list');
   }
 
   getUsers(){
-    return this.http.get(this.BaseUrl + 'users');
+    return this.http.get(this.AdminBaseUrl + 'users');
   }
 
   logout(){
-    return this.http.post(this.BaseUrl + 'admin-logout','');
+    return this.http.post(this.AdminBaseUrl + 'logout','');
   }
 
   addSalesAgent(data:any){
-    return this.http.post(this.BaseUrl + 'add-object',data);
+    return this.http.post(this.AdminBaseUrl + 'add-object',data);
   }
 }

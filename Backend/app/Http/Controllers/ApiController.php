@@ -85,7 +85,7 @@ class ApiController extends Controller
                 ], 400);
             }
 
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'role' => 'admin'])) {
                 $user = Auth::user();
                 $token = $user->createToken('remember_token')->plainTextToken;
                 $user->remember_token = $token;
@@ -112,15 +112,47 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
+    public function userLogin(Request $request){
+        try {
+            $validator = Validator::make($request->all(), [
+                'username' => 'required|string',
+                'password' => 'required|string',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'errors' => $validator->errors(),
+                ], 400);
+            }
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'role' => 'user'])) {
+                $user = Auth::user();
+                $token = $user->createToken('remember_token')->plainTextToken;
+                $user->remember_token = $token;
+                $user->save();
+                $user->token = $token;
+                return response()->json([
+                    'status' => true,
+                    'message' => 'User Logged in Successfully!',
+                    'data' => $user,
+                ], 200);
+            }
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid username and Password!',
+            ], 401);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred. Please try again later.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function logout(Request $request)
     {
         try {
             // Log the user out
             Auth::logout();
-
-            // $request->user()->tokens->each(function ($token) {
-            //     $token->delete();
-            // });
 
             return response()->json([
                 'status' => true,

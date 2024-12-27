@@ -17,10 +17,9 @@ import { NavCollapseComponent } from './theme/layouts/admin/navigation/nav-conte
 import { NavGroupComponent } from './theme/layouts/admin/navigation/nav-content/nav-group/nav-group.component';
 import { NavItemComponent } from './theme/layouts/admin/navigation/nav-content/nav-item/nav-item.component';
 import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
-import { InterceptorInterceptor } from './services/interceptor.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+// import { AdminInterceptor } from './services/admin.interceptor';
+// import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AddUserComponent } from './demo/component/add-user/add-user.component';
-import { LogoutComponent } from './demo/component/logout/logout.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sales-agent.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -43,16 +42,15 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     NavGroupComponent,
     NavItemComponent,
     AddUserComponent,
-    LogoutComponent,
     AddSalesAgentComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
   providers: [NavigationItem,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: InterceptorInterceptor,
-      multi: true, 
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AdminInterceptor,
+    //   multi: true, 
+    // },
   ],
   bootstrap: [AdminAppComponent]
 })
