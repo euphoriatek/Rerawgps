@@ -44,7 +44,7 @@ export class AdminInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && !this.isUnauthorizedHandled) {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/admin/login']);
         }
         return throwError(error);
       }),
