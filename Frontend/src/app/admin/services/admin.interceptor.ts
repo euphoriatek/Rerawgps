@@ -14,9 +14,9 @@ import { ToasterService } from 'src/app/services/toster.service';
 
 
 @Injectable()
-export class InterceptorInterceptor implements HttpInterceptor {
+export class AdminInterceptor implements HttpInterceptor {
   private isUnauthorizedHandled: boolean = false;
-  constructor(private userCookies: AdminCookiesService, private router: Router, public toastr:ToasterService) {  console.log("555555555");}
+  constructor(private userCookies: AdminCookiesService, private router: Router, public toastr:ToasterService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const urlSegments = request.url.split('/');
     const lastSegment = urlSegments[urlSegments.length - 1];
@@ -62,5 +62,3 @@ export class InterceptorInterceptor implements HttpInterceptor {
       this.router.navigate(['/admin/login']);
   }
 }
-
-

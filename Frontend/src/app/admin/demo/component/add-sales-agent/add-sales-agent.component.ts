@@ -26,7 +26,7 @@ export class AddSalesAgentComponent {
   }
   ngOnInit(): void {
     this.UserForm = this.fb.group({
-      user: ['', [Validators.required]],
+      user_id: ['', [Validators.required]],
       imei:['', [Validators.required]],
       name:['', [Validators.required]],
       expire:[''],
