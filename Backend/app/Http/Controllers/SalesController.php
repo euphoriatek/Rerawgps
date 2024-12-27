@@ -17,8 +17,8 @@ class SalesController extends Controller
             'imei' => 'required|regex:/^[0-9]{15}$/',
             'name' => 'required|string|max:255',
             'user_id' => 'required|string|max:255',
-            'expire' => 'nullable', 
-            'expire_date' => 'nullable|date', 
+            'expire' => 'nullable',
+            'expire_date' => 'nullable|date',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -43,7 +43,7 @@ class SalesController extends Controller
     }
     public function createUser($data)
     {
-     
+
         $object = SalesModel::create([
             'imei' => $data['imei'],
             'name' => $data['name'],

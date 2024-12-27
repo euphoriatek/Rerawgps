@@ -62,9 +62,9 @@ class ApiController extends Controller
             'mobile_number' => $data['mobile_number'],
             'address' => $data['address'],
             'api_key' => $data['api_key'],
-           
+
         ]);
-    
+
         return $user;
     }
     //login 
@@ -95,7 +95,7 @@ class ApiController extends Controller
                     'status' => true,
                     'message' => 'Logged in Successfully!',
                     'data' => $user,
-                   
+
                 ], 200);
             }
 
@@ -113,7 +113,8 @@ class ApiController extends Controller
         }
     }
 
-    public function userLogin(Request $request){
+    public function userLogin(Request $request)
+    {
         try {
             $validator = Validator::make($request->all(), [
                 'username' => 'required|string',
@@ -166,8 +167,9 @@ class ApiController extends Controller
         }
     }
 
-    public function UsersList(){
-        try{
+    public function UsersList()
+    {
+        try {
             $users = User::where('role', 'user')->get();
             return response()->json([
                 'status' => true,
@@ -182,8 +184,9 @@ class ApiController extends Controller
         }
     }
 
-    public function Users(){
-        try{
+    public function Users()
+    {
+        try {
             $users = User::select('id', 'username')->where('role', 'user')->get();
             return response()->json([
                 'status' => true,
