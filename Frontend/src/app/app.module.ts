@@ -24,9 +24,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 // import { TranslationService } from './services/translation.service';
-import { RouteInterceptor } from './services/route.interceptor';
-import { AdminInterceptor } from './admin/services/admin.interceptor';
-import { UserInterceptor } from './user/services/user.interceptor';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -54,15 +51,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: RouteInterceptor,
-      multi: true, 
-    },
-    AdminInterceptor,
-    UserInterceptor
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

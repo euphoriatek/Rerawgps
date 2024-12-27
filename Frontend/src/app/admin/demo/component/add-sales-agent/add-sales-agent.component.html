@@ -5,13 +5,13 @@
             <div class="col-lg-8">
                 <div class="form-group">
                     <label for="">{{'users' | translate}}</label>
-                    <select class="form-control" formControlName="user_id">
+                    <select class="form-control" formControlName="user">
                         <option value="" disabled selected>{{'select_user_option' | translate}}</option>
                         <option *ngFor="let data of usersData" value="{{data.id}}">{{data.username}}</option>
                     </select>
                     <div *ngIf="
-                        UserForm?.get('user_id')?.hasError('required') &&
-                        UserForm?.get('user_id')?.touched">
+                        UserForm?.get('user')?.hasError('required') &&
+                        UserForm?.get('user')?.touched">
                         <span class="error-message">{{'user_required' | translate}}</span>
                     </div>
                 </div>

@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
 import { UserCookiesService } from './usercookies.service';
 import { ToasterService } from 'src/app/services/toster.service';
 
-@Injectable()
-export class UserInterceptor implements HttpInterceptor {
 
+@Injectable()
+export class InterceptorInterceptor implements HttpInterceptor {
   private isUnauthorizedHandled: boolean = false;
   constructor(private userCookies: UserCookiesService, private router: Router, public toastr:ToasterService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -62,3 +62,5 @@ export class UserInterceptor implements HttpInterceptor {
       this.router.navigate(['/login']);
   }
 }
+
+

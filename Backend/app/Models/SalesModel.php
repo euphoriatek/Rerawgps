@@ -10,7 +10,7 @@ class SalesModel extends Model
     use HasFactory;
     protected $table = 'sales';
 
- protected $fillable = ['imei', 'name', 'user_id', 'expire', 'expire_date'];
+ protected $fillable = ['imei', 'name', 'user', 'expire', 'expire_date'];
 
     // You can also define casts for specific attributes, like dates
     protected $casts = [
