@@ -3,9 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\TranslationController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\SaleAgentController;
 use App\Http\Controllers\SalesController;
 /*
 |--------------------------------------------------------------------------
@@ -22,16 +19,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', [ApiController::class, 'register']);
-Route::post('/login', [ApiController::class, 'login']);
-Route::post('/admin-logout', [ApiController::class, 'logout']);
-Route::get('/get-translation', [TranslationController::class, 'getTranslation']);
-Route::post('/store_translations', [TranslationController::class, 'store']);
-Route::post('/languages', [LanguageController::class, 'store']);
-Route::post('/sale-agents', [SaleAgentController::class, 'store']);
-Route::get('/sale-agents', [SaleAgentController::class, 'getRecods']);
-Route::post('/add-object',  [SalesController::class, 'store']);
-Route::get('/get-object-list', [SalesController::class, 'getObjectList']);
+Route::post('/login', [ApiController::class, 'UserLogin']);
+// Route::post('/logout', [ApiController::class, 'login']);
 
-Route::get('/users-list', [ApiController::class, 'UsersList']);
-Route::get('/users', [ApiController::class, 'Users']);
+Route::post('/admin/login', [ApiController::class, 'login']);
+// Route::post('/admin/logout', [ApiController::class, 'logout']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    // Admin
+    Route::post('/admin/register', [ApiController::class, 'register']);
+    Route::get('/admin/users-list', [ApiController::class, 'UsersList']);
+    
+    Route::get('/admin/users', [ApiController::class, 'Users']);
+    Route::post('/add-object',  [SalesController::class, 'store']);
+
+    // User
+    Route::get('/get-object-list', [SalesController::class, 'getObjectList']);
+});

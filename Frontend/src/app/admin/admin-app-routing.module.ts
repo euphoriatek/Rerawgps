@@ -9,7 +9,6 @@ import { GuestComponent } from './theme/layouts/guest/guest.component';
 import { authGuard } from './guard/auth.guard';
 import { unAuthGuard } from './guard/un-auth.guard';
 import { AddUserComponent } from './demo/component/add-user/add-user.component';
-import { LogoutComponent } from './demo/component/logout/logout.component';
 import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sales-agent.component';
 const routes: Routes = [
   {
@@ -35,11 +34,6 @@ const routes: Routes = [
         path: 'add-sales-agent',
         component: AddSalesAgentComponent,
         canActivate:[authGuard]
-      },
-      {
-        path: 'admin-logout',
-        component: LogoutComponent,
-        // canActivate:[authGuard]
       }
     ]
   },

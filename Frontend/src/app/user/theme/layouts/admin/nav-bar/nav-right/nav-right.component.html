@@ -1,5 +1,12 @@
 <!-- [Mobile Media Block end] -->
 <ul class="list-unstyled">
+  <li class="pc-h-item header-user-profile">
+    <select (change)="switchLanguage($event.target)" [(ngModel)]="defaultLanguage">
+      <option value="en">English</option>
+      <option value="ar">Arabic</option>
+      <option value="ku">Kurdish</option>
+    </select>
+  </li>
   <li class="dropdown pc-h-item" ngbDropdown>
     <a class="pc-head-link dropdown-toggle arrow-none me-0" ngbDropdownToggle>
       <i class="ti ti-bell"></i>
@@ -94,7 +101,7 @@
             <h6 class="mb-1">Stebin Ben</h6>
             <span>UI/UX Designer</span>
           </div>
-          <a href="javascript:" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
+          <a (click)="logOut()" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
         </div>
       </div>
       <ul ngbNav #nav="ngbNav" class="nav drp-tabs nav-fill nav-tabs">
