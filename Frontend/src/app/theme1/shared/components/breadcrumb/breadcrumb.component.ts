@@ -6,7 +6,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 // project import
-import { NavigationItem } from 'src/app/theme/layouts/admin/navigation/navigation';
+import { NavigationItem } from 'src/app/theme1/layouts/admin/navigation/navigation';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -47,7 +47,7 @@ export class BreadcrumbComponent {
 
   filterNavigation(activeLink) {
     let result: object;
-    let title = 'Welcome';
+    let title = '';
     this.navigation.forEach(function (a) {
       if (a.type === 'item' && 'url' in a && a.url === activeLink) {
         result = [
@@ -128,6 +128,6 @@ export class BreadcrumbComponent {
       }
     });
     this.navigationList = result;
-    this.titleService.setTitle(title + ' | Mantis Angular Template');
+    this.titleService.setTitle(title);
   }
 }

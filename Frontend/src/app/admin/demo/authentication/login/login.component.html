@@ -1,18 +1,23 @@
 <div class="auth-main">
   <div class="auth-wrapper v3">
     <div class="auth-form">
-      <div class="auth-header">
-        <a href="javascript:"><img src="assets/images/regayKar-logo.png" alt="logo" /></a>
-      </div>
-      <div class="card my-5">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-end mb-4">
-            <h3 class="mb-0"><b>{{ 'admin_login' | translate}}</b></h3>
+      
+      <div class="card">
+        <div class="auth-header text-center mb-4">
+          <img src="assets/images/admin_images/admin-logo.png" alt="logo" />
+        </div>
+        <div class="card-body p-0">
+          <div class="d-flex justify-content-center align-items-end mb-4">
+            <h3 class="mb-0">{{ 'login' | translate}}</h3>
           </div>
           <form method="post" (ngSubmit)="Login()" [formGroup]="LoginForm">
             <div class="form-group mb-3">
               <label class="form-label" for="username">{{ 'username' | translate}}</label>
-              <input formControlName="username" type="text" class="form-control" id="username" placeholder="{{ 'username' | translate}}" />
+              <div class="form-input">
+                <img src="assets/images/admin_images/mail.svg" alt="email" />
+                <input formControlName="username" type="text" class="form-control" id="username" placeholder="{{ 'username' | translate}}" />
+              </div>
+             
               <div *ngIf="
                 LoginForm?.get('username')?.hasError('required') &&
                 LoginForm?.get('username')?.touched">
@@ -21,8 +26,11 @@
             </div>
             <div class="form-group mb-3">
               <label class="form-label" for="password">{{ 'password' | translate}}</label>
+              <div class="form-input">
+                <img src="assets/images/admin_images/lock.svg" alt="lock" />
               <input formControlName="password" type="password" class="form-control" id="password"
                 placeholder="{{ 'password' | translate}}" value="123456789" />
+              </div>
               <div *ngIf="
               LoginForm?.get('password')?.hasError('required') &&
               LoginForm?.get('password')?.touched">
@@ -49,20 +57,7 @@
           </div>
         </div>
       </div>
-      <div class="auth-footer row">
-        <!-- <div class=""> -->
-        <div class="col my-1">
-          <p class="m-0">Copyright © <a href="" target="_blank"></a></p>
-        </div>
-        <!-- <div class="col-auto my-1">
-          <ul class="list-inline footer-link mb-0">
-            <li class="list-inline-item"><a href="https://codedthemes.com/" target="_blank">Home</a></li>
-            <li class="list-inline-item"><a href="https://codedthemes.com/privacy-policy/" target="_blank">Privacy Policy</a></li>
-            <li class="list-inline-item"><a href="https://codedthemes.support-hub.io/" target="_blank">Contact us</a></li>
-          </ul>
-        </div> -->
-        <!-- </div> -->
-      </div>
+    
     </div>
   </div>
 </div>

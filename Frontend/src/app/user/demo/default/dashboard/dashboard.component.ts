@@ -11,7 +11,7 @@ import { SharedModule } from 'src/app/user/theme/shared/shared.module';
 import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-@Component({
+@Component({   
   selector: 'app-dashboard',
   standalone: true,
   imports: [RouterModule, CommonModule, SharedModule, TranslateModule],

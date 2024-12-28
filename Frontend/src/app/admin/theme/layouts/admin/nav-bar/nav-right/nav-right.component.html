@@ -7,7 +7,7 @@
       <option value="ku">Kurdish</option>
     </select>
   </li> 
-  <li class="dropdown pc-h-item" ngbDropdown>
+  <!-- <li class="dropdown pc-h-item" ngbDropdown>
     <a class="pc-head-link dropdown-toggle arrow-none me-0" ngbDropdownToggle>
       <i class="ti ti-bell"></i>
       <span class="badge bg-success pc-h-badge">3</span>
@@ -85,7 +85,7 @@
         <a href="javascript:" class="link-primary">View all</a>
       </div>
     </div>
-  </li>
+  </li> -->
   <li class="dropdown pc-h-item header-user-profile" ngbDropdown>
     <a class="pc-head-link dropdown-toggle arrow-none me-0" ngbDropdownToggle>
       <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
@@ -99,14 +99,13 @@
           </div>
           <div class="flex-grow-1 ms-3">
             <h6 class="mb-1">Stebin Ben</h6>
-            <span>UI/UX Designer</span>
           </div>
           <a  [routerLink]="['/admin/admin-logout']" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
         </div>
       </div>
       <ul ngbNav #nav="ngbNav" class="nav drp-tabs nav-fill nav-tabs">
         <li ngbNavItem="1">
-          <a ngbNavLink><i class="ti ti-user"></i> Profile</a>
+          <a ngbNavLink><i class="ti ti-user"></i> Edit Profile</a>
           <ng-template ngbNavContent>
             <div *ngFor="let task of profile">
               <a class="dropdown-item">
@@ -116,7 +115,7 @@
             </div>
           </ng-template>
         </li>
-        <li ngbNavItem="2">
+        <!-- <li ngbNavItem="2">
           <a ngbNavLink><i class="ti ti-settings"></i> Setting</a>
           <ng-template ngbNavContent>
             <div *ngFor="let task of setting">
@@ -126,7 +125,7 @@
               </a>
             </div>
           </ng-template>
-        </li>
+        </li> -->
       </ul>
       <div [ngbNavOutlet]="nav"></div>
     </div>

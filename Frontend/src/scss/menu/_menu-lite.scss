@@ -149,12 +149,19 @@
     li {
       position: relative;
       padding-bottom: 2px;
+      
 
       > a {
-        padding: 10px 24px;
+        padding: 8px 17px;
         display: block;
-        border-radius: 5px;
+        border-radius: 0;
         position: relative;
+        white-space: nowrap;
+        &:hover{
+          background: #fbfbfb;
+          color: #000;
+          
+        }
 
         .coded-mtext {
           position: relative;
@@ -277,6 +284,7 @@
         }
       }
     }
+
 
     > app-nav-group > app-nav-item {
       li {
@@ -852,4 +860,9 @@
       width: 80px;
     }
   }
+}
+
+.coded-navbar .coded-inner-navbar li.active a{
+  background-color: #fff;
+  color:#000;
 }

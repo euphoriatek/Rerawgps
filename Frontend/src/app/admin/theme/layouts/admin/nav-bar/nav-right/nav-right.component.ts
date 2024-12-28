@@ -16,18 +16,18 @@ export class NavRightComponent {
       icon: 'ti ti-edit-circle',
       title: 'Edit Profile'
     },
-    {
-      icon: 'ti ti-user',
-      title: 'View Profile'
-    },
-    {
-      icon: 'ti ti-clipboard',
-      title: 'Social Profile'
-    },
-    {
-      icon: 'ti ti-edit-circle',
-      title: 'Billing'
-    },
+    // {
+    //   icon: 'ti ti-user',
+    //   title: 'View Profile'
+    // },
+    // {
+    //   icon: 'ti ti-clipboard',
+    //   title: 'Social Profile'
+    // },
+    // {
+    //   icon: 'ti ti-edit-circle',
+    //   title: 'Billing'
+    // },
     {
       icon: 'ti ti-power',
       title: 'Logout',

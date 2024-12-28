@@ -70,10 +70,71 @@ $pc-secondary: map-get($preset-colors, 'preset-1', 'secondary');
 @import 'scss/themes/components/components';
 
 // pages
-@import 'scss/themes/pages/page';
+@import 'scss/themes/pages/page'; 
 
 // font
 @import 'scss/fonts/tabler-icons.min.css';
 @import "../node_modules/ngx-spinner/animations/square-jelly-box.css";
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root{
+  --color-theme:#1E3160;
+
+}
+
+html, body { 
+  height: 100%;
+ }
+body { 
+  margin: 0; 
+  font-family: "Poppins", serif;
+ }
+
+//  FORM CSS
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+ .error-message {
+  color: #ff4d4f;
+  font-size: 12px;
+}
+.btn {
+  font-size: 14px;
+  border-radius: 6px;
+  font-weight: 400;
+  transition: 1s;
+  padding: 7px 16px;
+}
+.btn-primary{
+  background-color: #1E3160;
+  border-color:#1E3160;
+}
+
+select {
+  background-color: #fff;
+  background-image: url('../src/assets/images/admin_images/down-arrow.png');
+  padding: 6px 24px 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  appearance: none;
+  background-size: 16px;
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+}
+table tr th {
+  background: #f7f7f7 !important;
+  padding: 8px !important;
+  font-weight: 500;
+  color: #000 !important;
+}
+.form-control {
+  background: #fff;
+  border-radius: 8px;
+  border: solid 1px #d3dbeb;
+}
+a{
+  cursor: pointer;
+}
+
+//  FORM CSS
