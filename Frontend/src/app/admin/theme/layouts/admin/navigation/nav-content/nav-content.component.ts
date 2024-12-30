@@ -6,7 +6,9 @@ import { Location, LocationStrategy } from '@angular/common';
 import { NavigationItem } from '../navigation';
 import { MantisConfig } from 'src/app/app-config';
 import { environment } from 'src/environments/environment';
-
+import { AdminCookiesService } from 'src/app/admin/services/admincookies.service';
+import { ToasterService } from 'src/app/services/toster.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-nav-content',
   templateUrl: './nav-content.component.html',
@@ -27,7 +29,8 @@ export class NavContentComponent implements OnInit {
   constructor(
     public nav: NavigationItem,
     private location: Location,
-    private locationStrategy: LocationStrategy
+    private locationStrategy: LocationStrategy,
+    public toaster:ToasterService,public cookie:AdminCookiesService,public route:Router
   ) {
     this.windowWidth;
     this.navigation = this.nav.get();
@@ -69,5 +72,14 @@ export class NavContentComponent implements OnInit {
     if (this.windowWidth < 1025 && document.querySelector('app-navigation.coded-navbar').classList.contains('mob-open')) {
       this.NavCollapsedMob.emit();
     }
+  }
+
+  logOut(){
+    sessionStorage.clear();
+    localStorage.clear();
+    this.cookie.deleteCookieAll();
+    this.cookie.deleteCookie('AdminUser');
+    this.toaster.error("Logout successfully!", "Logout");
+    this.route.navigate(['/admin/login']);
   }
 }
