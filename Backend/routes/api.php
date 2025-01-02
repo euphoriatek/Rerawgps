@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Super Admin
     Route::post('/admin/add-server', [ServerController::class, 'addServer'])->middleware('auth:users');
     Route::get('/admin/get-servers', [ServerController::class, 'GetServers'])->middleware('auth:users');
+    Route::post('/admin/edit-server/{id}', [ServerController::class, 'UpdateServers'])->middleware('auth:users');
+    Route::post('/admin/delete-server', [ServerController::class, 'deleteServer'])->middleware('auth:users');
     // Admin
     Route::post('/admin/register', [ApiController::class, 'register'])->middleware('auth:users');
     Route::get('/admin/users-list', [ApiController::class, 'UsersList'])->middleware('auth:users');

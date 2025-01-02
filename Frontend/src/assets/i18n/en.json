@@ -75,5 +75,12 @@
     "user_name":"User Name",
     "user_id":"User Id",
     "search":"Search",
-    "sales_agent_list":"Sales Agent List"
+    "sales_agent_list":"Sales Agent List",
+    "edit_server":"Edit Server",
+    "server_updated_success":"Server updated successfully!",
+    "server_updated_error":"Server could not be updated",
+    "server_updated_error_ex":"An error occurred while updating in",
+    "server_deleted_success":"Server deleted successfully!",
+    "server_deleted_error":"Server could not be deleted",
+    "server_deleted_error_ex":"An error occurred while updating in"
 }

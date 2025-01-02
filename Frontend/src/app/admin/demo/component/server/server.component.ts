@@ -17,6 +17,9 @@ export class ServerComponent {
   isSubmitted = false;
   servesData:any;
   showAddserver:boolean=false;
+  visible: boolean = false;
+  selectedServer: any;
+
   constructor(public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
 
   }
@@ -41,7 +44,8 @@ export class ServerComponent {
       const data = this.ServerForm.value;
       this.api.addServer(data).subscribe({
         next: (response: any) => {
-          if (response && response.status) {
+          if (response) {
+            console.log(response);
             this.getServers();
             this.ServerForm.reset();
             this.toaster.success(this.translate.instant('server_added_success'), this.translate.instant('server'));
@@ -69,7 +73,6 @@ export class ServerComponent {
       next: (response: any) => {
         if (response && response.status) {
           this.servesData = response.data;
-          console.log(response.data);
         } else {
         }
       },
@@ -87,4 +90,84 @@ export class ServerComponent {
   addServerForm(){
     this.showAddserver = true;
   }
+
+
+  EditServer(): void {
+    if (this.ServerForm.invalid) {
+      this.isSubmitted = true;
+      this.ServerForm.markAllAsTouched();
+      return;
+    }
+  
+    if (this.ServerForm.valid) {
+      this.spinner.show();
+      const data = this.ServerForm.value;
+      this.api.updateServer(this.selectedServer.id, data).subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.getServers();
+            this.toaster.success(this.translate.instant('server_updated_success'), this.translate.instant('server'));
+            this.visible = false;
+            this.spinner.hide();
+            this.isSubmitted = false;
+          } else {
+            this.toaster.error(this.translate.instant('server_updated_error') || this.translate.instant('try_again'), this.translate.instant('server'));
+            this.spinner.hide();
+          }
+        },
+        error: (err) => {
+          this.spinner.hide();
+          this.isSubmitted = false;
+          this.toaster.error(
+            this.translate.instant('server_updated_error_ex') || this.translate.instant('try_again'),
+            this.translate.instant('server')
+          );
+          console.error(err);
+        }
+      });
+    }
+  }
+
+  openEditDialog(selectedServer: any): void {
+    this.selectedServer = selectedServer;  
+    this.ServerForm.patchValue({
+      name: selectedServer.name,
+      server_url: selectedServer.server_url,
+      access_key: selectedServer.access_key
+    });  
+    this.visible = true;
+  }
+
+  closeDialog(): void {
+    this.visible = false;
+  }
+
+  deleteRow(data: any): void {
+    this.spinner.show();
+    this.isSubmitted = true;
+    this.api.deleteServer(data.id).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          const index = this.servesData.indexOf(data);
+          if (index !== -1) {
+            this.servesData.splice(index, 1);
+          }
+          this.toaster.success(this.translate.instant('server_deleted_success'), this.translate.instant('server'));
+          this.spinner.hide();
+          this.isSubmitted = false;
+        } else {
+          this.toaster.error(this.translate.instant('server_deleted_error') || this.translate.instant('try_again'), this.translate.instant('server'));
+          this.spinner.hide();
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        this.isSubmitted = false;
+        this.toaster.error(this.translate.instant('server_deleted_error_ex') || this.translate.instant('try_again'), this.translate.instant('server'));
+        console.error(err);
+      }
+    });
+  }
+  
+
 }

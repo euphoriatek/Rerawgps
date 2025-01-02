@@ -29,7 +29,8 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ServerComponent } from './demo/component/server/server.component';
 import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
-
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from "primeng/button"; 
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -48,7 +49,7 @@ import { AdminUsersComponent } from './demo/component/admin-users/admin-users.co
     ServerComponent,
     AdminUsersComponent
   ],
-  imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
+  imports: [AdminAppRoutingModule,DialogModule,ButtonModule,SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
   providers: [NavigationItem,
     // {
     //   provide: HTTP_INTERCEPTORS,
