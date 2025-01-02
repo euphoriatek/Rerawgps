@@ -10,6 +10,8 @@ import { authGuard } from './guard/auth.guard';
 import { unAuthGuard } from './guard/un-auth.guard';
 import { AddUserComponent } from './demo/component/add-user/add-user.component';
 import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sales-agent.component';
+import { ServerComponent } from './demo/component/server/server.component';
+import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
 const routes: Routes = [
   {
     path: '',
@@ -23,6 +25,16 @@ const routes: Routes = [
       {
         path: 'dashboard/default',
         loadComponent: () => import('./demo/default/dashboard/dashboard.component'),
+        canActivate:[authGuard]
+      },
+      {
+        path: 'servers',
+        component: ServerComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'admin-users',
+        component: AdminUsersComponent,
         canActivate:[authGuard]
       },
       {

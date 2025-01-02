@@ -12,6 +12,14 @@ export class ApiService {
     return this.http.post(this.AdminBaseUrl + 'login', data);
   }
 
+  addServer(data:any){
+    return this.http.post(this.AdminBaseUrl + 'add-server', data);
+  }
+
+  getServers(){
+    return this.http.get(this.AdminBaseUrl + 'get-servers');
+  }
+
   addUser(data:any){
     return this.http.post(this.AdminBaseUrl + 'register', data);
   }

@@ -1,0 +1,47 @@
+.add_user_btn{
+    margin-left: 5px;
+    background-color:#134aa0;
+    color:white;
+    }
+
+.search-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .search {
+    padding-left: 30px; 
+    padding-right: 10px; 
+    height: 38px;
+  }
+  
+  .search-container i {
+    position: absolute;
+    left: 10px; 
+    top: 50%;
+    transform: translateY(-50%);
+    color: gray; 
+  }
+
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 15px;
+  }
+  
+  td, th {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  // tr:nth-child(even) {
+  //   background-color: #dddddd;
+  // }
+  .users_table{
+    width: 100%;
+  }
+  .checkbox{
+    margin-right: 15px;
+    
+  }

@@ -27,6 +27,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { ServerComponent } from './demo/component/server/server.component';
+import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     NavGroupComponent,
     NavItemComponent,
     AddUserComponent,
-    AddSalesAgentComponent
+    AddSalesAgentComponent,
+    ServerComponent,
+    AdminUsersComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
   providers: [NavigationItem,
