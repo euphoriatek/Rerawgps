@@ -70,5 +70,10 @@
     "edit":"Edit",
     "delete":"Delete",
     "servers":"Servers",
-    "admin_users":"Admin Users"
+    "admin_users":"Admin Users",
+    "id":"ID",
+    "user_name":"User Name",
+    "user_id":"User Id",
+    "search":"Search",
+    "sales_agent_list":"Sales Agent List"
 }

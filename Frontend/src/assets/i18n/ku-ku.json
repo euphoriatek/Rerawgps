@@ -56,6 +56,23 @@
     "keep_me_sign_in": "Bimînin têkevin",
     "copyright_©": "Mîhenganên çap û belavkirin ©",
     "reports":"Raport",
-    "log_out":"Derkeve"
-    
+    "log_out":"Derkeve",
+    "access_key": "Kila gihiştinê",
+    "url_required": "URL hewce ye",
+    "access_key_required": "Kila gihiştinê hewce ye",
+    "server_added_success": "Server bi serkeftin hat zêdekirin!",
+    "server_added_error": "Server nehat zêdekirin",
+    "server_added_error_ex": "Xeletiyek di dema zêdekirinê de çêbû",
+    "servers_list": "Lîsteya serveran",
+    "add_server": "Serverê zêde bike",
+    "actions": "Çalakî",
+    "edit": "Sererastkirin",
+    "delete": "Jêbirin",
+    "servers": "Serveran",
+    "admin_users": "Bikarhênerên admin",
+    "id": "Nasname",
+    "user_name": "Navê Bikarhêner",
+    "user_id": "Nasnameya Bikarhêner",
+    "search": "Lêgerîn",
+    "sales_agent_list":"Lîsteya Ajentan Firotanê"
 }
