@@ -57,5 +57,18 @@
     "keep_me_sign_in":"Keep me sign in",
     "copyright_©":"Copyright ©",
     "reports":"Reports",
-    "log_out":"Log Out"
+    "log_out":"Log Out",
+    "access_key":"Access Key",
+    "url_required":"URL is required",
+    "access_key_required":"Access Key is required",
+    "server_added_success":"Server added successfully!",
+    "server_added_error":"Server could not be added",
+    "server_added_error_ex":"An error occurred while adding in",
+    "servers_list":"Servers List",
+    "add_server":"Add Server",
+    "actions":"Actions",
+    "edit":"Edit",
+    "delete":"Delete",
+    "servers":"Servers",
+    "admin_users":"Admin Users"
 }
