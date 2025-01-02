@@ -47,7 +47,7 @@ class ServerController extends Controller
     public function GetServers(){
 		try {
 
-            $servers = Servers::get();
+            $servers = Servers::whereNull('deleted_at')->get();
             return response()->json([
                 'status' => true,
                 'data' => $servers,
@@ -61,5 +61,80 @@ class ServerController extends Controller
             ], 500);
         }
     }
+
+
+
+   public function UpdateServers($id, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'server_url' => 'required|string|max:255',
+            'access_key' => 'required|string|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation errors occurred.',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $server = Servers::find($id);
+
+        if (!$server) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server not found.'
+            ], 404);
+        }
+
+        $server->update([
+            'name' => $request->name,
+            'server_url' => $request->server_url,
+            'access_key' => $request->access_key,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Server updated successfully.',
+            'server' => $server
+        ], 200);
+    }
+
+
+    public function deleteServer(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'server_id' => 'required|exists:servers,id', 
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation errors occurred.',
+                'errors' => $validator->errors()
+            ], 400); 
+        }
+
+        $server = Servers::find($request->input('server_id'));
+
+        if (!$server) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server not found.',
+            ], 404);
+        }
+
+        $server->deleted_at = now();
+        $server->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Server deleted successfully.',
+            'server' => $server
+        ], 200);
+    }
+
 
 }

@@ -74,5 +74,12 @@
     "user_name": "اسم المستخدم",
     "user_id": "معرف المستخدم",
     "search": "بحث",
-    "sales_agent_list":"قائمة وكلاء المبيعات"
+    "sales_agent_list":"قائمة وكلاء المبيعات",
+    "edit_server": "تعديل الخادم",
+    "server_updated_success": "تم تحديث الخادم بنجاح!",
+    "server_updated_error": "تعذر تحديث الخادم",
+    "server_updated_error_ex": "حدث خطأ أثناء الإضافة",
+    "server_deleted_success": "تم حذف الخادم بنجاح!",
+    "server_deleted_error": "تعذر حذف الخادم",
+    "server_deleted_error_ex": "حدث خطأ أثناء التحديث"
 }

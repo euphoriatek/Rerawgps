@@ -25,8 +25,8 @@ const NavigationItems = [
     icon: 'ti ti-dashboard',
   },
   {
-    id: 'server',
-    title: 'server',
+    id: 'servers',
+    title: 'servers',
     type: 'item',
     url: '/admin/servers',
     icon: 'ti ti-dashboard',
