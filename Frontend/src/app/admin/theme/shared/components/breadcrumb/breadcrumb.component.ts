@@ -1,7 +1,7 @@
 // Angular import
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { AdminCookiesService } from 'src/app/admin/services/admincookies.service';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
@@ -26,9 +26,11 @@ export class BreadcrumbComponent {
   constructor(
     private _router: Router,
     public nav: NavigationItem,
-    private titleService: Title
+    private titleService: Title,
+    public cookie:AdminCookiesService
   ) {
-    this.navigation = this.nav.get();
+    const role = this.cookie.getCookie('AdminUser')?.role;
+    this.navigation = this.nav.get(role);
     this.setBreadcrumb();
   }
 

@@ -76,6 +76,9 @@
     "user_id":"User Id",
     "search":"Search",
     "sales_agent_list":"Sales Agent List",
+    "admin_users_list":"Admin Users List",
+    "server":"Server",
+    "add_admin_user":"Add Admin User"
     "edit_server":"Edit Server",
     "server_updated_success":"Server updated successfully!",
     "server_updated_error":"Server could not be updated",

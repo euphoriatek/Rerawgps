@@ -14,54 +14,68 @@ import { access } from 'fs';
   styleUrls: ['./admin-users.component.scss']
 })
 export class AdminUsersComponent {
-  ServerForm!: FormGroup;
+  AdminUsr!: FormGroup;
   isSubmitted = false;
-  servesData:any;
-  showAddserver:boolean=false;
+  showAddUser:boolean=true;
+  visible: boolean = false;
+  server_options:any;
+  adminData:any;
   constructor(public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
 
   }
   ngOnInit(): void {
-    this.ServerForm = this.fb.group({
-      name: ['', [Validators.required]],
-      server_url:['', [Validators.required]],
-      access_key:['', [Validators.required]]
+    this.AdminUsr = this.fb.group({
+      server_id: ['', [Validators.required]],
+      name:['', [Validators.required]],
+      username:['', [Validators.required]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+        ],
+      ],
     });
     this.getServers();
+    this.adminUsers();
   }
+  showDialog() {
+    this.visible = true;
+}
 
-
-  addServer(): void {
-    if (this.ServerForm.invalid) {
+addUser(): void {
+    if (this.AdminUsr.invalid) {
       this.isSubmitted = true;
-      this.ServerForm.markAllAsTouched();
+      this.AdminUsr.markAllAsTouched();
       this.spinner.hide();
       return;
-    }else if(this.ServerForm.valid){
+    }else if(this.AdminUsr.valid){
       this.spinner.show();
-      const data = this.ServerForm.value;
-      this.api.addServer(data).subscribe({
+      const data = this.AdminUsr.value;
+      console.log(data);
+      this.api.addAdminUser(data).subscribe({
         next: (response: any) => {
           if (response && response.status) {
             this.getServers();
-            this.ServerForm.reset();
-            this.toaster.success(this.translate.instant('server_added_success'), this.translate.instant('server'));
+            this.AdminUsr.reset();
+            this.toaster.success(this.translate.instant('user_added_success'), this.translate.instant('server'));
             this.spinner.hide();
             this.isSubmitted = false;
-            this.showAddserver = false;
+            this.showAddUser = false;
           } else {
-            this.toaster.error(this.translate.instant('server_added_error') || this.translate.instant('try_again'), this.translate.instant('server'));
+            this.toaster.error(this.translate.instant('user_added_error') || this.translate.instant('try_again'), this.translate.instant('server'));
           }
         },
         error: (err) => {
           this.spinner.hide();
           this.isSubmitted = false;
-          this.toaster.error(this.translate.instant('server_added_error_ex') || this.translate.instant('try_again'), this.translate.instant('server'));
+          this.toaster.error(this.translate.instant('user_added_error_ex') || this.translate.instant('try_again'), this.translate.instant('server'));
           console.error(err);
         }
       });
     }else{
-      this.ServerForm.markAllAsTouched();
+      this.AdminUsr.markAllAsTouched();
     }
   }
 
@@ -69,7 +83,23 @@ export class AdminUsersComponent {
     this.api.getServers().subscribe({
       next: (response: any) => {
         if (response && response.status) {
-          this.servesData = response.data;
+          this.server_options = response.data;
+          console.log(response.data);
+        } else {
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
+  }
+
+  adminUsers(){
+    this.api.getAdminUsers().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.adminData = response.data;
           console.log(response.data);
         } else {
         }
@@ -82,10 +112,15 @@ export class AdminUsersComponent {
   }
 
   resetForm(){
-    this.ServerForm.reset();
+    this.AdminUsr.reset();
   }
 
-  addServerForm(){
-    this.showAddserver = true;
+  addAdminUsr(){
+    this.showAddUser = true;
+  }
+
+  getUrl(data:any){
+    const serverUrls = data.map(server => server.server.server_url).join(", ");
+    return serverUrls;
   }
 }

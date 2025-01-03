@@ -29,12 +29,16 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ServerComponent } from './demo/component/server/server.component';
 import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
+
+import { MatSelectModule } from '@angular/material/select';
+import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from "primeng/button"; 
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';
+
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -54,7 +58,7 @@ import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.co
     AdminUsersComponent,
     ConfirmDialogComponent
   ],
-  imports: [AdminAppRoutingModule,DialogModule,ButtonModule,MatDialogModule,MatButtonModule,SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
+  imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule],
   providers: [NavigationItem,
     // {
     //   provide: HTTP_INTERCEPTORS,
