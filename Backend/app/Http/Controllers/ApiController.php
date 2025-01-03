@@ -273,4 +273,68 @@ class ApiController extends Controller
             ], 500);
         }
     }
+    public function UpdateUser($id, Request $request)
+    {
+        $input = $request->all();
+        try {
+            $user = User::findOrFail($id);
+            $validator = Validator::make($input, [
+                'site_url' => 'required|string|max:255',
+                'username' => 'required|string|max:255',
+                'api_key' => 'required',
+                'mobile_number' => 'required|numeric|min:10',
+                'password' => 'nullable|string|min:8',
+                'address' => 'required|string|max:255',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'errors' => $validator->errors(),
+                ], 400);
+            }
+            $user->update([
+                'site_url' => $input['site_url'],
+                'username' => $input['username'],
+                'api_key' => $input['api_key'],
+                'mobile_number' => $input['mobile_number'],
+                'address' => $input['address'],
+                'password' => $input['password'] ? Hash::make($input['password']) : $input['password'],
+            ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'User updated successfully!',
+                'data' => $user,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while updating the user.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function deleteUser(Request $request, $id)
+    {
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found.',
+                ], 404);
+            }
+            $user->is_delete = 1;
+            $user->save();
+            $user->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'User deleted successfully.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while deleting the user.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
