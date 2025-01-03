@@ -7,6 +7,8 @@ import { ToasterService } from 'src/app/services/toster.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { TranslateService } from '@ngx-translate/core';
 import { access } from 'fs';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';  
 @Component({
   selector: 'app-server',
   templateUrl: './server.component.html',
@@ -20,7 +22,8 @@ export class ServerComponent {
   visible: boolean = false;
   selectedServer: any;
 
-  constructor(public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
+
+  constructor(public route: Router,private dialog: MatDialog,public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
 
   }
   ngOnInit(): void {
@@ -143,31 +146,42 @@ export class ServerComponent {
   }
 
   deleteRow(data: any): void {
-    this.spinner.show();
-    this.isSubmitted = true;
-    this.api.deleteServer(data.id).subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          const index = this.servesData.indexOf(data);
-          if (index !== -1) {
-            this.servesData.splice(index, 1);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: this.translate.instant('Delete_confirmation'),
+        message: this.translate.instant('are_you_sure_want_to_delete'), 
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.spinner.show();
+        this.isSubmitted = true;
+        this.api.deleteServer(data.id).subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              const index = this.servesData.indexOf(data);
+              if (index !== -1) {
+                this.servesData.splice(index, 1);
+              }
+              this.toaster.success(this.translate.instant('server_deleted_success'), this.translate.instant('server'));
+              this.spinner.hide();
+              this.isSubmitted = false;
+            } else {
+              this.toaster.error(this.translate.instant('server_deleted_error') || this.translate.instant('try_again'), this.translate.instant('server'));
+              this.spinner.hide();
+            }
+          },
+          error: (err) => {
+            this.spinner.hide();
+            this.isSubmitted = false;
+            this.toaster.error(this.translate.instant('server_deleted_error_ex') || this.translate.instant('try_again'), this.translate.instant('server'));
+            console.error(err);
           }
-          this.toaster.success(this.translate.instant('server_deleted_success'), this.translate.instant('server'));
-          this.spinner.hide();
-          this.isSubmitted = false;
-        } else {
-          this.toaster.error(this.translate.instant('server_deleted_error') || this.translate.instant('try_again'), this.translate.instant('server'));
-          this.spinner.hide();
-        }
-      },
-      error: (err) => {
-        this.spinner.hide();
-        this.isSubmitted = false;
-        this.toaster.error(this.translate.instant('server_deleted_error_ex') || this.translate.instant('try_again'), this.translate.instant('server'));
-        console.error(err);
+        });
       }
     });
   }
   
-
 }

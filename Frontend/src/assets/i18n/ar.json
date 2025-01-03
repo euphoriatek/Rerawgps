@@ -81,5 +81,9 @@
     "server_updated_error_ex": "حدث خطأ أثناء الإضافة",
     "server_deleted_success": "تم حذف الخادم بنجاح!",
     "server_deleted_error": "تعذر حذف الخادم",
-    "server_deleted_error_ex": "حدث خطأ أثناء التحديث"
+    "server_deleted_error_ex": "حدث خطأ أثناء التحديث",
+    "are_you_sure_want_to_delete": "هل أنت متأكد أنك تريد الحذف؟",
+    "Delete_confirmation": "تأكيد الحذف",
+    "yes": "نعم",
+    "no": "لا"
 }

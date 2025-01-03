@@ -81,6 +81,10 @@
     "server_updated_error_ex": "Çewtiyek çû di dema zêdekirinê de",
     "server_deleted_success": "Server bi serkeftin hat jêbirin!",
     "server_deleted_error": "Server nayê jêbirin",
-    "server_deleted_error_ex": "Çewtiyek di derheq kirineke de çê bû"
+    "server_deleted_error_ex": "Çewtiyek di derheq kirineke de çê bû",
+    "are_you_sure_want_to_delete": "Ma hûn bawer in ku dixwazin jê bibin?",
+    "Delete_confirmation": "Tesdîqkirina jêbirinê",
+    "yes": "Erê",
+    "no": "Na"
 
 }

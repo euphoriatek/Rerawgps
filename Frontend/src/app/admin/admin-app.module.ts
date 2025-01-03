@@ -31,6 +31,10 @@ import { ServerComponent } from './demo/component/server/server.component';
 import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from "primeng/button"; 
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -47,9 +51,10 @@ import { ButtonModule } from "primeng/button";
     AddUserComponent,
     AddSalesAgentComponent,
     ServerComponent,
-    AdminUsersComponent
+    AdminUsersComponent,
+    ConfirmDialogComponent
   ],
-  imports: [AdminAppRoutingModule,DialogModule,ButtonModule,SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
+  imports: [AdminAppRoutingModule,DialogModule,ButtonModule,MatDialogModule,MatButtonModule,SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
   providers: [NavigationItem,
     // {
     //   provide: HTTP_INTERCEPTORS,

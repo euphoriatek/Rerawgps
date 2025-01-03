@@ -35,9 +35,6 @@
     padding: 8px;
   }
   
-  // tr:nth-child(even) {
-  //   background-color: #dddddd;
-  // }
   .users_table{
     width: 100%;
   }
@@ -46,16 +43,5 @@
     
   }
 
-  ::ng-deep .p-dialog-header span {
-    margin-left: 50px;
-    font-weight: bold;
-    font-size: 20px;
-  }
-  
-  ::ng-deep .p-dialog {
-    border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(16, 24, 40, 0.1);
-  }
 
 
