@@ -75,5 +75,8 @@
     "user_name":"User Name",
     "user_id":"User Id",
     "search":"Search",
-    "sales_agent_list":"Sales Agent List"
+    "sales_agent_list":"Sales Agent List",
+    "admin_users_list":"Admin Users List",
+    "server":"Server",
+    "add_admin_user":"Add Admin User"
 }

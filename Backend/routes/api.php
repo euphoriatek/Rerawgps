@@ -32,6 +32,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Super Admin
     Route::post('/admin/add-server', [ServerController::class, 'addServer'])->middleware('auth:users');
     Route::get('/admin/get-servers', [ServerController::class, 'GetServers'])->middleware('auth:users');
+
+    Route::post('/admin/add-admin-usr', [ApiController::class, 'addAdmin'])->middleware('auth:users');
+    Route::get('/admin/get-admin-usr', [ApiController::class, 'getAdmin'])->middleware('auth:users');
+
     // Admin
     Route::post('/admin/register', [ApiController::class, 'register'])->middleware('auth:users');
     Route::get('/admin/users-list', [ApiController::class, 'UsersList'])->middleware('auth:users');
