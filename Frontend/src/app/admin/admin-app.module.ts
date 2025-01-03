@@ -58,7 +58,7 @@ import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.co
     AdminUsersComponent,
     ConfirmDialogComponent
   ],
-  imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule],
+  imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule,MatDialogModule,MatButtonModule],
   providers: [NavigationItem,
     // {
     //   provide: HTTP_INTERCEPTORS,

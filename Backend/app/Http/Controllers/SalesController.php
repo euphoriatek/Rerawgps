@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SalesModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 class SalesController extends Controller
@@ -14,11 +15,10 @@ class SalesController extends Controller
 
         $input = $request->all();
         $validator = Validator::make($input, [
-            'imei' => 'required|regex:/^[0-9]{15}$/',
             'name' => 'required|string|max:255',
-            'user_id' => 'required|string|max:255',
-            'expire' => 'nullable',
-            'expire_date' => 'nullable|date',
+            'user_id' => 'required|numeric|max:255',
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -26,8 +26,8 @@ class SalesController extends Controller
             ], 400);
         }
         try {
-
-            $object = $this->createUser($input);
+            $input['password'] = Hash::make($input['password']);
+            $object = SalesModel::create($input);
             return response()->json([
                 'status' => true,
                 'message' => 'Object added successfully!',
@@ -40,18 +40,6 @@ class SalesController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
-    }
-    public function createUser($data)
-    {
-
-        $object = SalesModel::create([
-            'imei' => $data['imei'],
-            'name' => $data['name'],
-            'user' => $data['user'],
-            'expire' => $data['expire'],
-            'expire_date' => $data['expire_date'] ?? null,
-        ]);
-        return $object;
     }
     public function getObjectList(Request $request)
     {
@@ -76,5 +64,33 @@ class SalesController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function login(Request $request)
+    {
+        $input = $request->all();
+        // Validate input
+        $validator = Validator::make($input, [
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+        $sales = SalesModel::where('username', $request->username)->first();
+        if (!$sales || !Hash::check($request->password, $sales->password)) {
+            return response()->json(['status' => false, 'message' => 'Invalid credentials'], 401);
+        }
+        // $token = $sales->createSalesToken('sales_token');
+        $token = $sales->createToken('sales_token')->plainTextToken;
+        $sales->remember_token = $token;
+        $sales->save();
+        return response()->json([
+            'status' => true,
+            'message' => 'Login successful!',
+            'token' => $token,
+        ], 200);
     }
 }

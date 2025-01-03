@@ -3,19 +3,21 @@
     <div class="row">
         <div class="col-lg-7">
             <div class="row">
-
-
-            <div class="col-lg-12">
-                <div class="form-group">
-                    <label for="">{{'server_url' | translate}}</label>
-                    <input type="text" formControlName="site_url" class="form-control" autocomplete="false">
-                    <div *ngIf="
-                        UserForm?.get('site_url')?.hasError('required') &&
-                        UserForm?.get('site_url')?.touched">
-                        <span class="error-message">{{'server_url_required' | translate}}</span>
-                    </div>
+            <div class="form-group">
+                <label for="">{{ "server" | translate }}</label><br />
+                <mat-form-field appearance="outline" class="multi-select">
+                  <mat-label>Select Server</mat-label>
+                  <mat-select formControlName="server_id">
+                    <mat-option *ngFor="let option of server_options" [value]="option.id">
+                      {{ option.server_url }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="UserForm?.get('server_id')?.hasError('required') && UserForm?.get('server_id')?.touched">
+                  <span class="error-message">{{ "server_required" | translate }}</span>
                 </div>
-            </div>
+              </div>
+              
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="">{{'username' | translate}}</label>

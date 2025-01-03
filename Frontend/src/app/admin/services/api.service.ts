@@ -45,12 +45,10 @@ export class ApiService {
   addUser(data: any) {
     return this.http.post(this.AdminBaseUrl + 'register', data);
   }
-  getUserList() {
-    return this.http.get(this.AdminBaseUrl + 'users-list');
-  }
-
-  getUsers() {
-    return this.http.get(this.AdminBaseUrl + 'users');
+  getUserList(type: any = null) {
+    const url = this.AdminBaseUrl + 'users-list';
+    const params = type ? { type } : {};
+    return this.http.get(url, { params });
   }
 
   logout() {

@@ -53,7 +53,7 @@ addUser(): void {
     }else if(this.AdminUsr.valid){
       this.spinner.show();
       const data = this.AdminUsr.value;
-      console.log(data);
+      // console.log(data);
       this.api.addAdminUser(data).subscribe({
         next: (response: any) => {
           if (response && response.status) {
@@ -84,7 +84,7 @@ addUser(): void {
       next: (response: any) => {
         if (response && response.status) {
           this.server_options = response.data;
-          console.log(response.data);
+          // console.log(response.data);
         } else {
         }
       },

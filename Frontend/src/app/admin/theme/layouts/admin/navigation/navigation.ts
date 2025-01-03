@@ -69,7 +69,7 @@ export class NavigationItem {
   }
   get(role:any) {
     if (role === "admin") {
-      return NavigationItems.filter(item => item.id !== 'server' && item.id !== 'admin_users');
+      return NavigationItems.filter(item => item.id !== 'servers' && item.id !== 'admin_users');
     }
     return NavigationItems;
   }

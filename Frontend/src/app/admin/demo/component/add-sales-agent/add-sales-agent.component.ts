@@ -27,20 +27,26 @@ export class AddSalesAgentComponent {
   ngOnInit(): void {
     this.UserForm = this.fb.group({
       user_id: ['', [Validators.required]],
-      imei:['', [Validators.required]],
       name:['', [Validators.required]],
-      expire:[''],
-      expire_date:[''],
+      username:['', [Validators.required]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+        ],
+      ]
     });
     this.getUsers();
-    this.generateIMEI();
-    this.today = new Date();
-    this.today.setHours(0, 0, 0, 0);
+    // this.generateIMEI();
+    // this.today = new Date();
+    // this.today.setHours(0, 0, 0, 0);
   }
 
   getUsers(){
     this.spinner.show();
-    this.api.getUsers().subscribe({
+    this.api.getUserList({"type":"filter"}).subscribe({
       next: (response: any) => {
         this.spinner.hide();
         if (response && response.status) {
@@ -86,6 +92,7 @@ export class AddSalesAgentComponent {
       });
     }else{
       this.UserForm.markAllAsTouched();
+      return;
     }
   }
 

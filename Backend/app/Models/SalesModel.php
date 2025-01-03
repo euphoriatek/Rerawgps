@@ -1,19 +1,22 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class SalesModel extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
+class SalesModel extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
     protected $table = 'sales';
-
- protected $fillable = ['imei', 'name', 'user_id', 'expire', 'expire_date'];
-
-    // You can also define casts for specific attributes, like dates
-    protected $casts = [
-        'expire_date' => 'date',
-    ];
+    protected $fillable = ['name', 'username', 'password', 'user_id'];
+    protected $hidden = ['remember_token'];
+    /**
+     * Create a token and store it in the `sales_access_tokens` table.
+     *
+     * @param string $name
+     * @param array $abilities
+     * @return string
+     */
+ 
+    
 }

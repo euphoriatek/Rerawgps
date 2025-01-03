@@ -5,7 +5,8 @@ export const accessPermissionGuard: CanActivateFn = (route, state) => {
     let userCookieService = inject(AdminCookiesService);
     let _router = inject(Router);
     if(userCookieService.checkCookie('AdminUser')){
-      let role = userCookieService.getCookie('CurrentUser')?.role;
+      let role = userCookieService.getCookie('AdminUser')?.role;
+      console.log(role);
       if(role === "superadmin"){
         return true;
       }else{

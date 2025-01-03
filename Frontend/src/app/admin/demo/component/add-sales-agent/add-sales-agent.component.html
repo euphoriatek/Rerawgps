@@ -19,21 +19,8 @@
 
             <div class="col-lg-8">
                 <div class="form-group">
-                    <label for="">{{'imei' | translate}}</label>
-                    <input type="text" class="form-control" formControlName="imei" [value]="imei_number" readonly>
-                    <div *ngIf="
-                        UserForm?.get('imei')?.hasError('required') &&
-                        UserForm?.get('imei')?.touched">
-                        <span class="error-message">{{'imei_requied' | translate}}</span>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-lg-8">
-                <div class="form-group">
                     <label for="">{{'name' | translate}}</label>
-                    <input type="text" class="form-control" placeholder="{{'name' | translate}}" formControlName="name">
+                    <input type="text" class="form-control" formControlName="name" >
                     <div *ngIf="
                         UserForm?.get('name')?.hasError('required') &&
                         UserForm?.get('name')?.touched">
@@ -44,6 +31,40 @@
 
 
             <div class="col-lg-8">
+                <div class="form-group">
+                    <label for="">{{'username' | translate}}</label>
+                    <input type="text" class="form-control" formControlName="username" >
+                    <div *ngIf="
+                        UserForm?.get('username')?.hasError('required') &&
+                        UserForm?.get('username')?.touched">
+                        <span class="error-message">{{'username_required' | translate}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="">{{'password' | translate}}</label>
+                    <input type="password" class="form-control" formControlName="password">
+                    <div *ngIf="
+                        UserForm?.get('password')?.hasError('required') &&
+                        UserForm?.get('password')?.touched">
+                        <span class="error-message">{{ 'password_error' | translate}}</span>
+                    </div>
+                    <div *ngIf="
+                        UserForm?.get('password')?.hasError('minlength')">
+                        <span class="error-message">{{ 'password_length_error' | translate}}</span>
+                    </div>
+                    <div *ngIf="
+                        UserForm?.get('password')?.hasError('pattern')">
+                        <span class="error-message">{{ 'strong_password_error' | translate}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- <div class="col-lg-8">
                 <div class="form-group toogle">
                   <label for="" class="toggle-label">{{ 'are_you_sure_want_to_expires' | translate }}</label>
                   <mat-slide-toggle [(ngModel)]="expireStatus" formControlName="expire"></mat-slide-toggle>
@@ -62,7 +83,7 @@
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
                 </div>
-            </div>
+            </div> -->
 
 
             <div class="col-lg-8">

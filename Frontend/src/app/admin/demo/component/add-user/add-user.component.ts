@@ -14,12 +14,13 @@ import { TranslateService } from '@ngx-translate/core';
 export class AddUserComponent {
   UserForm!: FormGroup;
   isSubmitted = false;
+  server_options: any[] = []; 
   constructor(public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
 
   }
   ngOnInit(): void {
     this.UserForm = this.fb.group({
-      site_url: ['', [Validators.required]],
+      server_id: ['', [Validators.required]],
       api_key:['', [Validators.required]],
       username:['', [Validators.required]],
       password: [
@@ -39,6 +40,7 @@ export class AddUserComponent {
       ],
       address: ['', Validators.required],
     });
+    this.getServers();
   }
 
 
@@ -54,7 +56,9 @@ export class AddUserComponent {
       this.api.addUser(data).subscribe({
         next: (response: any) => {
           if (response && response.status) {
+            this.server_options = response.data;
             this.route.navigate(['/admin/dashboard/default']);
+            this.getServers();
             this.toaster.success(this.translate.instant('user_added_success'), this.translate.instant('user'));
             this.spinner.hide();
             this.isSubmitted = false;
@@ -76,5 +80,21 @@ export class AddUserComponent {
 
   resetForm(){
     this.UserForm.reset();
+  }
+
+  getServers(){
+    this.api.getServers().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.server_options = response.data;
+          // console.log(response.data);
+        } else {
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
   }
 }

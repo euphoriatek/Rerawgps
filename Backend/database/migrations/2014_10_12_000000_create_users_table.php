@@ -13,12 +13,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('username')->unique();
             $table->string('password');
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('server_id')->nullable();
+            $table->string('mobile_number')->nullable();
+            $table->string('address')->nullable();
+            $table->enum('role', ['superadmin', 'admin', 'user'])->default('user');
+            $table->text('api_key')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable(); // Soft delete (nullable)
         });
     }
 
