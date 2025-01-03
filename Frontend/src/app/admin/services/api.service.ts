@@ -16,6 +16,10 @@ export class ApiService {
     return this.http.post(this.AdminBaseUrl + 'add-server', data);
   }
 
+  updateServer(id: number, data: any) {
+    return this.http.post(`${this.AdminBaseUrl}edit-server/${id}`, data);
+  }
+
   getServers(){
     return this.http.get(this.AdminBaseUrl + 'get-servers');
   }
@@ -26,6 +30,10 @@ export class ApiService {
 
   getAdminUsers(){
     return this.http.get(this.AdminBaseUrl + 'get-admin-usr');
+  }
+
+  deleteServer(serverId) {
+    return this.http.post(this.AdminBaseUrl + 'delete-server', {server_id: serverId});
   }
 
   addUser(data:any){

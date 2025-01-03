@@ -74,5 +74,12 @@
     "user_name": "ناوی بەکارهێنەر",
     "user_id": "ناسنامەی بەکارهێنەر",
     "search": "گەڕان",
-    "sales_agent_list":"لیستی دڵنیانکارا"
+    "sales_agent_list":"لیستی دڵنیانکارا",
+    "edit_server": "دەستکاری خادم",
+    "server_updated_success": "خادم بە سەرکەوتوویی نوێکرا!",
+    "server_updated_error": "خەدم نەشێوە نوێکرایەوە",
+    "server_updated_error_ex": "هەڵەیەک ڕووداوە لە کاتی زیادکردن",
+    "server_deleted_success": "سێرڤەر بە سەرکەوتوویی سڕایەوە!",
+    "server_deleted_error": "سێرڤەر ناتوانرێ سڕایەوە",
+    "server_deleted_error_ex": "هەڵەیەک ڕویدا کاتێک گەڕانەوەیەک دەکرێ"
 }

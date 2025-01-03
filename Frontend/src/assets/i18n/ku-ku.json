@@ -74,5 +74,13 @@
     "user_name": "Navê Bikarhêner",
     "user_id": "Nasnameya Bikarhêner",
     "search": "Lêgerîn",
-    "sales_agent_list":"Lîsteya Ajentan Firotanê"
+    "sales_agent_list":"Lîsteya Ajentan Firotanê",
+    "edit_server": "Guhertina serverê",
+    "server_updated_success": "Server bi serkeftin hate nûvekirin!",
+    "server_updated_error": "Server nehat nûvekirin",
+    "server_updated_error_ex": "Çewtiyek çû di dema zêdekirinê de",
+    "server_deleted_success": "Server bi serkeftin hat jêbirin!",
+    "server_deleted_error": "Server nayê jêbirin",
+    "server_deleted_error_ex": "Çewtiyek di derheq kirineke de çê bû"
+
 }

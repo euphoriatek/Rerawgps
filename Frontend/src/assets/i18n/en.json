@@ -79,4 +79,11 @@
     "admin_users_list":"Admin Users List",
     "server":"Server",
     "add_admin_user":"Add Admin User"
+    "edit_server":"Edit Server",
+    "server_updated_success":"Server updated successfully!",
+    "server_updated_error":"Server could not be updated",
+    "server_updated_error_ex":"An error occurred while updating in",
+    "server_deleted_success":"Server deleted successfully!",
+    "server_deleted_error":"Server could not be deleted",
+    "server_deleted_error_ex":"An error occurred while updating in"
 }
