@@ -34,6 +34,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from "primeng/button"; 
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,8 @@ import { ButtonModule } from "primeng/button";
     AddUserComponent,
     AddSalesAgentComponent,
     ServerComponent,
-    AdminUsersComponent
+    AdminUsersComponent,
+    ConfirmDialogComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule],
   providers: [NavigationItem,

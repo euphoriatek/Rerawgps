@@ -81,5 +81,9 @@
     "server_updated_error_ex": "هەڵەیەک ڕووداوە لە کاتی زیادکردن",
     "server_deleted_success": "سێرڤەر بە سەرکەوتوویی سڕایەوە!",
     "server_deleted_error": "سێرڤەر ناتوانرێ سڕایەوە",
-    "server_deleted_error_ex": "هەڵەیەک ڕویدا کاتێک گەڕانەوەیەک دەکرێ"
+    "server_deleted_error_ex": "هەڵەیەک ڕویدا کاتێک گەڕانەوەیەک دەکرێ",
+    "are_you_sure_want_to_delete": "دڵنیایت دەتەوێ بسڕیتەوە؟",
+    "Delete_confirmation": "پشتڕاستکردنەوەی سڕینەوە",
+    "yes": "بەڵێ",
+    "no": "نەخێر"
 }

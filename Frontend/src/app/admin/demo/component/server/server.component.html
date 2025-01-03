@@ -106,7 +106,7 @@
                   <td>{{ data.server_url }}</td>
                   <td>{{ data.access_key }}</td>
                   <td>{{ data.created_at | date }}</td>
-                  <td><button class="btn btn-warning btn-xs" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
+                  <td><button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
                     <button class="btn btn-warning btn-xs" (click)="deleteRow(data)">{{ "delete" | translate}}</button></td>
                 </tr>
               </tbody>
@@ -117,11 +117,11 @@
     </div>
   </div>
 
-  <p-dialog id="dialog" header="{{ 'edit_server' | translate }}" [(visible)]="visible" [style]="{ width: '60vw' }"
-    [modal]="true">
+  <p-dialog id="dialog" header="{{ 'edit_server' | translate }}" [(visible)]="visible" [style]="{ width: '40vw' }"
+    [modal]="true" [draggable]="false" [resizable]="false">
     <form action="" [formGroup]="ServerForm" (ngSubmit)="EditServer()">
       <div class="row">
-        <div class="col-lg-7">
+        <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-12">
               <div class="form-group">

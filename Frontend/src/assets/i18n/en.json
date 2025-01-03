@@ -85,5 +85,9 @@
     "server_updated_error_ex":"An error occurred while updating in",
     "server_deleted_success":"Server deleted successfully!",
     "server_deleted_error":"Server could not be deleted",
-    "server_deleted_error_ex":"An error occurred while updating in"
+    "server_deleted_error_ex":"An error occurred while updating in",
+    "are_you_sure_want_to_delete":"Are you Sure want to delete?",
+    "Delete_confirmation":"Delete Confirmation",
+    "yes":"Yes",
+    "no":"No"
 }
