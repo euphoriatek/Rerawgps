@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Servers;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class ServerController extends Controller
 {
 
-	public function addServer(Request $request)
+    public function addServer(Request $request)
     {
         $input = $request->all();
 
@@ -43,9 +44,9 @@ class ServerController extends Controller
             ], 500);
         }
     }
-
-    public function GetServers(){
-		try {
+    public function GetServers()
+    {
+        try {
 
             $servers = Servers::whereNull('deleted_at')->get();
             return response()->json([
@@ -53,7 +54,7 @@ class ServerController extends Controller
                 'data' => $servers,
                 'message' => 'Success'
             ], 200);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while fetching users.',
@@ -61,10 +62,7 @@ class ServerController extends Controller
             ], 500);
         }
     }
-
-
-
-   public function UpdateServers($id, Request $request)
+    public function UpdateServers($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -101,12 +99,10 @@ class ServerController extends Controller
             'server' => $server
         ], 200);
     }
-
-
     public function deleteServer(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'server_id' => 'required|exists:servers,id', 
+            'server_id' => 'required|exists:servers,id',
         ]);
 
         if ($validator->fails()) {
@@ -114,7 +110,7 @@ class ServerController extends Controller
                 'success' => false,
                 'message' => 'Validation errors occurred.',
                 'errors' => $validator->errors()
-            ], 400); 
+            ], 400);
         }
 
         $server = Servers::find($request->input('server_id'));
@@ -135,6 +131,4 @@ class ServerController extends Controller
             'server' => $server
         ], 200);
     }
-
-
 }

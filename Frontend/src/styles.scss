@@ -138,6 +138,24 @@ select {
 a{
   cursor: pointer;
 }
+::ng-deep  {
+  .p-component-overlay{
+    background: #00000099;
+  }
+  .p-dialog-content{
+    overflow-x: hidden;
+  }
+  .p-dialog-header span {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+.p-dialog {
+  padding: 25px;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(16, 24, 40, 0.1);
+}
+}
 
 //  FORM CSS
 
