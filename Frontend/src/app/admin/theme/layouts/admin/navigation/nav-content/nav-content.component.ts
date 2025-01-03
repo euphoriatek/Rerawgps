@@ -32,8 +32,9 @@ export class NavContentComponent implements OnInit {
     private locationStrategy: LocationStrategy,
     public toaster:ToasterService,public cookie:AdminCookiesService,public route:Router
   ) {
+    const role = this.cookie.getCookie('AdminUser')?.role;
     this.windowWidth;
-    this.navigation = this.nav.get();
+    this.navigation = this.nav.get(role);
   }
 
   // Life cycle events

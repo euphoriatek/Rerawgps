@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\AssigendServer;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -23,7 +23,9 @@ class User extends Authenticatable
         'password',
         'address',
         'api_key',
-        'username'
+        'username',
+        'role',
+        'name'
     ];
 
     /**
@@ -35,5 +37,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-   
+    public function assigned_servers()
+    {
+        return $this->hasMany(AssigendServer::class,'user_id','id');
+    }
 }

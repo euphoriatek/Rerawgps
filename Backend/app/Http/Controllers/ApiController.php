@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\AssigendServer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -85,7 +86,21 @@ class ApiController extends Controller
                 ], 400);
             }
 
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'role' => 'admin'])) {
+            // if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'role' => 'admin'])) {
+            //     $user = Auth::user();
+            //     $token = $user->createToken('remember_token')->plainTextToken;
+            //     $user->remember_token = $token;
+            //     $user->save();
+            //     $user->token = $token;
+            //     return response()->json([
+            //         'status' => true,
+            //         'message' => 'Logged in Successfully!',
+            //         'data' => $user,
+
+            //     ], 200);
+            // }
+            if (Auth::attempt(['username' => $request->username, 'password' => $request->password]) && 
+                in_array(Auth::user()->role, ['admin', 'superadmin'])) {
                 $user = Auth::user();
                 $token = $user->createToken('remember_token')->plainTextToken;
                 $user->remember_token = $token;
@@ -95,10 +110,8 @@ class ApiController extends Controller
                     'status' => true,
                     'message' => 'Logged in Successfully!',
                     'data' => $user,
-
                 ], 200);
             }
-
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid username and Password!',
@@ -196,6 +209,66 @@ class ApiController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while logging out.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function addAdmin(Request $request)
+    {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'name' => 'required|string|max:255',
+            'server_id.*' => 'required|distinct|unique:assigned_servers,server_id',
+            // 'server_id' => 'required|array',
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|min:8'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        try {
+            $input['role'] = "admin";
+            $input['password'] = Hash::make($input['password']);
+            $user = User::create($input);
+
+            foreach ($input['server_id'] as $key => $value) {
+                $AssigendServer = AssigendServer::create(['user_id' => $user->id, 'server_id' => $value]);
+            }
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'User added successfully!',
+                'data' => $user,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while registering the user.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getAdmin(){
+        try {
+
+            $servers = User::with('assigned_servers.server')->where('role', 'admin')->get();
+            return response()->json([
+                'status' => true,
+                'data' => $servers,
+                'message' => 'Success'
+            ], 200);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while fetching users.',
                 'error' => $e->getMessage(),
             ], 500);
         }

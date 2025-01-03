@@ -1,0 +1,19 @@
+import { CanActivateFn, Router } from '@angular/router';
+import { AdminCookiesService } from '../services/admincookies.service';
+import { inject } from '@angular/core';
+export const accessPermissionGuard: CanActivateFn = (route, state) => {
+    let userCookieService = inject(AdminCookiesService);
+    let _router = inject(Router);
+    if(userCookieService.checkCookie('AdminUser')){
+      let role = userCookieService.getCookie('CurrentUser')?.role;
+      if(role === "superadmin"){
+        return true;
+      }else{
+        _router.navigate(['/admin/dashboard/default']);
+        return false;
+      }
+    } else{
+      _router.navigate(['/admin/login']);
+      return false;
+    }
+};

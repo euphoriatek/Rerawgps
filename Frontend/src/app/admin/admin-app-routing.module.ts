@@ -12,6 +12,7 @@ import { AddUserComponent } from './demo/component/add-user/add-user.component';
 import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sales-agent.component';
 import { ServerComponent } from './demo/component/server/server.component';
 import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
+import { accessPermissionGuard } from './guard/access-permission.guard';
 const routes: Routes = [
   {
     path: '',
@@ -30,12 +31,12 @@ const routes: Routes = [
       {
         path: 'servers',
         component: ServerComponent,
-        canActivate:[authGuard]
+        canActivate:[authGuard, accessPermissionGuard]
       },
       {
         path: 'admin-users',
         component: AdminUsersComponent,
-        canActivate:[authGuard]
+        canActivate:[authGuard, accessPermissionGuard]
       },
       {
         path: 'add-user',
