@@ -46,11 +46,25 @@ const NavigationItems = [
     icon: 'ti ti-user-plus',
   },
   {
+    id: 'users',
+    title: 'users',
+    type: 'item',
+    url: '/admin/users',
+    icon: 'ti ti-users',
+  },
+  {
     id: 'addsalesagent',
     title: 'add_sales_agent',
     type: 'item',
     url: '/admin/add-sales-agent',
     icon: 'ti ti-user-plus',
+  },
+  {
+    id: 'groups',
+    title: 'groups',
+    type: 'item',
+    url: '/admin/group',
+    icon: 'ti ti-users'
   },
   {
     id: 'setting',

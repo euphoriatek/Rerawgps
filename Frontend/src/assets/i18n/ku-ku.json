@@ -86,5 +86,11 @@
     "Delete_confirmation": "Tesdîqkirina jêbirinê",
     "yes": "Erê",
     "no": "Na",
-    "created_at": "Çêkirî li"
+    "created_at": "Çêkirî li",
+    "user_updated_success": "Bikarhêner bi serkeftî hate nûkirin!",
+    "user_updated_error": "Bikarhêner nehat nûkirin",
+    "user_updated_error_ex": "Xeletî çûbû demê nûkirinê de",
+    "user_deleted_success": "Bikarhêner bi serkeftî hate jêbirin!",
+    "user_deleted_error": "Bikarhêner nehat jêbirin",
+    "user_deleted_error_ex": "Xeletî çûbû demê jêbirinê de"
 }

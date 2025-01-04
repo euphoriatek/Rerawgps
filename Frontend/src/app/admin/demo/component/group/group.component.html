@@ -1,0 +1,110 @@
+<div class="container">
+  <form [formGroup]="groupForm" (ngSubmit)="onSubmit()" *ngIf="showgroup">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="name">{{ 'name' | translate }}</label>
+          <input id="name" formControlName="name" class="form-control" />
+          <div *ngIf="groupForm.get('name').invalid && groupForm.get('name').touched" class="error-message">
+            {{ 'name_required' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="description">{{ 'description' | translate }}</label>
+          <textarea id="description" formControlName="description" class="form-control"></textarea>
+          <div *ngIf="groupForm.get('description').invalid && groupForm.get('description').touched"
+            class="error-message">
+            {{ 'description_required' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="startDate">{{ 'start_date' | translate }}</label>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" [min]="today" />
+            <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+          </mat-form-field>
+          <div *ngIf="groupForm.get('startDate').invalid && groupForm.get('startDate').touched" class="error-message">
+            {{ 'start_date_required' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="endDate">{{ 'end_date' | translate }}</label>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" [min]="today" />
+            <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+          </mat-form-field>
+          <div *ngIf="groupForm.get('endDate').invalid && groupForm.get('endDate').touched" class="error-message">
+            {{ 'end_date_required' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="form-group">
+        <div class="d-flex gap-2 from-button">
+          <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
+          <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate }}">
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="card tbl-card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-8">
+            <h3 class="mb-0">Group List</h3>
+          </div>
+          <div class="col-lg-4">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="d-flex justify-content-end">
+                  <div class="search-container">
+                    <input class="search form-control" type="search" id="gsearch" name="gsearch"
+                      placeholder="Search" />
+                    <i class="fa fa-search"></i>
+                  </div>
+                  <button class="btn btn-warning" (click)="addUserForm()">
+                    {{ "add_user" | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table table-bordered mb-0">
+            <thead>
+              <tr>
+                <th>{{ "name" | translate }}</th>
+                <th>{{ "description" | translate }}</th>
+                <th>{{ "start_date" | translate }}</th>
+                <th>{{ "end_date" | translate }}</th>
+                <th>{{ "actions" | translate }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

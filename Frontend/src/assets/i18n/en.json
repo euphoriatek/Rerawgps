@@ -39,7 +39,7 @@
     "user_added_error_ex":"An error occurred while adding in",
     "created_at":"Created At",
     "add_sales_agent":"Add Sales Agent",
-    "users":"Select Users",
+    "users":"Users",
     "name": "Name",
     "imei":"IMEI",
     "user_required":"User is required",
@@ -89,5 +89,12 @@
     "are_you_sure_want_to_delete":"Are you Sure want to delete?",
     "Delete_confirmation":"Delete Confirmation",
     "yes":"Yes",
-    "no":"No"
+    "no":"No",
+    "end_date":"End Date",
+    "start_date":"Start End",
+    "start_date_required":"Start Date Required",
+    "end_date_required":"End Date Required",
+    "user_updated_success":"User Updated Successfully",
+    "user_updated_error":"User could not be updated",
+    "user_updated_error_ex":"An error occurred while updating in"
 }

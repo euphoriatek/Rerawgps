@@ -1,0 +1,135 @@
+<div class="card tbl-card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-8">
+            <h3 class="mb-0">{{ 'users_list' | translate}}</h3>
+          </div>
+          <div class="col-lg-4">
+            <div class="row ">
+              <div class="col-lg-12">
+                <div class="d-flex justify-content-end">
+                  <div class="search-container">
+                    <input class="search form-control" type="search" id="gsearch" name="gsearch" placeholder="Search">
+                    <i class="fa fa-search"></i>
+                  </div>
+                  <button class="btn add_user_btn" [routerLink]="['/admin/add-user']">{{'add_users' | translate
+                    }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table table-bordered mb-0">
+            <thead>
+              <tr>
+                <th>{{ 'server_url' | translate}}</th>
+                <th>{{ 'username' | translate}}</th>
+                <th>{{ 'mobile_number' | translate}}</th>
+                <th>{{ 'address' | translate}}</th>
+                <th>{{ 'api_key' | translate}}</th>
+                <th>{{ 'created_at' | translate}}</th>
+                <th>{{ "actions" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="usersData">
+              <tr *ngFor="let data of usersData;">
+                <td>{{data.site_url}}</td>
+                <td>{{data.username}}</td>
+                <td>{{data.mobile_number}}</td>
+                <td>{{data.address}}</td>
+                <td>{{data.api_key}}</td>
+                <td>{{data.created_at | date}}</td>
+                <td><button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" |
+                    translate}}</button>
+                  <button class="btn btn-danger btn-xs" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-dialog id="dialog" header="{{ 'edit' | translate }}" [(visible)]="visible" [style]="{ width: '60vw' }"
+    [modal]="true">
+    <form action="" [formGroup]="UserEditForm" (ngSubmit)="EditUser()">
+      <div class="row">
+        <div class="col-lg-7">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="site_url">{{ "site_url" | translate }}</label>
+                <input type="text" formControlName="site_url" class="form-control" autocomplete="false" />
+                <div
+                  *ngIf="UserEditForm?.get('site_url')?.hasError('required') && UserEditForm?.get('site_url')?.touched">
+                  <span class="error-message">{{ "site_url_required" | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="username">{{ "username" | translate }}</label>
+                <input type="text" formControlName="username" class="form-control" autocomplete="false" />
+                <div
+                  *ngIf="UserEditForm?.get('username')?.hasError('required') && UserEditForm?.get('username')?.touched">
+                  <span class="error-message">{{ "username_required" | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="password">{{ "password" | translate }}</label>
+                <input type="password" formControlName="password" class="form-control" autocomplete="false" />
+                <div
+                  *ngIf="UserEditForm?.get('password')?.hasError('required') && UserEditForm?.get('password')?.touched">
+                  <span class="error-message">{{ "password_required" | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="mobile_number">{{ "mobile_number" | translate }}</label>
+                <input type="text" formControlName="mobile_number" class="form-control" autocomplete="false" />
+                <div
+                  *ngIf="UserEditForm?.get('mobile_number')?.hasError('required') && UserEditForm?.get('mobile_number')?.touched">
+                  <span class="error-message">{{ "mobile_number_required" | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="address">{{ "address" | translate }}</label>
+                <input type="text" formControlName="address" class="form-control" autocomplete="false" />
+                <div
+                  *ngIf="UserEditForm?.get('address')?.hasError('required') && UserEditForm?.get('address')?.touched">
+                  <span class="error-message">{{ "address_required" | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="api_key">{{ "api_key" | translate }}</label>
+                <input type="text" formControlName="api_key" class="form-control" autocomplete="false" />
+                <div
+                  *ngIf="UserEditForm?.get('api_key')?.hasError('required') && UserEditForm?.get('api_key')?.touched">
+                  <span class="error-message">{{ "api_key_required" | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="d-flex gap-2 from-button">
+                  <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
+                  <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate }}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </p-dialog>
+</div>

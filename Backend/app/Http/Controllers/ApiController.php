@@ -204,40 +204,130 @@ class ApiController extends Controller
     public function addAdmin(Request $request)
     {
         $input = $request->all();
-
         $validator = Validator::make($input, [
             'name' => 'required|string|max:255',
-            'server_id.*' => 'required|distinct|unique:assigned_servers,server_id',
-            // 'server_id' => 'required|array',
+            'server_id.*' => 'required',
             'username' => 'required|string|max:255',
             'password' => 'required|string|min:8'
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
             ], 400);
         }
-
         try {
+            if (User::where('username', $input['username'])->exists()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Username already exists!',
+                ], 400);
+            }
             $input['role'] = "admin";
             $input['password'] = Hash::make($input['password']);
-            $user = User::create($input);
-
-            foreach ($input['server_id'] as $key => $value) {
-                $AssigendServer = AssigendServer::create(['user_id' => $user->id, 'server_id' => $value]);
+            $user = User::create([
+                'name' => $input['name'],
+                'username' => $input['username'],
+                'password' => $input['password'],
+                'role' => $input['role'],
+            ]);
+            foreach ($input['server_id'] as $value) {
+                AssigendServer::create([
+                    'user_id' => $user->id,
+                    'server_id' => $value
+                ]);
             }
-            
             return response()->json([
                 'status' => true,
                 'message' => 'User added successfully!',
                 'data' => $user,
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred while registering the user.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function UpdateAdminUser(Request $request, $id)
+    {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'name' => 'required|string|max:255',
+            'server_id.*' => 'required',
+            'username' => 'required|string|max:255',
+            'password' => 'nullable|string|min:8',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                    'errors' => $validator->errors(),
+                ], 400);
+        }
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                return response()->json([
+                        'status' => false,
+                        'message' => 'User not found!',
+                ], 404);
+            }
+            if (User::where('username', $input['username'])->where('id', '!=', $id)->exists()) {
+                return response()->json([
+                        'status' => false,
+                        'message' => 'Username already exists!',
+                ], 400);
+            }
+                if (!empty($input['password'])) {
+                    $input['password'] = Hash::make($input['password']);
+                } else {
+                    unset($input['password']);
+                }
+                $user->update([
+                    'name' => $input['name'],
+                    'username' => $input['username'],
+                    'password' => $input['password'] ?? $user->password,
+                ]);
+                AssigendServer::where('user_id', $user->id)->delete();
+                foreach ($input['server_id'] as $value) {
+                    AssigendServer::create([
+                        'user_id' => $user->id,
+                        'server_id' => $value
+                    ]);
+                }
+                return response()->json([
+                    'status' => true,
+                    'message' => 'User updated successfully!',
+                    'data' => $user,
+                ], 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'An error occurred while updating the user.',
+                    'error' => $e->getMessage(),
+                ], 500);
+            }
+    }
+    public function deleteAdminUser(Request $request)
+    {
+        try {
+            $id = $request->input('id');
+            $user = User::find($id);
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found!',
+                ], 404);
+            }
+            AssigendServer::where('user_id', $id)->delete();
+            $user->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'User deleted successfully!',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while deleting the user.',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -309,7 +399,6 @@ class ApiController extends Controller
                     'message' => 'User not found.',
                 ], 404);
             }
-            $user->is_delete = 1;
             $user->save();
             $user->delete();
             return response()->json([
