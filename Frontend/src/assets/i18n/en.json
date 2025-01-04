@@ -96,5 +96,6 @@
     "end_date_required":"End Date Required",
     "user_updated_success":"User Updated Successfully",
     "user_updated_error":"User could not be updated",
-    "user_updated_error_ex":"An error occurred while updating in"
+    "user_updated_error_ex":"An error occurred while updating in",
+    "server_required":"Server is Required"
 }

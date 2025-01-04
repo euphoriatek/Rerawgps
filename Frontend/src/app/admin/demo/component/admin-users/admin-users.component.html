@@ -13,8 +13,12 @@
               <label for="">{{ "server" | translate }}</label
               ><br />
               <mat-form-field appearance="outline" class="multi-select">
-                <mat-label>Select Server</mat-label>
-                <mat-select multiple formControlName="server_id">
+                <!-- <mat-label>Select Server</mat-label> -->
+                <mat-select
+                  multiple
+                  formControlName="server_id"
+                  class="form-control"
+                >
                   <mat-option
                     *ngFor="let option of server_options"
                     [value]="option.id"
@@ -109,27 +113,12 @@
             </div>
           </div>
           <div class="col-lg-12">
-            <div class="row">
-              <div class="col-lg-2">
-                <div class="form-group">
-                  <input
-                    type="submit"
-                    class="btn btn-primary w-100"
-                    value="{{ 'save' | translate }}"
-                  />
+            <div class="form-group">
+                <div class="d-flex gap-2 from-button">
+                    <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
+                    <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
                 </div>
               </div>
-              <div class="col-lg-2">
-                <div class="form-group">
-                  <input
-                    (click)="resetForm()"
-                    type="button"
-                    class="btn btn-warning w-100"
-                    value="{{ 'reset' | translate }}"
-                  />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -176,153 +165,156 @@
                 </tr>
               </thead>
               <tbody *ngIf="adminData">
-                  <tr *ngFor="let data of adminData">
-                    <td>{{ data.name }}</td>
-                    <td>{{ getUrl(data.assigned_servers) }}</td>
-                    <td>{{ data.created_at | date }}</td>
-                    <td><button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button> <button class="btn btn-warning btn-xs" (click)="deleteRow(data)">{{ "delete" | translate}}</button></td>
-                  </tr>
-                </tbody>
+                <tr *ngFor="let data of adminData">
+                  <td>{{ data.name }}</td>
+                  <td>{{ getUrl(data.assigned_servers) }}</td>
+                  <td>{{ data.created_at | date }}</td>
+                  <td>
+                    <button
+                      class="btn btn-warning btn-xs me-3"
+                      (click)="openEditDialog(data)"
+                    >
+                      {{ "edit" | translate }}
+                    </button>
+                    <button class="btn btn-warning btn-xs">
+                      {{ "delete" | translate }}
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <p-dialog id="dialog" header="{{ 'admin_users' | translate }}" [(visible)]="visible" [style]="{ width: '40vw' }"
-  [modal]="true" [draggable]="false" [resizable]="false">
+  <p-dialog
+    id="dialog"
+    header="{{ 'admin_users' | translate }}"
+    [(visible)]="visible"
+    [style]="{ width: '40vw' }"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+  >
     <form action="" [formGroup]="AdminUsr" (ngSubmit)="editUser()">
-    <div class="row">
-      <div class="col-lg-5">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="">{{ "server" | translate }}</label
-              ><br />
-              <mat-form-field appearance="outline" class="multi-select">
-                <mat-label>Select Server</mat-label>
-                <mat-select multiple formControlName="server_id">
-                  <mat-option
-                    *ngFor="let option of server_options"
-                    [value]="option.id"
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="">{{ "server" | translate }}</label
+                ><br />
+                <mat-form-field appearance="outline" class="multi-select">
+                  <mat-select
+                    multiple
+                    formControlName="server_id"
+                    class="form-control"
                   >
-                    {{ option.server_url }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div
-                *ngIf="
-                  AdminUsr?.get('server_id')?.hasError('required') &&
-                  AdminUsr?.get('server_id')?.touched
-                "
-              >
-                <span class="error-message">{{
-                  "server_required" | translate
-                }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="">{{ "name" | translate }}</label>
-              <input
-                type="text"
-                formControlName="name"
-                class="form-control"
-                autocomplete="false"
-              />
-              <div
-                *ngIf="
-                  AdminUsr?.get('name')?.hasError('required') &&
-                  AdminUsr?.get('name')?.touched
-                "
-              >
-                <span class="error-message">{{
-                  "name_required" | translate
-                }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="">{{ "username" | translate }}</label>
-              <input
-                type="text"
-                formControlName="username"
-                class="form-control"
-                autocomplete="false"
-              />
-              <div
-                *ngIf="
-                  AdminUsr?.get('username')?.hasError('required') &&
-                  AdminUsr?.get('username')?.touched
-                "
-              >
-                <span class="error-message">{{
-                  "username_required" | translate
-                }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="">{{ "password" | translate }}</label>
-              <input
-                type="text"
-                formControlName="password"
-                class="form-control"
-                autocomplete="false"
-              />
-              <div
-                *ngIf="
-                  AdminUsr?.get('password')?.hasError('required') &&
-                  AdminUsr?.get('password')?.touched
-                "
-              >
-                <span class="error-message">{{
-                  "password_error" | translate
-                }}</span>
-              </div>
-              <div *ngIf="AdminUsr?.get('password')?.hasError('minlength')">
-                <span class="error-message">{{
-                  "password_length_error" | translate
-                }}</span>
-              </div>
-              <div *ngIf="AdminUsr?.get('password')?.hasError('pattern')">
-                <span class="error-message">{{
-                  "strong_password_error" | translate
-                }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <div class="row">
-              <div class="col-lg-2">
-                <div class="form-group">
-                  <input
-                    type="submit"
-                    class="btn btn-primary w-100"
-                    value="{{ 'save' | translate }}"
-                  />
+                    <mat-option
+                      *ngFor="let option of server_options"
+                      [value]="option.id"
+                    >
+                      {{ option.server_url }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div
+                  *ngIf="
+                    AdminUsr?.get('server_id')?.hasError('required') &&
+                    AdminUsr?.get('server_id')?.touched
+                  "
+                >
+                  <span class="error-message">{{
+                    "server_required" | translate
+                  }}</span>
                 </div>
               </div>
-              <div class="col-lg-2">
-                <div class="form-group">
-                  <input
-                    (click)="resetForm()"
-                    type="button"
-                    class="btn btn-warning w-100"
-                    value="{{ 'reset' | translate }}"
-                  />
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="">{{ "name" | translate }}</label>
+                <input
+                  type="text"
+                  formControlName="name"
+                  class="form-control"
+                  autocomplete="false"
+                />
+                <div
+                  *ngIf="
+                    AdminUsr?.get('name')?.hasError('required') &&
+                    AdminUsr?.get('name')?.touched
+                  "
+                >
+                  <span class="error-message">{{
+                    "name_required" | translate
+                  }}</span>
                 </div>
               </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="">{{ "username" | translate }}</label>
+                <input
+                  type="text"
+                  formControlName="username"
+                  class="form-control"
+                  autocomplete="false"
+                />
+                <div
+                  *ngIf="
+                    AdminUsr?.get('username')?.hasError('required') &&
+                    AdminUsr?.get('username')?.touched
+                  "
+                >
+                  <span class="error-message">{{
+                    "username_required" | translate
+                  }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="">{{ "password" | translate }}</label>
+                <input
+                  type="text"
+                  formControlName="password"
+                  class="form-control"
+                  autocomplete="false"
+                />
+                <div
+                  *ngIf="
+                    AdminUsr?.get('password')?.hasError('required') &&
+                    AdminUsr?.get('password')?.touched
+                  "
+                >
+                  <span class="error-message">{{
+                    "password_error" | translate
+                  }}</span>
+                </div>
+                <div *ngIf="AdminUsr?.get('password')?.hasError('minlength')">
+                  <span class="error-message">{{
+                    "password_length_error" | translate
+                  }}</span>
+                </div>
+                <div *ngIf="AdminUsr?.get('password')?.hasError('pattern')">
+                  <span class="error-message">{{
+                    "strong_password_error" | translate
+                  }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                  <div class="d-flex gap-2 from-button">
+                      <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
+                      <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
+                  </div>
+                </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
   </p-dialog>
-
 </div>

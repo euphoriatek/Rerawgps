@@ -10,15 +10,14 @@
   $temp: $header-height + 61;
   position: relative;
   top: $header-height;
-  margin-left: $sidebar-width;
-  min-height: calc(100vh - #{$temp});
+  min-height: calc(100vh - 2vh);
   background: $body-bg;
+  margin-left:270px;
 
   .coded-content {
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 20px;
-    background-color: #f6f9ff;
   }
 
   .page-header + .row {

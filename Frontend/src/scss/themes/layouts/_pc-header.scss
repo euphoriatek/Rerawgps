@@ -6,12 +6,14 @@
   background: $header-background;
   color: $header-color;
   min-height: $header-height;
-  box-shadow: $header-shadow;
   position: fixed;
   left: $sidebar-width;
   right: 0;
   z-index: 1025;
   display: flex;
+  border-radius: 10px 10px 0px 0;
+  margin-left:14px;
+  border-bottom: solid 1px #e0e6f1;
 
   ul {
     margin-bottom: 0;
