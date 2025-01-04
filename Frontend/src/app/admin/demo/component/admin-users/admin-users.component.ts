@@ -228,5 +228,8 @@ addUser(): void {
     });
   }
 
+  onDialogClose(){
+    this.AdminUsr.reset();
+  }
 
 }

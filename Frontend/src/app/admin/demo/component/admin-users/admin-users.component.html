@@ -196,6 +196,7 @@
     [modal]="true"
     [draggable]="false"
     [resizable]="false"
+    (onHide)="onDialogClose()"
   >
     <form action="" [formGroup]="AdminUsr" (ngSubmit)="editUser()">
       <div class="row">

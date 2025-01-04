@@ -195,6 +195,9 @@ export class ServerComponent {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
   
+  onDialogClose(){
+    this.ServerForm.reset();
+  }
 }
 
 

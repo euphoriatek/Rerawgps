@@ -356,11 +356,10 @@ class ApiController extends Controller
         try {
             $user = User::findOrFail($id);
             $validator = Validator::make($input, [
-                'site_url' => 'required|string|max:255',
                 'username' => 'required|string|max:255',
                 'api_key' => 'required',
                 'mobile_number' => 'required|numeric|min:10',
-                'password' => 'nullable|string|min:8',
+                // 'password' => 'nullable|string|min:8',
                 'address' => 'required|string|max:255',
             ]);
             if ($validator->fails()) {
@@ -369,12 +368,11 @@ class ApiController extends Controller
                 ], 400);
             }
             $user->update([
-                'site_url' => $input['site_url'],
                 'username' => $input['username'],
                 'api_key' => $input['api_key'],
                 'mobile_number' => $input['mobile_number'],
                 'address' => $input['address'],
-                'password' => $input['password'] ? Hash::make($input['password']) : $input['password'],
+                // 'password' => $input['password'] ? Hash::make($input['password']) : $input['password'],
             ]);
             return response()->json([
                 'status' => true,

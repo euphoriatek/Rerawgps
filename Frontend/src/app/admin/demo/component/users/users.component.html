@@ -62,9 +62,9 @@
             <div class="col-lg-12">
               <div class="form-group">
                 <label for="site_url">{{ "site_url" | translate }}</label>
-                <input type="text" formControlName="site_url" class="form-control" autocomplete="false" />
+                <input type="text" formControlName="server_id" class="form-control" autocomplete="false" />
                 <div
-                  *ngIf="UserEditForm?.get('site_url')?.hasError('required') && UserEditForm?.get('site_url')?.touched">
+                  *ngIf="UserEditForm?.get('server_id')?.hasError('required') && UserEditForm?.get('server_id')?.touched">
                   <span class="error-message">{{ "site_url_required" | translate }}</span>
                 </div>
               </div>
@@ -79,7 +79,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-12">
+            <!-- <div class="col-lg-12">
               <div class="form-group">
                 <label for="password">{{ "password" | translate }}</label>
                 <input type="password" formControlName="password" class="form-control" autocomplete="false" />
@@ -88,7 +88,7 @@
                   <span class="error-message">{{ "password_required" | translate }}</span>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="col-lg-12">
               <div class="form-group">
                 <label for="mobile_number">{{ "mobile_number" | translate }}</label>
