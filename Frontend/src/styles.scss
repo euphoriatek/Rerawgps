@@ -75,8 +75,8 @@ $pc-secondary: map-get($preset-colors, 'preset-1', 'secondary');
 // font
 @import 'scss/fonts/tabler-icons.min.css';
 @import "../node_modules/ngx-spinner/animations/square-jelly-box.css";
-@import "primeng/resources/primeng.css";
-@import "../node_modules/ngx-spinner/animations/ball-spin-clockwise.css";
+// @import "primeng/resources/primeng.css";
+// @import "../node_modules/ngx-spinner/animations/ball-spin-clockwise.css";
 :root{
   --color-theme:#1E3160;
 
@@ -95,6 +95,8 @@ body {
 .form-group label {
   font-size: 14px;
   font-weight: 400;
+  text-transform: capitalize;
+  display: block;
 }
 
  .error-message {
@@ -124,12 +126,16 @@ select {
   background-repeat: no-repeat;
   background-position: right 6px center;
 }
-// table tr th {
-//   background: #f7f7f7 !important;
-//   padding: 8px !important;
-//   font-weight: 500;
-//   color: #000 !important;
-// }
+
+// All table CSS
+
+table{
+  font-family: "Poppins", serif !important;
+}
+
+
+// All table CSS
+
 .form-control {
   background: #fff;
   border-radius: 8px;
@@ -180,4 +186,13 @@ box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(1
   background-color:#faad14;
   color:#fff;
 }
-
+.from-button{
+  .btn{
+    padding: 9px 35px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Poppins", serif;
+  }
+}
