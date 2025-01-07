@@ -20,6 +20,7 @@ import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
 // import { AdminInterceptor } from './services/admin.interceptor';
 // import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AddUserComponent } from './demo/component/add-user/add-user.component';
+import { UsersComponent } from './demo/component/users/users.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sales-agent.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -29,7 +30,6 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ServerComponent } from './demo/component/server/server.component';
 import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
-import { GroupComponent } from './demo/component/group/group.component';
 import { MatSelectModule } from '@angular/material/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
@@ -66,7 +66,7 @@ import {DropdownModule} from 'primeng/dropdown';
     ServerComponent,
     AdminUsersComponent,
     ConfirmDialogComponent,
-    GroupComponent
+    UsersComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule,MatDialogModule,MatButtonModule,
     TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ProgressBarModule,DropdownModule

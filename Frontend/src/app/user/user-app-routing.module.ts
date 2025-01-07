@@ -6,7 +6,7 @@ import { UserAppComponent } from './user-app.component';
 import { authGuard } from './guard/auth.guard';
 import { GuestComponent } from './theme/layouts/guest/guest.component';
 import { unAuthGuard } from './guard/un-auth.guard';
-
+import { GroupComponent } from './demo/component/group/group.component';
 const routes: Routes = [
   {
     path: '',
@@ -20,6 +20,11 @@ const routes: Routes = [
       {
         path: 'dashboard/default',
         loadComponent: () => import('./demo/default/dashboard/dashboard.component'),
+        canActivate:[authGuard]
+      },
+      {
+        path: 'group',
+        component: GroupComponent,
         canActivate:[authGuard]
       },
       {

@@ -38,16 +38,16 @@ const NavigationItems = [
     url: '/admin/admin-users',
     icon: 'ti ti-dashboard',
   },
+  // {
+  //   id: 'adduser',
+  //   title: 'add_users',
+  //   type: 'item',
+  //   url: '/admin/add-user',
+  //   icon: 'ti ti-user-plus',
+  // },
   {
-    id: 'adduser',
-    title: 'add_users',
-    type: 'item',
-    url: '/admin/add-user',
-    icon: 'ti ti-user-plus',
-  },
-  {
-    id: 'users',
-    title: 'users',
+    id: 're_gaykar_users',
+    title: 're_gaykar_users',
     type: 'item',
     url: '/admin/users',
     icon: 'ti ti-users',
@@ -58,13 +58,6 @@ const NavigationItems = [
     type: 'item',
     url: '/admin/add-sales-agent',
     icon: 'ti ti-user-plus',
-  },
-  {
-    id: 'groups',
-    title: 'groups',
-    type: 'item',
-    url: '/admin/group',
-    icon: 'ti ti-users'
   },
   {
     id: 'setting',

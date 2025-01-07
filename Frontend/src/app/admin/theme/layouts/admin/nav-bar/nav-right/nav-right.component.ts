@@ -73,7 +73,7 @@ export class NavRightComponent {
     localStorage.clear();
     this.cookie.deleteCookieAll();
     this.cookie.deleteCookie('AdminUser');
-    this.toaster.error("Logout successfully!", "Logout");
+    this.toaster.success("Logout successfully!", "Logout");
     this.route.navigate(['/admin/login']);
   }
 }

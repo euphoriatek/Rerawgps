@@ -41,7 +41,13 @@ const NavigationItems = [
     url: '/dashboard/default',
     icon: 'ti ti-dashboard',
   },
- 
+  {
+    id: 'groups',
+    title: 'groups',
+    type: 'item',
+    url: '/group',
+    icon: 'ti ti-users'
+  },
 ];
 
 @Injectable()

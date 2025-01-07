@@ -19,8 +19,8 @@ export class ApiService {
   updateServer(id: number, data: any) {
     return this.http.post(`${this.AdminBaseUrl}edit-server/${id}`, data);
   }
-  updateUser(id: number, data: any) {
-    return this.http.post(`${this.AdminBaseUrl}edit-user/${id}`, data);
+  updateUser(data: any) {
+    return this.http.post(this.AdminBaseUrl + 'edit-user', data);
   }
 
   getServers() {
@@ -59,8 +59,8 @@ export class ApiService {
     return this.http.post(this.AdminBaseUrl + 'add-object', data);
   }
 
-  editAdminUser(id: number, data: any){
-    return this.http.post(`${this.AdminBaseUrl}edit-admin-user/${id}`, data);
+  editAdminUser(data: any){
+    return this.http.post(this.AdminBaseUrl + 'edit-admin-user', data);
   }
 
   deleteAdminUser(id: number) {

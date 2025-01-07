@@ -1,7 +1,7 @@
 // angular import
 import { NgModule } from '@angular/core';
 
-
+import { TranslateModule } from '@ngx-translate/core';
 // project import
 import { UserAppRoutingModule } from './user-app-routing.module';
 import { UserAppComponent } from './user-app.component';
@@ -19,7 +19,13 @@ import { NavItemComponent } from './theme/layouts/admin/navigation/nav-content/n
 import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
 // import { InterceptorInterceptor } from './services/interceptor.interceptor';
 // import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
+import { GroupComponent } from './demo/component/group/group.component';
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -32,9 +38,10 @@ import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
     NavContentComponent,
     NavCollapseComponent,
     NavGroupComponent,
-    NavItemComponent
+    NavItemComponent,
+    GroupComponent
   ],
-  imports: [UserAppRoutingModule, SharedModule],
+  imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
   providers: [NavigationItem,
     // {
     //   provide: HTTP_INTERCEPTORS,
