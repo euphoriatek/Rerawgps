@@ -140,6 +140,7 @@ export class ServerComponent {
   }
 
   openEditDialog(selectedServer: any): void {
+    this.showAddserver = false;
     this.selectedServer = selectedServer;  
     this.ServerForm.patchValue({
       name: selectedServer.name,
@@ -167,14 +168,10 @@ export class ServerComponent {
         this.isSubmitted = true;
         this.api.deleteServer(data.id).subscribe({
           next: (response: any) => {
-            if (response.success) {
-              const index = this.servesData.indexOf(data);
-              if (index !== -1) {
-                this.servesData.splice(index, 1);
-              }
+            if (response.status) {
               this.toaster.success(this.translate.instant('server_deleted_success'), this.translate.instant('server'));
-              this.spinner.hide();
               this.isSubmitted = false;
+              this.getServers();
             } else {
               this.toaster.error(this.translate.instant('server_deleted_error') || this.translate.instant('try_again'), this.translate.instant('server'));
               this.spinner.hide();

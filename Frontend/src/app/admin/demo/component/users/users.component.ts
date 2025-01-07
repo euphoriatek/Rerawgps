@@ -1,20 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/admin/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { TranslateService } from '@ngx-translate/core';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from "primeng/button"; 
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core'; 
-import { ReactiveFormsModule } from '@angular/forms';
-
+import { Router } from '@angular/router';
+import { Table } from 'primeng/table';
+import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-users',
-  standalone: true,
-  imports: [RouterModule, CommonModule, TranslateModule, DialogModule, ButtonModule, ReactiveFormsModule],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
@@ -22,37 +17,108 @@ export class UsersComponent implements OnInit {
   usersData: any;
   visible: boolean = false;
   UserEditForm!: FormGroup;
-  isSubmitted = false;
   selectedUser: any;
-
+  showAddUsers: boolean = false;
+  UserForm!: FormGroup;
+  server_options: any[] = [];
+  customers: Customer[];
+  selectedCustomers: Customer[];
+  @ViewChild('dt') dt: Table | undefined;
   constructor(
     private spinner: NgxSpinnerService,
     private api: ApiService,
     private fb: FormBuilder,
     private toaster: ToasterService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public route: Router,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
+    this.UserForm = this.fb.group({
+      server_id: ['', [Validators.required]],
+      api_key: ['', [Validators.required]],
+      username: ['', [Validators.required]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+        ],
+      ],
+      mobile_number: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^\d{10}$/),
+        ],
+      ],
+      address: ['', Validators.required],
+    });
     this.UserEditForm = this.fb.group({
+      id:['', [Validators.required]],
       server_id: ['', [Validators.required]],
       username: ['', Validators.required],
-      // password: ['', Validators.required],
-      mobile_number: ['', Validators.required],
+      password: [
+        '',
+        [
+          Validators.minLength(8),
+          Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+        ],
+      ],
+      mobile_number: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^\d{10}$/),
+        ],
+      ],
       address: ['', Validators.required],
       api_key: ['', Validators.required]
     });
+    this.getServers();
     this.getUsers();
   }
 
-  // Fetch all users
-  getUsers(): void {
-    this.spinner.show();
-    this.api.getUserList().subscribe({
+  addUser(): void {
+    if (this.UserForm.invalid) {
+      this.UserForm.markAllAsTouched();
+      this.spinner.hide();
+      return;
+    } else if (this.UserForm.valid) {
+      this.spinner.show();
+      const data = this.UserForm.value;
+      this.api.addUser(data).subscribe({
+        next: (response: any) => {
+          if (response && response.status) {
+            this.showAddUsers = false;
+            this.UserForm.reset();
+            this.getUsers();
+            this.toaster.success(this.translate.instant('user_added_success'), this.translate.instant('user'));
+          } else {
+            this.toaster.error(this.translate.instant('user_added_error') || this.translate.instant('try_again'), this.translate.instant('user'));
+          }
+          this.spinner.hide();
+        },
+        error: (err) => {
+          this.spinner.hide();
+          this.toaster.error(this.translate.instant('user_added_error_ex') || this.translate.instant('try_again'), this.translate.instant('user'));
+          console.error(err);
+        }
+      });
+    } else {
+      this.UserForm.markAllAsTouched();
+    }
+  }
+
+  getServers() {
+    this.api.getServers().subscribe({
       next: (response: any) => {
-        this.spinner.hide();
         if (response && response.status) {
-          this.usersData = response.data;
+          this.server_options = response.data;
+          // console.log(response.data);
+        } else {
         }
       },
       error: (err) => {
@@ -61,53 +127,67 @@ export class UsersComponent implements OnInit {
       }
     });
   }
-
-  // Open edit dialog for selected user
-  openEditDialog(selectedUser: any): void {
-    this.selectedUser = selectedUser;
-    this.UserEditForm.patchValue({
-      server_id: selectedUser.server_id,
-      username: selectedUser.username,
-      mobile_number: selectedUser.mobile_number,
-      address: selectedUser.address,
-      api_key: selectedUser.api_key
+  getUsers(): void {
+    this.spinner.show();
+    this.api.getUserList().subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        if (response && response.status) {
+          this.usersData = response.data;
+          this.usersData.forEach(user => {
+            user.server_url = user.server_url || 'No server URL available';
+          });
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
     });
-    this.visible = true;
   }
-
-  // Close dialog
-  closeDialog(): void {
-    this.visible = false;
+  openEditDialog(data: any): void { 
+    if (this.server_options && this.server_options.length > 0) {
+      this.UserEditForm.patchValue({
+        id:data.id,
+        server_id: data.server.id, 
+        username: data.username,
+        mobile_number: data.mobile_number,
+        address: data.address,
+        api_key: data.api_key
+      });
+      this.visible = true;
+    } else {
+      this.getServers();
+      this.visible = false;
+    }
   }
-
+  
+  
   // Edit user and save changes
   EditUser(): void {
     if (this.UserEditForm.invalid) {
-      this.isSubmitted = true;
       this.UserEditForm.markAllAsTouched();
       return;
     }
     if (this.UserEditForm.valid) {
       this.spinner.show();
       const data = this.UserEditForm.value;
-      this.api.updateUser(this.selectedUser.id, data).subscribe({
+      this.api.updateUser(data).subscribe({
         next: (response: any) => {
           if (response.status === true) {
-            this.getUsers();
-            this.toaster.success(this.translate.instant('edit_updated_success'), this.translate.instant('user'));
             this.visible = false;
-            this.spinner.hide();
-            this.isSubmitted = false;
+            this.UserEditForm.reset();
+            this.getUsers();
+            this.toaster.success(this.translate.instant('user_updated_success'), this.translate.instant('user'));
           } else {
-            this.toaster.error(this.translate.instant('edit_updated_error') || this.translate.instant('try_again'), this.translate.instant('user'));
-            this.spinner.hide();
+            this.toaster.error(this.translate.instant('user_updated_error') || this.translate.instant('try_again'), this.translate.instant('user'));
           }
+          this.spinner.hide();
         },
         error: (err) => {
           this.spinner.hide();
-          this.isSubmitted = false;
           this.toaster.error(
-            this.translate.instant('edit_updated_error_ex') || this.translate.instant('try_again'),
+            this.translate.instant('user_updated_error_ex') || this.translate.instant('try_again'),
             this.translate.instant('user')
           );
           console.error(err);
@@ -123,32 +203,60 @@ export class UsersComponent implements OnInit {
 
   // Delete user
   deleteRow(data: any): void {
-    this.spinner.show();
-    this.isSubmitted = true;
 
-    this.api.deleteUser(data.id).subscribe({
-      next: (response: any) => {
-        if (response.status) {
-          const index = this.usersData.indexOf(data);
-          if (index !== -1) {
-            this.usersData.splice(index, 1);
-          }
-          this.toaster.success(this.translate.instant('user_deleted_success'), this.translate.instant('user'));
-          this.spinner.hide();
-          this.isSubmitted = false;
-        } else {
-          this.toaster.error(this.translate.instant('user_deleted_error') || this.translate.instant('try_again'), this.translate.instant('user'));
-          this.spinner.hide();
-          this.isSubmitted = false;
-        }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: this.translate.instant('Delete_confirmation'),
+        message: this.translate.instant('are_you_sure_want_to_delete'),
       },
-      error: (err) => {
-        this.spinner.hide();
-        this.isSubmitted = false;
-        this.toaster.error(this.translate.instant('user_deleted_error_ex') || this.translate.instant('try_again'), this.translate.instant('user'));
-        console.error(err);
-      }
     });
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.api.deleteUser(data.id).subscribe({
+          next: (response: any) => {
+            if (response.status) {
+              this.getUsers();
+              this.toaster.success(this.translate.instant('user_deleted_success'), this.translate.instant('user'));
+            } else {
+              this.toaster.error(this.translate.instant('user_deleted_error') || this.translate.instant('try_again'), this.translate.instant('user'));
+            }
+            this.spinner.hide();
+          },
+          error: (err) => {
+            this.spinner.hide();
+            this.toaster.error(this.translate.instant('user_deleted_error_ex') || this.translate.instant('try_again'), this.translate.instant('user'));
+            console.error(err);
+          }
+        });
+      }
+  });
   }
-  
+  addUsers() {
+    this.showAddUsers = true;
+  }
+  // Close dialog
+  closeDialog(): void {
+    this.visible = false;
+  }
+
+  applyFilterGlobal($event: any, stringVal: any) {
+    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  }
+
+}
+
+
+export interface Server
+{
+  server_url: string;
+}
+export interface Customer {
+  id?: number;
+  server:Server;
+  username?: string;
+  mobile_number?: string;
+  address?: string;
+  api_key?: string;
+  created_at?: string;
 }

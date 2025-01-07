@@ -71,7 +71,7 @@ export class NavRightComponent {
     localStorage.clear();
     this.cookie.deleteCookieAll();
     this.cookie.deleteCookie('CurrentUser');
-    this.toaster.error("Logout successfully!", "Logout");
+    this.toaster.success("Logout successfully!", "Logout");
     this.route.navigate(['/login']);
   }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use App\Models\AssigendServer;
+use App\Models\Servers;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,5 +42,10 @@ class User extends Authenticatable
     public function assigned_servers()
     {
         return $this->hasMany(AssigendServer::class,'user_id','id');
+    }
+
+    public function server()
+    {
+        return $this->hasOne(Servers::class,'id','server_id');
     }
 }

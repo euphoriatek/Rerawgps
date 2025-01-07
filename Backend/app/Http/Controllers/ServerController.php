@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Servers;
+use App\Models\AssigendServer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -101,20 +102,30 @@ class ServerController extends Controller
         $validator = Validator::make($request->all(), [
             'server_id' => 'required|exists:servers,id',
         ]);
-
+        
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validation errors occurred.',
                 'errors' => $validator->errors()
             ], 400);
+        }
+
+        $assignedCheck = AssigendServer::where('server_id', $request->input('server_id'))
+            ->whereNull('deleted_at')
+            ->get();
+        if($assignedCheck){
+            return response()->json([
+                'status' => false,
+                'message' => 'Server is Assigned ',
+            ], 200);
         }
 
         $server = Servers::find($request->input('server_id'));
 
         if (!$server) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Server not found.',
             ], 404);
         }
@@ -123,7 +134,7 @@ class ServerController extends Controller
         $server->save();
 
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Server deleted successfully.',
             'server' => $server
         ], 200);

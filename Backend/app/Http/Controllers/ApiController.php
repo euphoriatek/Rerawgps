@@ -23,7 +23,7 @@ class ApiController extends Controller
 
         $validator = Validator::make($input, [
             'server_id' => 'required|numeric',
-            'username' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
             'api_key' => 'required',
             'mobile_number' => 'required|numeric|min:10',
             'password' => 'required|string|min:8',
@@ -186,7 +186,7 @@ class ApiController extends Controller
             if($request->input('type')){
                 $users = User::select('id', 'username')->where('role', 'user')->get();
             }else{
-                $users = User::where('role', 'user')->get();
+                $users = User::with('server')->where('role', 'user')->get();
             }
             return response()->json([
                 'status' => true,
@@ -249,10 +249,11 @@ class ApiController extends Controller
             ], 500);
         }
     }
-    public function UpdateAdminUser(Request $request, $id)
+    public function UpdateAdminUser(Request $request)
     {
         $input = $request->all();
         $validator = Validator::make($input, [
+            'id' => 'required|numeric',
             'name' => 'required|string|max:255',
             'server_id.*' => 'required',
             'username' => 'required|string|max:255',
@@ -264,48 +265,42 @@ class ApiController extends Controller
                 ], 400);
         }
         try {
-            $user = User::find($id);
+            $user = User::find($input['id']);
             if (!$user) {
                 return response()->json([
                         'status' => false,
                         'message' => 'User not found!',
                 ], 404);
             }
-            if (User::where('username', $input['username'])->where('id', '!=', $id)->exists()) {
-                return response()->json([
-                        'status' => false,
-                        'message' => 'Username already exists!',
-                ], 400);
+            if (!empty($input['password'])) {
+                $input['password'] = Hash::make($input['password']);
+            } else {
+                unset($input['password']);
             }
-                if (!empty($input['password'])) {
-                    $input['password'] = Hash::make($input['password']);
-                } else {
-                    unset($input['password']);
-                }
-                $user->update([
-                    'name' => $input['name'],
-                    'username' => $input['username'],
-                    'password' => $input['password'] ?? $user->password,
+            $user->update([
+                'name' => $input['name'],
+                'username' => $input['username'],
+                'password' => $input['password'] ?? $user->password,
+            ]);
+            AssigendServer::where('user_id', $user->id)->delete();
+            foreach ($input['server_id'] as $value) {
+                AssigendServer::create([
+                    'user_id' => $user->id,
+                    'server_id' => $value
                 ]);
-                AssigendServer::where('user_id', $user->id)->delete();
-                foreach ($input['server_id'] as $value) {
-                    AssigendServer::create([
-                        'user_id' => $user->id,
-                        'server_id' => $value
-                    ]);
-                }
-                return response()->json([
-                    'status' => true,
-                    'message' => 'User updated successfully!',
-                    'data' => $user,
-                ], 200);
-            } catch (\Exception $e) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'An error occurred while updating the user.',
-                    'error' => $e->getMessage(),
-                ], 500);
             }
+            return response()->json([
+                'status' => true,
+                'message' => 'User updated successfully!',
+                'data' => $user,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while updating the user.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
     public function deleteAdminUser(Request $request)
     {
@@ -350,29 +345,37 @@ class ApiController extends Controller
             ], 500);
         }
     }
-    public function UpdateUser($id, Request $request)
+    public function UpdateUser(Request $request)
     {
         $input = $request->all();
         try {
-            $user = User::findOrFail($id);
+            $user = User::find($input['id']);
             $validator = Validator::make($input, [
+                'id' => 'required|numeric',
                 'username' => 'required|string|max:255',
                 'api_key' => 'required',
                 'mobile_number' => 'required|numeric|min:10',
-                // 'password' => 'nullable|string|min:8',
+                'password' => 'nullable|string|min:8',
                 'address' => 'required|string|max:255',
+                'server_id' => 'required|numeric|max:255',
             ]);
             if ($validator->fails()) {
                 return response()->json([
                     'errors' => $validator->errors(),
                 ], 400);
             }
+            if (!empty($input['password'])) {
+                $input['password'] = Hash::make($input['password']);
+            } else {
+                unset($input['password']);
+            }
             $user->update([
                 'username' => $input['username'],
                 'api_key' => $input['api_key'],
                 'mobile_number' => $input['mobile_number'],
                 'address' => $input['address'],
-                // 'password' => $input['password'] ? Hash::make($input['password']) : $input['password'],
+                'server_id' => $input['server_id'],
+                'password' => $input['password'] ?? $user->password
             ]);
             return response()->json([
                 'status' => true,

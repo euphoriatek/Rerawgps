@@ -37,14 +37,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/admin/add-admin-usr', [ApiController::class, 'addAdmin'])->middleware('auth:users');
     Route::get('/admin/get-admin-usr', [ApiController::class, 'getAdmin'])->middleware('auth:users');
-    Route::post('/admin/edit-admin-user/{id}', [ApiController::class, 'UpdateAdminUser'])->middleware('auth:users');
+    Route::post('/admin/edit-admin-user', [ApiController::class, 'UpdateAdminUser'])->middleware('auth:users');
     Route::post('/admin/delete-admin-user', [ApiController::class, 'deleteAdminUser'])->middleware('auth:users');
     Route::post('/admin/edit-server/{id}', [ServerController::class, 'UpdateServers'])->middleware('auth:users');
     Route::post('/admin/delete-server', [ServerController::class, 'deleteServer'])->middleware('auth:users');
 
 
 
-    Route::post('/admin/edit-user/{id}', [ApiController::class, 'UpdateUser'])->middleware('auth:users');
+    Route::post('/admin/edit-user', [ApiController::class, 'UpdateUser'])->middleware('auth:users');
     Route::delete('/admin/delete-user/{id}', [ApiController::class, 'deleteUser'])->middleware('auth:users');
 
     // Admin

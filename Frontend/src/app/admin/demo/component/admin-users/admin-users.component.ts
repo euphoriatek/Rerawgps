@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/admin/services/api.service';
@@ -10,6 +10,8 @@ import { access } from 'fs';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';  
 
+import { Table } from 'primeng/table';
+import { PrimeNGConfig } from 'primeng/api';
 @Component({
   selector: 'app-admin-users',
   templateUrl: './admin-users.component.html',
@@ -17,6 +19,7 @@ import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.co
 })
 export class AdminUsersComponent {
   AdminUsr!: FormGroup;
+  EditAdminUsr!:FormGroup;
   isSubmitted = false;
   showAddUser:boolean=false;
   visible: boolean = false;
@@ -24,6 +27,9 @@ export class AdminUsersComponent {
   adminData:any;
   edit_data: any;
   usersData:any;
+  customers: Customer[];
+  selectedCustomers: Customer[];
+  @ViewChild('dt') dt: Table | undefined;
   constructor(public route: Router,private dialog: MatDialog, public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
 
   }
@@ -41,13 +47,30 @@ export class AdminUsersComponent {
         ],
       ],
     });
-    this.getServers();
-    this.adminUsers();
+    this.EditAdminUsr = this.fb.group({
+      id:['',[Validators.required]],
+      server_id: ['', [Validators.required]],
+      name:['', [Validators.required]],
+      username:['', [Validators.required]],
+      password: [
+        '',
+        [
+          Validators.minLength(8),
+          Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+        ],
+      ],
+    });
+    this.loadData();
   }
   showDialog() {
     this.visible = true;
 }
 
+loadData(){
+  this.spinner.show();
+  this.getServers();
+  this.adminUsers();
+}
 addUser(): void {
     if (this.AdminUsr.invalid) {
       this.isSubmitted = true;
@@ -60,8 +83,7 @@ addUser(): void {
       this.api.addAdminUser(data).subscribe({
         next: (response: any) => {
           if (response && response.status) {
-            this.getServers();
-            this.adminUsers();
+            this.loadData();
             this.AdminUsr.reset();
             this.toaster.success(this.translate.instant('user_added_success'), this.translate.instant('user'));
             this.spinner.hide();
@@ -88,7 +110,6 @@ addUser(): void {
       next: (response: any) => {
         if (response && response.status) {
           this.server_options = response.data;
-
         } else {
         }
       },
@@ -100,11 +121,14 @@ addUser(): void {
   }
 
   adminUsers(){
+    this.spinner.show();
     this.api.getAdminUsers().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.adminData = response.data;
+          this.spinner.hide();
         } else {
+          this.spinner.hide();
         }
       },
       error: (err) => {
@@ -117,7 +141,11 @@ addUser(): void {
   resetForm(){
     this.AdminUsr.reset();
   }
-
+  resetEditForm(){
+    var id = this.EditAdminUsr.get('id').value;
+    this.EditAdminUsr.reset();
+    this.EditAdminUsr.get('id').setValue(id);
+  }
   addAdminUsr(){
     this.showAddUser = true;
   }
@@ -131,7 +159,8 @@ addUser(): void {
     this.edit_data = data;
     const serverIds = data.assigned_servers?.map(server => server.server_id) || [];
     if (this.server_options && this.server_options.length > 0) {
-      this.AdminUsr.patchValue({
+      this.EditAdminUsr.patchValue({
+        id:data.id,
         server_id: serverIds,  
         name: data.name,
         username: data.username
@@ -145,20 +174,20 @@ addUser(): void {
   
   
   editUser(): void {
-    if (this.AdminUsr.invalid) {
+    if (this.EditAdminUsr.invalid) {
       this.isSubmitted = true;
-      this.AdminUsr.markAllAsTouched();
+      this.EditAdminUsr.markAllAsTouched();
       this.spinner.hide();
       return;
-    } else if (this.AdminUsr.valid) {
+    } else if (this.EditAdminUsr.valid) {
       this.spinner.show();
-      const data = this.AdminUsr.value;
-      this.api.editAdminUser(this.edit_data.id, data).subscribe({
+      const data = this.EditAdminUsr.value;
+      this.api.editAdminUser(data).subscribe({
         next: (response: any) => {
           if (response && response.status) {
             this.getServers();
             this.adminUsers();  
-            this.AdminUsr.reset(); 
+            this.EditAdminUsr.reset(); 
             this.toaster.success(this.translate.instant('user_updated_success'), this.translate.instant('user'));
             this.spinner.hide();
             this.isSubmitted = false;
@@ -175,7 +204,7 @@ addUser(): void {
         }
       });
     } else {
-      this.AdminUsr.markAllAsTouched();
+      this.EditAdminUsr.markAllAsTouched();
     }
   }
   
@@ -190,20 +219,16 @@ addUser(): void {
   
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        this.isSubmitted = true;
+        this.spinner.show();
         this.api.deleteAdminUser(data.id).subscribe({
           next: (response: any) => {
             if (response) {
-              const index = this.usersData.indexOf(data);
-              if (index !== -1) {
-                this.usersData.splice(index, 1);
-              }
+              this.adminUsers();
               this.toaster.success(
                 this.translate.instant('user_deleted_success'),
                 this.translate.instant('user')
               );
               this.spinner.hide();
-              this.isSubmitted = false;
             } else {
               this.toaster.error(
                 this.translate.instant('user_deleted_error') ||
@@ -215,7 +240,6 @@ addUser(): void {
           },
           error: (err) => {
             this.spinner.hide();
-            this.isSubmitted = false;
             this.toaster.error(
               this.translate.instant('user_deleted_error_ex') ||
                 this.translate.instant('try_again'),
@@ -228,8 +252,18 @@ addUser(): void {
     });
   }
 
+  applyFilterGlobal($event: any, stringVal: any) {
+    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  }
+
   onDialogClose(){
     this.AdminUsr.reset();
   }
 
+}
+export interface Customer {
+  id?: number;
+  name?: string;
+  server_url?: string;
+  created_at?: string;
 }
