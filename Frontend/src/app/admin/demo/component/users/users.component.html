@@ -161,7 +161,7 @@
                         <span class="p-column-title">{{ "actions" | translate }}</span>
                         <button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
                         <button class="btn btn-warning btn-xs me-3" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
-                        <button class="btn btn-warning btn-xs">{{ "add_sales_agent" | translate}}</button>
+                        <button class="btn btn-warning btn-xs" [routerLink]="['/admin/user-view', data.id]">{{ "view" | translate}}</button>
                     </td>
                 </tr>
             </ng-template>

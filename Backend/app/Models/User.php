@@ -27,7 +27,8 @@ class User extends Authenticatable
         'api_key',
         'username',
         'role',
-        'name'
+        'name',
+        'created_by'
     ];
 
     /**

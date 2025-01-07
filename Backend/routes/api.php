@@ -30,6 +30,7 @@ Route::post('/admin/login', [ApiController::class, 'login']);
 Route::post('/sales/login', [SalesController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('admin/get-servers-list', [ApiController::class, 'getServerList'])->middleware('auth:users');
     // Super Admin
     Route::post('/admin/add-server', [ServerController::class, 'addServer'])->middleware('auth:users');
     Route::get('/admin/get-servers', [ServerController::class, 'GetServers'])->middleware('auth:users');
@@ -54,11 +55,20 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/admin/user-delete/{id}', [ApiController::class, 'DeleteUser'])->middleware('auth:users');
 
     Route::post('/admin/add-object',  [SalesController::class, 'store'])->middleware('auth:users');
-
+    Route::post('/admin/get-objects',  [SalesController::class, 'getObjects'])->middleware('auth:users');
+    Route::post('/admin/update-objects',  [SalesController::class, 'updateObject'])->middleware('auth:users');
+    Route::delete('/admin/delete-object/{id}',  [SalesController::class, 'deleteObject'])->middleware('auth:users');
+    
     // User
     Route::get('/admin/get-object-list', [SalesController::class, 'getObjectList'])->middleware('auth:users');
     Route::get('/get-objects', [SalesController::class, 'getObjects'])->middleware('auth:users');
     // Route::get('/get-object-list', [SalesController::class, 'getObjectList'])->middleware('auth:sales');
 
     Route::post('/admin/create-group', [GroupController::class, 'store'])->middleware('auth:users');
+
+    Route::post('admin/get-user-info', [ApiController::class, 'getUserInfo'])->middleware('auth:users');
+
+    // Admin Api
+    Route::get('/admin/get-admin-servers', [ServerController::class, 'GetAdminServers'])->middleware('auth:users');
+    Route::get('/admin/get-admin-users-list', [ApiController::class, 'GetAdminUsersList'])->middleware('auth:users');
 });

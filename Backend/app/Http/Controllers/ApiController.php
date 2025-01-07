@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Servers;
 use App\Models\AssigendServer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -54,6 +55,23 @@ class ApiController extends Controller
         }
     }
 
+    public function getServerList()
+    {
+        // Count the number of servers
+        $serverCount = Servers::count();
+        // $server = Servers::get();
+        $servers = Servers::get();
+        $adminUserCount = User::where('role', 'admin')->count();
+        $userCount = User::where('role', 'user')->count();
+        return response()->json([
+            'status' => true,
+            'serverCount' => $serverCount,
+            'adminUserCount' => $adminUserCount,
+            'userCount' => $userCount,
+            'servers' => $servers
+        ]);
+    }
+
     public function createUser($data)
     {
         $user = User::create([
@@ -63,6 +81,7 @@ class ApiController extends Controller
             'mobile_number' => $data['mobile_number'],
             'address' => $data['address'],
             'api_key' => $data['api_key'],
+            'created_by' => $data['created_by'] ?? null
 
         ]);
 
@@ -414,4 +433,64 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
+    public function getUserInfo(Request $request)
+    {
+        try {
+            $userId = $request->input('user_id');
+            if(!$userId){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User id is required.',
+                ], 404);
+            }
+            $user = User::with('server')->find($userId);
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found.',
+                ], 404);
+            }
+            return response()->json([
+                'status' => true,
+                'message' => 'User fetch data successfully.',
+                'data' => $user
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while fetecing data.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function GetAdminUsersList(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized. Please log in.',
+                ], 401);
+            }
+            if($request->input('type')){
+                $users = User::select('id', 'username')->where('created_by', $user->id)->where('role', 'user')->get();
+            }else{
+                $users = User::with('server')->where('created_by', $user->id)->where('role', 'user')->get();
+            }
+            return response()->json([
+                'status' => true,
+                'data' => $users,
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while logging out.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
 }

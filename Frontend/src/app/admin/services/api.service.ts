@@ -70,4 +70,36 @@ export class ApiService {
   addGroup(data: any) {
     return this.http.post(this.AdminBaseUrl + 'create-group', data);
   }
+
+  getSales(id:number){
+    return this.http.post(this.AdminBaseUrl + 'get-objects', {user_id:id});
+  }
+
+  updateSales(data){
+    return this.http.post(this.AdminBaseUrl + 'update-objects', data);
+  }
+
+  deleteSales(data){
+    return this.http.delete(this.AdminBaseUrl + 'delete-object/' +data);
+  }
+
+  getServersList() {
+    return this.http.get(this.AdminBaseUrl + 'get-servers-list');
+  }
+
+  getUserInfo(data){
+    return this.http.post(this.AdminBaseUrl + 'get-user-info', {user_id:data});
+  }
+
+  // Admin Api
+
+  getAdminServers() {
+    return this.http.get(this.AdminBaseUrl + 'get-admin-servers');
+  }
+
+  getAdminUserList(type: any = null) {
+    const url = this.AdminBaseUrl + 'get-admin-users-list';
+    const params = type ? { type } : {};
+    return this.http.get(url, { params });
+  }
 }

@@ -13,7 +13,12 @@ import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sal
 import { ServerComponent } from './demo/component/server/server.component';
 import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
 import { accessPermissionGuard } from './guard/access-permission.guard';
+import { accessPermissionGuardAdmin } from './guard/admin-access-permission.guard';
 import { UsersComponent } from './demo/component/users/users.component';
+import { RegayKarUserViewComponent } from './demo/component/regay-kar-user-view/regay-kar-user-view.component';
+import { AdminRegayKarUserComponent } from './demo/component/admin-regay-kar-user/admin-regay-kar-user.component';
+import { AdminRegayKarUserViewComponent } from './demo/component/admin-regay-kar-user-view/admin-regay-kar-user-view.component';
+import { AssignedServerComponent } from './demo/component/assigned-server/assigned-server.component';
 const routes: Routes = [
   {
     path: '',
@@ -39,21 +44,41 @@ const routes: Routes = [
         component: AdminUsersComponent,
         canActivate:[authGuard, accessPermissionGuard]
       },
-      {
-        path: 'add-user',
-        component: AddUserComponent,
-        canActivate:[authGuard]
-      },
-      {
-        path: 'add-sales-agent',
-        component: AddSalesAgentComponent,
-        canActivate:[authGuard]
-      },
+      // {
+      //   path: 'add-user',
+      //   component: AddUserComponent,
+      //   canActivate:[authGuard]
+      // },
+      // {
+      //   path: 'add-sales-agent',
+      //   component: AddSalesAgentComponent,
+      //   canActivate:[authGuard]
+      // },
       {
         path: 'users',
         component: UsersComponent,
-        canActivate:[authGuard]
-      }
+        canActivate:[authGuard, accessPermissionGuard]
+      },
+      {
+        path: 'user-view/:id',
+        component: RegayKarUserViewComponent,
+        canActivate:[authGuard, accessPermissionGuard]
+      },
+      {
+        path: 'regaykar_users',
+        component: AdminRegayKarUserComponent,
+        canActivate:[authGuard, accessPermissionGuardAdmin]
+      },
+      {
+        path: 'regayuser-view/:id',
+        component: AdminRegayKarUserViewComponent,
+        canActivate:[authGuard, accessPermissionGuardAdmin]
+      },
+      {
+        path: 'assigned_server',
+        component: AssignedServerComponent,
+        canActivate:[authGuard, accessPermissionGuardAdmin]
+      },
     ]
   },
   {

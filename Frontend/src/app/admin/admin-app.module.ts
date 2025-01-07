@@ -47,6 +47,10 @@ import {ContextMenuModule} from 'primeng/contextmenu';
 import {ToastModule} from 'primeng/toast';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {DropdownModule} from 'primeng/dropdown';
+import { RegayKarUserViewComponent } from './demo/component/regay-kar-user-view/regay-kar-user-view.component';
+import { AdminRegayKarUserComponent } from './demo/component/admin-regay-kar-user/admin-regay-kar-user.component';
+import { AdminRegayKarUserViewComponent } from './demo/component/admin-regay-kar-user-view/admin-regay-kar-user-view.component';
+import { AssignedServerComponent } from './demo/component/assigned-server/assigned-server.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +70,11 @@ import {DropdownModule} from 'primeng/dropdown';
     ServerComponent,
     AdminUsersComponent,
     ConfirmDialogComponent,
-    UsersComponent
+    UsersComponent,
+    RegayKarUserViewComponent,
+    AdminRegayKarUserComponent,
+    AdminRegayKarUserViewComponent,
+    AssignedServerComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule,MatDialogModule,MatButtonModule,
     TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ProgressBarModule,DropdownModule
