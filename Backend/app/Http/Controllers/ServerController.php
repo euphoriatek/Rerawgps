@@ -17,8 +17,7 @@ class ServerController extends Controller
 
         $validator = Validator::make($input, [
             'name' => 'required|string|max:255',
-            'server_url' => 'required|string|max:255',
-            'access_key' => 'required|string|max:255'
+            'server_url' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -66,8 +65,7 @@ class ServerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'server_url' => 'required|string|max:255',
-            'access_key' => 'required|string|max:255'
+            'server_url' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -89,8 +87,7 @@ class ServerController extends Controller
 
         $server->update([
             'name' => $request->name,
-            'server_url' => $request->server_url,
-            'access_key' => $request->access_key,
+            'server_url' => $request->server_url
         ]);
 
         return response()->json([

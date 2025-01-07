@@ -58,4 +58,16 @@ export class ApiService {
   addSalesAgent(data: any) {
     return this.http.post(this.AdminBaseUrl + 'add-object', data);
   }
+
+  editAdminUser(id: number, data: any){
+    return this.http.post(`${this.AdminBaseUrl}edit-admin-user/${id}`, data);
+  }
+
+  deleteAdminUser(id: number) {
+    return this.http.post(this.AdminBaseUrl + 'delete-admin-user', { id: id });
+  }
+
+  addGroup(data: any) {
+    return this.http.post(this.AdminBaseUrl + 'create-group', data);
+  }
 }

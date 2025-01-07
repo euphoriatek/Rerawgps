@@ -57,7 +57,7 @@ export class AddUserComponent {
         next: (response: any) => {
           if (response && response.status) {
             this.server_options = response.data;
-            this.route.navigate(['/admin/dashboard/default']);
+            this.route.navigate(['/admin/users']);
             this.getServers();
             this.toaster.success(this.translate.instant('user_added_success'), this.translate.instant('user'));
             this.spinner.hide();

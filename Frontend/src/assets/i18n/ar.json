@@ -38,7 +38,7 @@
     "user_added_error": "تعذر إضافة المستخدم",
     "user_added_error_ex": "حدث خطأ أثناء الإضافة في",
     "add_sales_agent": "إضافة وكيل مبيعات",
-    "users": "اختر المستخدمين",
+    "users": "المستخدمين",
     "name": "الاسم",
     "imei": "الـIMEI",
     "user_required": "المستخدم مطلوب",
@@ -86,5 +86,11 @@
     "Delete_confirmation": "تأكيد الحذف",
     "yes": "نعم",
     "no": "لا",
-    "created_at": "تم الإنشاء في"
+    "created_at": "تم الإنشاء في",
+    "user_updated_success": "تم تحديث المستخدم بنجاح!",
+    "user_updated_error": "تعذر تحديث المستخدم",
+    "user_updated_error_ex": "حدث خطأ أثناء التحديث",
+    "user_deleted_success": "تم حذف المستخدم بنجاح!",
+    "user_deleted_error": "تعذر حذف المستخدم",
+    "user_deleted_error_ex": "حدث خطأ أثناء الحذف"
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ServerController;
+use App\Http\Controllers\GroupController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,7 +37,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/admin/add-admin-usr', [ApiController::class, 'addAdmin'])->middleware('auth:users');
     Route::get('/admin/get-admin-usr', [ApiController::class, 'getAdmin'])->middleware('auth:users');
-
+    Route::post('/admin/edit-admin-user/{id}', [ApiController::class, 'UpdateAdminUser'])->middleware('auth:users');
+    Route::post('/admin/delete-admin-user', [ApiController::class, 'deleteAdminUser'])->middleware('auth:users');
     Route::post('/admin/edit-server/{id}', [ServerController::class, 'UpdateServers'])->middleware('auth:users');
     Route::post('/admin/delete-server', [ServerController::class, 'deleteServer'])->middleware('auth:users');
 
@@ -57,4 +59,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/admin/get-object-list', [SalesController::class, 'getObjectList'])->middleware('auth:users');
     Route::get('/get-objects', [SalesController::class, 'getObjects'])->middleware('auth:users');
     // Route::get('/get-object-list', [SalesController::class, 'getObjectList'])->middleware('auth:sales');
+
+    Route::post('/admin/create-group', [GroupController::class, 'store'])->middleware('auth:users');
 });

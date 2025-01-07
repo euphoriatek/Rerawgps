@@ -1,6 +1,21 @@
-// select css
-
-::ng-deep{
+.group-form {
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+  }
+  ::ng-deep{
     mat-form-field{
         width: 100%;
           .mdc-text-field--outlined{
@@ -16,6 +31,11 @@
             --mdc-outlined-text-field-outline-width:0px;
           }
     }
-
+    .cdk-overlay-container {
+      z-index: 1200;
+    }
+    .mat-mdc-form-field-subscript-wrapper{
+      display: none;
+    }
+  
   }
-  // select css

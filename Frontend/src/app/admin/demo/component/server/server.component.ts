@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/admin/services/api.service';
@@ -9,6 +9,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { access } from 'fs';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';  
+
+import { Table } from 'primeng/table';
+import { PrimeNGConfig } from 'primeng/api';
 @Component({
   selector: 'app-server',
   templateUrl: './server.component.html',
@@ -22,20 +25,23 @@ export class ServerComponent {
   visible: boolean = false;
   selectedServer: any;
 
+  customers: Customer[];
+  selectedCustomers: Customer[];
 
-  constructor(public route: Router,private dialog: MatDialog,public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService) {
+  // @ViewChild('dt') table: Table;
+  @ViewChild('dt') dt: Table | undefined;
+  constructor(public route: Router,private dialog: MatDialog,public fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public cookiesService: AdminCookiesService, public toaster: ToasterService,private translate: TranslateService,private primengConfig: PrimeNGConfig) {
 
   }
   ngOnInit(): void {
     this.ServerForm = this.fb.group({
       name: ['', [Validators.required]],
-      server_url:['', [Validators.required]],
-      access_key:['', [Validators.required]]
+      server_url:['', [Validators.required]]
     });
+    // this.primengConfig.ripple = true;
     this.getServers();
   }
-
-
+  
   addServer(): void {
     if (this.ServerForm.invalid) {
       this.isSubmitted = true;
@@ -72,10 +78,12 @@ export class ServerComponent {
   }
 
   getServers(){
+    this.spinner.show();
     this.api.getServers().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.servesData = response.data;
+          this.spinner.hide();
         } else {
         }
       },
@@ -135,8 +143,7 @@ export class ServerComponent {
     this.selectedServer = selectedServer;  
     this.ServerForm.patchValue({
       name: selectedServer.name,
-      server_url: selectedServer.server_url,
-      access_key: selectedServer.access_key
+      server_url: selectedServer.server_url
     });  
     this.visible = true;
   }
@@ -183,5 +190,20 @@ export class ServerComponent {
       }
     });
   }
+
+  applyFilterGlobal($event: any, stringVal: any) {
+    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  }
   
+  onDialogClose(){
+    this.ServerForm.reset();
+  }
+}
+
+
+export interface Customer {
+  id?: number;
+  name?: string;
+  server_url?: string;
+  created_at?: string;
 }

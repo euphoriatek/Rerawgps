@@ -9,6 +9,6 @@ class Servers extends Model
 {
     protected $table = 'servers';
 
-    protected $fillable = ['name', 'server_url', 'access_key'];
+    protected $fillable = ['name', 'server_url'];
 
 }

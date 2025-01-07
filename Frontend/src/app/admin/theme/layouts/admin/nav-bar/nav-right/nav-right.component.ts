@@ -10,8 +10,10 @@ import { Router } from '@angular/router';
 })
 export class NavRightComponent {
   defaultLanguage: string;
+  Username:any;
     constructor(private translate: TranslateService,public toaster:ToasterService,public cookie:AdminCookiesService,public route:Router){
       this.defaultLanguage = localStorage.getItem('admin_language') ?? 'en';
+      this.Username = this.cookie.getCookie('AdminUser')?.username;
     }
   // public method
   profile = [

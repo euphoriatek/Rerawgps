@@ -1,4 +1,10 @@
 .navbar-collapsed {
+  .coded-micon{
+    margin-right:0px !important;
+  }
+  .coded-mtext{
+    display: none;
+  }
   .mobile-menu {
     transform: rotateY(-90deg);
     transform-origin: 0 0;
@@ -152,14 +158,18 @@
       
 
       > a {
-        padding: 8px 17px;
+        padding: 8px 20px;
         display: block;
-        border-radius: 0;
+        border-radius: 6px;
         position: relative;
         white-space: nowrap;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 0.6px;
+        width: 100%;
         &:hover{
           background: #fbfbfb;
-          color: #000;
+          color: #ff7c48;
           
         }
 
@@ -169,12 +179,12 @@
 
         > .coded-micon {
           font-size: 18px;
-          align-items: center;
-          margin-right: 15px;
-          height: 24px;
+          margin-right: 8px;
+          height: auto;
           display: inline-block;
           vertical-align: middle;
           text-align: center;
+          font-weight: bold;
 
           + .coded-mtext {
             position: relative;
@@ -326,6 +336,11 @@
   }
 
   &.navbar-collapsed {
+    .nav-link{
+      width: 100%;
+      padding: 8px 15px;
+      text-align: center;
+    }
     width: $sidebar-collapsed-width;
     height: 100%;
     transition: all 0.3s ease-in-out;
@@ -372,13 +387,15 @@
       > app-nav-group > app-nav-collapse > li {
         > a {
           z-index: 1026;
-          padding: 7px 25px;
+          padding: 9px 15px;
+          width: 100%;
 
           > .coded-mtext {
             transform: rotateY(-90deg);
             transform-origin: 0 0;
             opacity: 0;
             transition: all 0.3s ease-in-out;
+            display: none;
           }
         }
 
@@ -436,11 +453,11 @@
     }
 
     ~ .pc-container {
-      margin-left: 0px;
+      margin-left: 80px;
     }
 
     ~ app-nav-bar .pc-header {
-      left: 0px;
+      left: 70px;
     }
 
     .coded-badge {
@@ -857,12 +874,37 @@
   &:not(:hover) {
     .coded-inner-navbar app-nav-item > li > a,
     .coded-inner-navbar > app-nav-group > app-nav-collapse > li > a {
-      width: 80px;
+      width: 100%;
     }
   }
 }
 
 .coded-navbar .coded-inner-navbar li.active a{
   background-color: #fff;
-  color:#000;
+  color:#ff4c04;
 }
+
+.pc-sidebar .m-header img {
+  max-width: 200px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  top: 20px;
+}
+.close-sidebar-logo {
+  display: none;
+  max-width: 40px !important;
+}
+.navbar-collapsed .open-sidebar-logo{
+  display: none;
+}
+.navbar-collapsed .close-sidebar-logo {
+  display: block;
+}
+.main {
+  padding: 4px;
+  background: #e9eef3;
+  display: block;
+}
+
+

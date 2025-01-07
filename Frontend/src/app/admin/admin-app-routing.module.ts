@@ -13,6 +13,8 @@ import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sal
 import { ServerComponent } from './demo/component/server/server.component';
 import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
 import { accessPermissionGuard } from './guard/access-permission.guard';
+import { UsersComponent } from './demo/component/users/users.component';
+import { GroupComponent } from './demo/component/group/group.component';
 const routes: Routes = [
   {
     path: '',
@@ -46,6 +48,16 @@ const routes: Routes = [
       {
         path: 'add-sales-agent',
         component: AddSalesAgentComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'users',
+        component: UsersComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'group',
+        component: GroupComponent,
         canActivate:[authGuard]
       }
     ]
