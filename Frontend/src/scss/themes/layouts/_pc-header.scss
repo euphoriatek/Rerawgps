@@ -11,7 +11,7 @@
   right: 0;
   z-index: 1025;
   display: flex;
-  border-radius: 10px 10px 0px 0;
+  border-radius: 10px;
   margin-left:14px;
   border-bottom: solid 1px #e0e6f1;
 
@@ -89,7 +89,7 @@
   .pc-head-link {
     margin: 0 16px;
     position: relative;
-    font-weight: 300;
+    font-weight: 500;
     padding: 0;
     display: inline-flex;
     align-items: center;
@@ -98,10 +98,11 @@
     height: 34px;
     border-radius: $border-radius;
     color: $header-color;
+    text-transform: capitalize;
     // background: $border-color;
 
     > i {
-      font-size: 20px;
+      font-size: 32px;
       color: $header-color;
     }
 

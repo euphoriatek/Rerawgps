@@ -196,3 +196,76 @@ box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(1
     font-family: "Poppins", serif;
   }
 }
+
+.p-datatable-customers{
+  .p-datatable-header{
+    background-color: transparent;
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    input.form-control{
+      padding-left: 43px;
+      height: 40px;
+      font-size: 13px;
+    }
+    .ti-search{
+      margin-top: -13px;
+    }
+    h3{
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .add_user_btn{
+      margin-left: 5px;
+      background-color: #ff4c04;
+      color: white;
+      padding: 9px 18px;
+      border-radius: 7px;
+      font-size: 13px;
+    }
+}
+}
+.p-sortable-column-icon{
+  width: 13px !important;
+}
+}
+
+
+.p-datatable-wrapper{
+  border-radius: 10px;
+
+
+  .p-paginator {
+    padding: 1rem;
+}
+.p-datatable-thead > tr{
+  border-bottom:solid 1px #e2e6ef;
+}
+
+.p-datatable-thead > tr > th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+  font-family: "Poppins", serif;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 1rem 1rem;
+  white-space: nowrap;
+}
+.p-datatable-tbody > tr {
+    border-bottom:solid 1px #e2e6ef;
+}
+.p-datatable-tbody > tr > td {
+    cursor: auto;
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+}
+
+.p-dropdown-label:not(.p-placeholder) {
+    text-transform: uppercase;
+}
+
+
+}
+

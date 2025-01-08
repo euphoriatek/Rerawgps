@@ -160,16 +160,16 @@
       > a {
         padding: 8px 20px;
         display: block;
-        border-radius: 6px;
+        border-radius: 10px;
         position: relative;
         white-space: nowrap;
-        // text-transform: uppercase;
+        text-transform: uppercase;
         font-size: 13px;
         letter-spacing: 0.6px;
         width: 100%;
         &:hover{
-          background: #fbfbfb;
-          color: #ff7c48;
+          background-color: #44515e;
+          color: #ffffff;
           
         }
 
@@ -880,8 +880,8 @@
 }
 
 .coded-navbar .coded-inner-navbar li.active a{
-  background-color: #fff;
-  color:#ff4c04;
+  background-color: #44515e;
+  color: #ffffff;
 }
 
 .pc-sidebar .m-header img {
@@ -906,5 +906,15 @@
   background: #e9eef3;
   display: block;
 }
-
-
+.logout-Left {
+  position: absolute !important;
+  bottom: 35px;
+  width: 90%;
+}
+.logout-Left a {
+  color: #ff4c04;
+  font-weight: 600;
+}
+.coded-navbar.navbar-collapsed .logout-Left{
+  width: 67%;
+}

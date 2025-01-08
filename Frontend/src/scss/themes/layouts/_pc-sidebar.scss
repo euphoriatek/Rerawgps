@@ -6,12 +6,11 @@
   background: $sidebar-background;
   width: $sidebar-width;
   position: fixed;
-  top: 4px;
+  top: 0px;
   bottom: 0;
   z-index: 1026;
   overflow: hidden;
-  border-radius: 15px;
-  height: 99vh;
+  border-radius: 0px 15px 15px 0px;
 
 
   & .navbar-collapsed {
@@ -191,7 +190,7 @@
   .navbar-content {
     position: relative;
     height: calc(100vh - #{$header-height});
-    padding: 20px 10px;
+    padding: 7rem 10px 10px 10px;
   }
   .pc-submenu {
     .pc-link {

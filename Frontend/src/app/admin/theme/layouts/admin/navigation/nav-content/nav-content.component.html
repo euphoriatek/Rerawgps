@@ -6,7 +6,7 @@
         <app-nav-collapse *ngIf="item.type === 'collapse'" [item]="item"></app-nav-collapse>
         <app-nav-item *ngIf="item.type === 'item'" [item]="item"></app-nav-item>
       </ng-container>
-      <li (click)="logOut()"><a class="nav-link"><span class="coded-micon"><i class="ti ti-logout"></i></span><span  class="coded-mtext">{{ 'log_out' | translate}}</span></a></li>
+      <li class="logout-Left" (click)="logOut()"><a class="nav-link"><span class="coded-micon"><i class="ti ti-logout"></i></span><span  class="coded-mtext">{{ 'log_out' | translate}}</span></a></li>
     </ul>
 
   </div>

@@ -14,22 +14,6 @@
         }
     }
     
-    .table-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        input.form-control{
-          padding-left: 43px;
-          height: 40px;
-        }
-        .ti-search{
-          margin-top: -13px;
-        }
-        h3{
-          font-size: 20px;
-          font-weight: 400;
-        }
-    }
     
     .p-calendar .p-datepicker {
         min-width: 25rem;
@@ -48,27 +32,28 @@
           border: none;
         }
     
-        .p-paginator {
-            padding: 1rem;
-        }
+        // .p-paginator {
+        //     padding: 1rem;
+        // }
     
-        .p-datatable-thead > tr > th {
-          text-align: left;
-          font-weight: 400;
-          font-size: 14px;
-          font-family: "Poppins", serif;
-          background: #ebf0fb;
-        }
+        // .p-datatable-thead > tr > th {
+        //     text-align: left;
+        //     font-weight: 400;
+        //     font-size: 13px;
+        //     font-family: "Poppins", serif;
+        //     background: #ffffff;
+        //     color: #ff4c04;
+        // }
     
-        .p-datatable-tbody > tr > td {
-            cursor: auto;
-            padding: 0.5rem 1rem;
-            font-size: 14px;
-        }
+        // .p-datatable-tbody > tr > td {
+        //     cursor: auto;
+        //     padding: 0.5rem 1rem;
+        //     font-size: 14px;
+        // }
     
-        .p-dropdown-label:not(.p-placeholder) {
-            text-transform: uppercase;
-        }
+        // .p-dropdown-label:not(.p-placeholder) {
+        //     text-transform: uppercase;
+        // }
     }
     
     /* Responsive */
@@ -117,8 +102,3 @@
 
 }
 
-.add_user_btn{
-  margin-left: 5px;
-  background-color:#134aa0;
-  color:white;
-}
