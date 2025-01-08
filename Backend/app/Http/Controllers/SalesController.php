@@ -41,6 +41,94 @@ class SalesController extends Controller
             ], 500);
         }
     }
+
+    public function getObjects(Request $request){
+
+        $userId = $request->input('user_id');
+        if(!$userId){
+            return response()->json([
+                'status' => false,
+                'message' => 'Regaykar user id is required',
+            ], 401);
+        }
+        $saleData = SalesModel::where('user_id', $userId)->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Sales records fetched successfully!',
+            'data' => $saleData,
+        ], 200);
+    }
+
+    public function updateObject(Request $request)
+    {
+
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'id' => 'required|numeric',
+            'name' => 'required|string|max:255',
+            'user_id' => 'required|numeric|max:255',
+            'username' => 'required|string|max:255',
+            'password' => 'nullable|string|min:8',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+        try {
+            $object = SalesModel::find($input['id']);
+            if(!$object){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found',
+                    'data' => $object,
+                ], status: 400);
+            }
+            $object->name = $input['name'];
+            $object->user_id = $input['user_id'];
+            $object->username = $input['username'];
+            if (!empty($input['password'])) {
+                $object->password = Hash::make($input['password']);
+            }
+            $object->save();
+            return response()->json([
+                'status' => true,
+                'message' => 'Object updated successfully!',
+                'data' => $object,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while Object updated!.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function deleteObject(Request $request, $id){
+        try {
+            $sales = SalesModel::find($id);
+            if (!$sales) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found.',
+                ], 404);
+            }
+            $sales->save();
+            $sales->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Object deleted successfully.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while deleting the object.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
     public function getObjectList(Request $request)
     {
         try {

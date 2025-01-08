@@ -1,13 +1,25 @@
-<div class="container-fluid">
-  <div class="row">
+<div class="container-fluid" *ngIf="role">
+  <div class="row" *ngIf="role === 'superadmin'">
     <div class="col-lg-4">
-      Numbers Of Server
+      <div class="card">
+        <div class="card-body">
+          <strong>Number of Servers</strong>: {{ serverCount }}
+        </div>
+      </div>
     </div>
     <div class="col-lg-4">
-      Numbers Of Admin Users
+      <div class="card">
+        <div class="card-body">
+          <strong>Number of Admin Users</strong>: {{ adminUserCount }}
+        </div>
+      </div>
     </div>
     <div class="col-lg-4">
-      Numbers Of Users
+      <div class="card">
+        <div class="card-body">
+          <strong>Number of Users</strong>: {{ userCount }}
+        </div>
+      </div>
     </div>
   </div>
 </div>

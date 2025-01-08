@@ -52,12 +52,26 @@ const NavigationItems = [
     url: '/admin/users',
     icon: 'ti ti-users',
   },
+  // {
+  //   id: 'addsalesagent',
+  //   title: 'add_sales_agent',
+  //   type: 'item',
+  //   url: '/admin/add-sales-agent',
+  //   icon: 'ti ti-user-plus',
+  // },
   {
-    id: 'addsalesagent',
-    title: 'add_sales_agent',
+    id: 'assigned_server',
+    title: 'servers',
     type: 'item',
-    url: '/admin/add-sales-agent',
-    icon: 'ti ti-user-plus',
+    url: '/admin/assigned_server',
+    icon: 'ti ti-users',
+  },
+  {
+    id: 'regaykar_users',
+    title: 're_gaykar_users',
+    type: 'item',
+    url: '/admin/regaykar_users',
+    icon: 'ti ti-users',
   },
   {
     id: 'setting',
@@ -76,7 +90,10 @@ export class NavigationItem {
   }
   get(role:any) {
     if (role === "admin") {
-      return NavigationItems.filter(item => item.id !== 'servers' && item.id !== 'admin_users');
+      return NavigationItems.filter(item => item.id !== 'servers' && item.id !== 'admin_users' && item.id !== 're_gaykar_users');
+    }
+    if(role === "superadmin"){
+      return NavigationItems.filter(item => item.id !== 'regaykar_users' && item.id !== 'assigned_server');
     }
     return NavigationItems;
   }

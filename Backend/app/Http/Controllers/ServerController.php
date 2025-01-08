@@ -139,4 +139,32 @@ class ServerController extends Controller
             'server' => $server
         ], 200);
     }
+
+    // Admin Methods
+    public function GetAdminServers()
+    {
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized. Please log in.',
+                ], 401);
+            }
+            $assignedServers = AssigendServer::with('server')->where('user_id', $user->id)
+            ->get();
+            return response()->json([
+                'status' => true,
+                'data' => $assignedServers,
+                'message' => 'Success'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while fetching users.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
 }

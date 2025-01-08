@@ -75,7 +75,7 @@
     "user_name":"User Name",
     "user_id":"User Id",
     "search":"Search",
-    "sales_agent_list":"Sales Agent List",
+    "sales_agent_list":"List of Sales Agents",
     "admin_users_list":"List of Admin Users",
     "server":"Server",
     "add_admin_user":"Add Admin User",
@@ -103,5 +103,12 @@
     "set_new_password":"Set New Password",
     "user_deleted_success":"User deleted successfully",
     "user_deleted_error":"User could not be deleted",
-    "user_deleted_error_ex":"An error occurred while deleting in"
+    "user_deleted_error_ex":"An error occurred while deleting in",
+    "view":"View",
+    "sales_updated_success":"Sales User Updated Successfully",
+    "sales_updated_error":"Sales User could not be updated",
+    "sales_updated_error_ex":"An error occurred while updating in",
+    "sales_deleted_success":"Sales deleted successfully",
+    "sales_deleted_error":"Sales could not be deleted",
+    "sales_deleted_error_ex":"An error occurred while deleting in"
 }

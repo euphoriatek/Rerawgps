@@ -1,0 +1,240 @@
+<div class="container">
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <strong>Username</strong>: {{ usrInformation?.username }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <strong>Server</strong>: {{ usrInformation?.server?.server_url }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <form action="" [formGroup]="SalesUserForm" (ngSubmit)="addSalesAgent()" *ngIf="showAddSales">
+
+        <div class="col-lg-8">
+            <div class="form-group">
+                <label for="">{{'users' | translate}}</label>
+                <select class="form-control" formControlName="user_id">
+                    <option value="" disabled selected>{{'select_user_option' | translate}}</option>
+                    <option *ngFor="let data of usersData" value="{{data.id}}">{{data.username}}</option>
+                </select>
+                <div *ngIf="
+                    SalesUserForm?.get('user_id')?.hasError('required') &&
+                    SalesUserForm?.get('user_id')?.touched">
+                    <span class="error-message">{{'user_required' | translate}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="form-group">
+                <label for="">{{'name' | translate}}</label>
+                <input type="text" class="form-control" formControlName="name" >
+                <div *ngIf="
+                    SalesUserForm?.get('name')?.hasError('required') &&
+                    SalesUserForm?.get('name')?.touched">
+                    <span class="error-message">{{'name_required' | translate}}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-8">
+            <div class="form-group">
+                <label for="">{{'username' | translate}}</label>
+                <input type="text" class="form-control" formControlName="username" >
+                <div *ngIf="
+                    SalesUserForm?.get('username')?.hasError('required') &&
+                    SalesUserForm?.get('username')?.touched">
+                    <span class="error-message">{{'username_required' | translate}}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-8">
+            <div class="form-group">
+                <label for="">{{'password' | translate}}</label>
+                <input type="password" class="form-control" formControlName="password">
+                <div *ngIf="
+                    SalesUserForm?.get('password')?.hasError('required') &&
+                    SalesUserForm?.get('password')?.touched">
+                    <span class="error-message">{{ 'password_error' | translate}}</span>
+                </div>
+                <div *ngIf="
+                    SalesUserForm?.get('password')?.hasError('minlength')">
+                    <span class="error-message">{{ 'password_length_error' | translate}}</span>
+                </div>
+                <div *ngIf="
+                    SalesUserForm?.get('password')?.hasError('pattern')">
+                    <span class="error-message">{{ 'strong_password_error' | translate}}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="col-lg-8">
+            <div class="form-group toogle">
+              <label for="" class="toggle-label">{{ 'are_you_sure_want_to_expires' | translate }}</label>
+              <mat-slide-toggle [(ngModel)]="expireStatus" formControlName="expire"></mat-slide-toggle>
+            </div>
+        </div>
+          
+
+        <div class="col-lg-8" *ngIf="expireStatus">
+            <div class="form-group">
+              <label for="expire_date">{{'expire_date' | translate}}</label>
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="expire_date" [min]="today">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+        </div> -->
+
+
+        <div class="col-lg-12">
+            <div class="form-group">
+                <div class="d-flex gap-2 from-button">
+                    <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
+                    <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
+                </div>
+              </div>
+        </div>
+    </form>
+<p-table #dt [value]="salesData" [(selection)]="selectedCustomers" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
+            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0" [globalFilterFields]="['name','username','created_at']">
+            <ng-template pTemplate="caption">
+                <div class="table-header mb-4">
+                   <h3>{{ 'sales_agent_list' | translate}}</h3> 
+                   <div>
+                    <span class="p-input-icon-left">
+                        <i class="ti ti-search"></i>
+                        <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Global Search" />
+                    </span>
+                    <button class="btn add_user_btn" (click)="addSales()">{{'add_sales_agent' | translate}}</button>
+                  </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="name">{{ "username" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="username">{{ "username" | translate }} <p-sortIcon field="username"></p-sortIcon></th>
+                    <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
+                    <th>{{ "actions" | translate }}</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data>
+                <tr class="p-selectable-row">
+                    <td>
+                        <span class="p-column-title">{{ "username" | translate }}</span>
+                        {{data.name}}
+                    </td>
+                    <td>
+                        <span class="p-column-title">{{ "username" | translate }}</span>
+                        <span class="image-text">{{data.username}}</span>
+                    </td>
+                    <td>
+                        <span class="p-column-title">{{ "created_at" | translate }}</span>
+                        <span class="image-text">{{ data.created_at | date }}</span>
+                    </td>
+                    <td>
+                        <span class="p-column-title">{{ "actions" | translate }}</span>
+                        <button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
+                        <button class="btn btn-warning btn-xs me-3" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">No customers found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <p-dialog id="dialog" header="{{ 'edit' | translate }}" [(visible)]="visible" [style]="{ width: '60vw' }"
+        [modal]="true">
+        <form action="" [formGroup]="SalesEditForm" (ngSubmit)="EditSales()">
+          <div class="row">
+            <div class="col-lg-7">
+              <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="">{{'users' | translate}}</label>
+                        <select class="form-control" formControlName="user_id">
+                            <option value="" disabled selected>{{'select_user_option' | translate}}</option>
+                            <option *ngFor="let data of EditusersData" value="{{data.id}}">{{data.username}}</option>
+                        </select>
+                        <div *ngIf="
+                        SalesEditForm?.get('user_id')?.hasError('required') &&
+                        SalesEditForm?.get('user_id')?.touched">
+                            <span class="error-message">{{'user_required' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="">{{'name' | translate}}</label>
+                        <input type="text" class="form-control" formControlName="name" >
+                        <div *ngIf="
+                        SalesEditForm?.get('name')?.hasError('required') &&
+                        SalesEditForm?.get('name')?.touched">
+                            <span class="error-message">{{'name_required' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+        
+        
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="">{{'username' | translate}}</label>
+                        <input type="text" class="form-control" formControlName="username" >
+                        <div *ngIf="
+                        SalesEditForm?.get('username')?.hasError('required') &&
+                        SalesEditForm?.get('username')?.touched">
+                            <span class="error-message">{{'username_required' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label for="">{{'password' | translate}}</label>
+                        <input type="password" class="form-control" formControlName="password" placeholder="{{ 'set_new_password' | translate }}">
+                        <div *ngIf="
+                        SalesEditForm?.get('password')?.hasError('minlength')">
+                            <span class="error-message">{{ 'password_length_error' | translate}}</span>
+                        </div>
+                        <div *ngIf="
+                        SalesEditForm?.get('password')?.hasError('pattern')">
+                            <span class="error-message">{{ 'strong_password_error' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <div class="d-flex gap-2 from-button">
+                      <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
+                      <input (click)="resetEditForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate }}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </p-dialog>
+</div>

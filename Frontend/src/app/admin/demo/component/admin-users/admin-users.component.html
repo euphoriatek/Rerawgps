@@ -270,7 +270,7 @@
                   type="text"
                   formControlName="password"
                   class="form-control"
-                  autocomplete="false"
+                  autocomplete="false" placeholder="{{ 'set_new_password' | translate}}"
                 />
                 <div *ngIf="EditAdminUsr?.get('password')?.hasError('minlength')">
                   <span class="error-message">{{
