@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Admin API
     Route::get('/admin/get-admin-servers', [ServerController::class, 'GetAdminServers'])->middleware('role:admin');
-    Route::get('/admin/get-admin-users-list', [ApiController::class, 'GetAdminUsersList'])->middleware('role:admin');
+    Route::get('/admin/get-admin-regaykar-usrs', [ApiController::class, 'GetAdminRegaykar'])->middleware('role:admin');
     
    
     
@@ -72,10 +72,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('admin/get-user-info', [ApiController::class, 'getUserInfo'])->middleware('auth:users');
 
     // Admin Api
-    Route::post('/create-group', [GroupController::class, 'store']);
-    Route::get('/get-group-users-list', [GroupController::class, 'getGroupUserList']);
-    Route::post('/edit-group-user', [GroupController::class, 'editGroup']);
-    Route::delete('/delete-group-user/{id}', [GroupController::class, 'deleteGroupUser']);
+    Route::post('/create-group', [GroupController::class, 'store'])->middleware('auth:users');;
+    Route::get('/get-group-users-list', [GroupController::class, 'getGroupUserList'])->middleware('auth:users');;
+    Route::post('/edit-group-user', [GroupController::class, 'editGroup'])->middleware('auth:users');;
+    Route::delete('/delete-group-user/{id}', [GroupController::class, 'deleteGroupUser'])->middleware('auth:users');;
     Route::post('/get-sales-objects', [SalesController::class, 'getsalesObjects'])->middleware('auth:users');
     
 });

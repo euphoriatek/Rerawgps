@@ -53,7 +53,7 @@ export class ApiService {
   }
 
   addUser(data: any) {
-    return this.http.post(this.AdminBaseUrl + 'regaykar-user', data);
+    return this.http.post(this.AdminBaseUrl + 'add-regaykar-user', data);
   }
   
   getUserList() {
@@ -97,12 +97,10 @@ export class ApiService {
   }
 
   // Admin Api
-
   getAdminServers() {
     return this.http.get(this.AdminBaseUrl + 'get-admin-servers');
   }
-
-  getAdminUserList() {
-    return this.http.get(this.AdminBaseUrl + 'get-admin-users-list');
+  getAdminrRegaykarList() {
+    return this.http.get(this.AdminBaseUrl + 'get-admin-regaykar-usrs');
   }
 }

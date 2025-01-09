@@ -136,7 +136,7 @@ usersData: any;
   }
   getUsers(): void {
     this.spinner.show();
-    this.api.getAdminUserList().subscribe({
+    this.api.getAdminrRegaykarList().subscribe({
       next: (response: any) => {
         this.spinner.hide();
         if (response && response.status) {

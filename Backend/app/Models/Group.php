@@ -17,5 +17,5 @@ class Group extends Model
         'end_date',
         'created_by'
     ];
-    public $timestamps = false;
+    public $timestamps = true;
 }

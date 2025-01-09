@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 class ServerController extends Controller
 {
-
+    // Super Admin Method
     public function addServer(Request $request)
     {
         $input = $request->all();

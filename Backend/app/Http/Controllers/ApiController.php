@@ -470,7 +470,7 @@ class ApiController extends Controller
         }
     }
 
-    public function GetAdminUsersList(Request $request)
+    public function GetAdminRegaykar(Request $request)
     {
         try {
             $user = Auth::user();
@@ -480,7 +480,8 @@ class ApiController extends Controller
                     'message' => 'Unauthorized. Please log in.',
                 ], 401);
             }
-            $users = User::with('server')->where('created_by', $user->id)->where('role', 'user')->get();
+            $serverIds = AssigendServer::where('user_id', $user->id)->pluck('server_id')->toArray();
+            $users = User::with('server')->whereIn('server_id', $serverIds)->where('role', 'user')->get();
             return response()->json([
                 'status' => true,
                 'data' => $users,
