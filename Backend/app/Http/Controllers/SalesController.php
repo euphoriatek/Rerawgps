@@ -12,11 +12,10 @@ class SalesController extends Controller
     // Store method with validation
     public function store(Request $request)
     {
-
         $input = $request->all();
         $validator = Validator::make($input, [
-            'name' => 'required|string|max:255',
             'user_id' => 'required|numeric|max:255',
+            'name' => 'required|string|max:255',
             'username' => 'required|string|max:255',
             'password' => 'required|string|min:8',
         ]);
@@ -66,7 +65,6 @@ class SalesController extends Controller
         $validator = Validator::make($input, [
             'id' => 'required|numeric',
             'name' => 'required|string|max:255',
-            'user_id' => 'required|numeric|max:255',
             'username' => 'required|string|max:255',
             'password' => 'nullable|string|min:8',
         ]);

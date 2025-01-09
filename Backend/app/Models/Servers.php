@@ -9,7 +9,7 @@ class Servers extends Model
 {
     protected $table = 'servers';
 
-    protected $fillable = ['name', 'server_url'];
+    protected $fillable = ['name', 'server_url', 'platform'];
     public function assignedServers()
     {
         return $this->hasMany(AssigendServer::class, 'server_id', 'id'); // Change this if you use a different relationship type

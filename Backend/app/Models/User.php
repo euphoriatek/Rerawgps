@@ -28,7 +28,8 @@ class User extends Authenticatable
         'username',
         'role',
         'name',
-        'created_by'
+        'created_by',
+        'is_active'
     ];
 
     /**
@@ -38,6 +39,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'remember_token',
+        'password'
     ];
 
     public function assigned_servers()
@@ -48,5 +50,10 @@ class User extends Authenticatable
     public function server()
     {
         return $this->hasOne(Servers::class,'id','server_id');
+    }
+    public function hasRole($role)
+    {
+        // Assuming you're storing roles as a string or in a related table
+        return $this->role === $role;  // Adjust this based on how you store roles
     }
 }

@@ -9,7 +9,6 @@ import { GuestComponent } from './theme/layouts/guest/guest.component';
 import { authGuard } from './guard/auth.guard';
 import { unAuthGuard } from './guard/un-auth.guard';
 import { AddUserComponent } from './demo/component/add-user/add-user.component';
-import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sales-agent.component';
 import { ServerComponent } from './demo/component/server/server.component';
 import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
 import { accessPermissionGuard } from './guard/access-permission.guard';

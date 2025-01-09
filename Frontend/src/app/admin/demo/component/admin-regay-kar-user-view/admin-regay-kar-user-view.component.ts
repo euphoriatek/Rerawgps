@@ -23,8 +23,6 @@ SalesUserForm!: FormGroup;
   @ViewChild('dt') dt: Table | undefined;
   userId: any;
   salesData:any;
-  usersData: any;
-  EditusersData:any;
   showAddSales:boolean=false;
   visible:boolean=false;
   usrInformation:any;
@@ -40,7 +38,6 @@ SalesUserForm!: FormGroup;
   ) { }
   ngOnInit(): void {
     this.SalesUserForm = this.fb.group({
-      user_id: ['', [Validators.required]],
       name:['', [Validators.required]],
       username:['', [Validators.required]],
       password: [
@@ -68,7 +65,6 @@ SalesUserForm!: FormGroup;
     this.userId = this.Cureentroute.snapshot.paramMap.get('id');
     this.getUserInfo();
     this.getSales();
-    this.getUsers();
   }
 
   getSales(){
@@ -84,25 +80,6 @@ SalesUserForm!: FormGroup;
       error: (err) => {
         this.spinner.hide();
         console.error(err);
-      }
-    });
-  }
-
-  getUsers(){
-    this.spinner.show();
-    this.api.getAdminUserList("filter").subscribe({
-      next: (response: any) => {
-        this.spinner.hide();
-        if (response && response.status) {
-          this.usersData = response.data;
-          this.spinner.hide();
-        }else{
-          this.spinner.hide();
-        }
-      },
-      error: (err) => {
-        this.spinner.hide();
-        console.error(err); 
       }
     });
   }
@@ -130,6 +107,7 @@ SalesUserForm!: FormGroup;
       return;
     }else if(this.SalesUserForm.valid){
       this.spinner.show();
+      this.SalesUserForm.value.user_id = this.userId;
       const data = this.SalesUserForm.value;
       this.api.addSalesAgent(data).subscribe({
         next: (response: any) => {
@@ -173,7 +151,6 @@ SalesUserForm!: FormGroup;
   }
 
   openEditDialog(data: any): void {
-    this.EditusersData = this.usersData.filter((users:any) => users.id === data.user_id); 
       this.SalesEditForm.patchValue({
         id:data.id,
         user_id:data.user_id,

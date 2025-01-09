@@ -168,6 +168,7 @@
                         <span class="p-column-title">{{ "actions" | translate }}</span>
                         <button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
                         <button class="btn btn-warning btn-xs" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
+                        <mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle>
                     </td>
                 </tr>
             </ng-template>

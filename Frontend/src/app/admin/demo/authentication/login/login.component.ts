@@ -53,7 +53,7 @@ export default class LoginComponent {
             this.route.navigate(['/admin/dashboard/default']);
             this.toaster.success(this.translate.instant('login_success'), this.translate.instant('login'));
           } else {
-            this.toaster.error(this.translate.instant('invalid_user_password') || this.translate.instant('login_failed'), this.translate.instant('login'));
+            this.toaster.error(this.translate.instant('inactive_account') || this.translate.instant('login_failed'), this.translate.instant('login'));
           }
         },
         error: (err) => {

@@ -18,6 +18,19 @@ class ApiController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function getDashboard()
+    {
+        $serverCount = Servers::count();
+        $adminUserCount = User::where('role', 'admin')->count();
+        $userCount = User::where('role', 'user')->count();
+        return response()->json([
+            'status' => true,
+            'serverCount' => $serverCount,
+            'adminUserCount' => $adminUserCount,
+            'userCount' => $userCount
+        ]);
+    }
+
     public function register(Request $request)
     {
         $input = $request->all();
@@ -53,23 +66,6 @@ class ApiController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
-    }
-
-    public function getServerList()
-    {
-        // Count the number of servers
-        $serverCount = Servers::count();
-        // $server = Servers::get();
-        $servers = Servers::get();
-        $adminUserCount = User::where('role', 'admin')->count();
-        $userCount = User::where('role', 'user')->count();
-        return response()->json([
-            'status' => true,
-            'serverCount' => $serverCount,
-            'adminUserCount' => $adminUserCount,
-            'userCount' => $userCount,
-            'servers' => $servers
-        ]);
     }
 
     public function createUser($data)
@@ -121,6 +117,12 @@ class ApiController extends Controller
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password]) && 
                 in_array(Auth::user()->role, ['admin', 'superadmin'])) {
                 $user = Auth::user();
+                if ($user->role == 'admin' && $user->is_active == 0) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Your admin account is inactive. Please contact support.',
+                    ], 200);
+                }
                 $token = $user->createToken('remember_token')->plainTextToken;
                 $user->remember_token = $token;
                 $user->save();
@@ -160,6 +162,12 @@ class ApiController extends Controller
             }
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password, 'role' => 'user'])) {
                 $user = Auth::user();
+                if ($user->is_active == 0) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Your account is inactive. Please contact support.',
+                    ], 200);
+                }
                 $token = $user->createToken('remember_token')->plainTextToken;
                 $user->remember_token = $token;
                 $user->save();
@@ -202,11 +210,7 @@ class ApiController extends Controller
     public function UsersList(Request $request)
     {
         try {
-            if($request->input('type')){
-                $users = User::select('id', 'username')->where('role', 'user')->get();
-            }else{
-                $users = User::with('server')->where('role', 'user')->get();
-            }
+            $users = User::with('server')->where('role', 'user')->get();
             return response()->json([
                 'status' => true,
                 'data' => $users,
@@ -225,7 +229,8 @@ class ApiController extends Controller
         $input = $request->all();
         $validator = Validator::make($input, [
             'name' => 'required|string|max:255',
-            'server_id.*' => 'required',
+            'server_id' => 'required|array',
+            'server_id.*' => 'required|integer',
             'username' => 'required|string|max:255',
             'password' => 'required|string|min:8'
         ]);
@@ -475,11 +480,7 @@ class ApiController extends Controller
                     'message' => 'Unauthorized. Please log in.',
                 ], 401);
             }
-            if($request->input('type')){
-                $users = User::select('id', 'username')->where('created_by', $user->id)->where('role', 'user')->get();
-            }else{
-                $users = User::with('server')->where('created_by', $user->id)->where('role', 'user')->get();
-            }
+            $users = User::with('server')->where('created_by', $user->id)->where('role', 'user')->get();
             return response()->json([
                 'status' => true,
                 'data' => $users,
@@ -493,4 +494,36 @@ class ApiController extends Controller
         }
     }
     
+    public function updateStatus(Request $request){
+        try {
+        $input = $request->input('user_id');
+        if($input){
+            $user = User::find($input);
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found.',
+                ], 404);
+            }
+            $user->update(['is_active' => $user->is_active == 1 ? 0 : 1]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User status updated successfully.'
+            ], 200);
+
+        }else{
+            return response()->json([
+                    'status' => false,
+                    'message' => 'User id is required.',
+                ], 404);
+        }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while updating data.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

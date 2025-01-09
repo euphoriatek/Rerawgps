@@ -19,11 +19,11 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class ServerComponent {
   ServerForm!: FormGroup;
+  ServerEditForm!:FormGroup;
   isSubmitted = false;
   servesData:any;
   showAddserver:boolean=false;
   visible: boolean = false;
-  selectedServer: any;
 
   customers: Customer[];
   selectedCustomers: Customer[];
@@ -36,7 +36,14 @@ export class ServerComponent {
   ngOnInit(): void {
     this.ServerForm = this.fb.group({
       name: ['', [Validators.required]],
-      server_url:['', [Validators.required]]
+      server_url:['', [Validators.required]],
+      platform:['', [Validators.required]]
+    });
+    this.ServerEditForm = this.fb.group({
+      id:['', [Validators.required]],
+      name: ['', [Validators.required]],
+      server_url:['', [Validators.required]],
+      platform:['', [Validators.required]]
     });
     // this.primengConfig.ripple = true;
     this.getServers();
@@ -104,16 +111,16 @@ export class ServerComponent {
 
 
   EditServer(): void {
-    if (this.ServerForm.invalid) {
+    if (this.ServerEditForm.invalid) {
       this.isSubmitted = true;
-      this.ServerForm.markAllAsTouched();
+      this.ServerEditForm.markAllAsTouched();
       return;
     }
   
-    if (this.ServerForm.valid) {
+    if (this.ServerEditForm.valid) {
       this.spinner.show();
-      const data = this.ServerForm.value;
-      this.api.updateServer(this.selectedServer.id, data).subscribe({
+      const data = this.ServerEditForm.value;
+      this.api.updateServer(data).subscribe({
         next: (response: any) => {
           if (response.success) {
             this.getServers();
@@ -139,12 +146,13 @@ export class ServerComponent {
     }
   }
 
-  openEditDialog(selectedServer: any): void {
+  openEditDialog(data: any): void {
     this.showAddserver = false;
-    this.selectedServer = selectedServer;  
-    this.ServerForm.patchValue({
-      name: selectedServer.name,
-      server_url: selectedServer.server_url
+    this.ServerEditForm.patchValue({
+      id:data.id,
+      name: data.name,
+      server_url: data.server_url,
+      platform:data.platform
     });  
     this.visible = true;
   }
@@ -202,5 +210,6 @@ export interface Customer {
   id?: number;
   name?: string;
   server_url?: string;
+  platform?:string;
   created_at?: string;
 }

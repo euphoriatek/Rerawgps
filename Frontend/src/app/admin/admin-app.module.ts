@@ -22,7 +22,6 @@ import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
 import { AddUserComponent } from './demo/component/add-user/add-user.component';
 import { UsersComponent } from './demo/component/users/users.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { AddSalesAgentComponent } from './demo/component/add-sales-agent/add-sales-agent.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -66,7 +65,6 @@ import { AssignedServerComponent } from './demo/component/assigned-server/assign
     NavGroupComponent,
     NavItemComponent,
     AddUserComponent,
-    AddSalesAgentComponent,
     ServerComponent,
     AdminUsersComponent,
     ConfirmDialogComponent,

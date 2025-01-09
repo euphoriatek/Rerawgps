@@ -33,6 +33,26 @@
           </div>
           <div class="col-lg-12">
             <div class="form-group">
+              <label for="">{{ "platform" | translate }}</label>
+              <mat-form-field appearance="outline" class="multi-select">
+                <!-- <mat-label>Select Server</mat-label> -->
+                <mat-select formControlName="platform" class="form-control">
+                  <mat-option value="GPSWOX" >GPSWOX</mat-option>
+                  <mat-option value="GPS-Server" >GPS-Server</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="
+                  ServerForm?.get('platform')?.hasError('required') &&
+                  ServerForm?.get('platform')?.touched
+                ">
+                <span class="error-message">{{
+                  "platform_required" | translate
+                  }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="form-group">
                 <div class="d-flex gap-2 from-button">
                     <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
                     <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
@@ -45,7 +65,7 @@
   </form>
   <p-dialog id="dialog" header="{{ 'edit_server' | translate }}" [(visible)]="visible" [style]="{ width: '40vw' }"
     [modal]="true" [draggable]="false" [resizable]="false" (onHide)="onDialogClose()">
-    <form action="" [formGroup]="ServerForm" (ngSubmit)="EditServer()">
+    <form action="" [formGroup]="ServerEditForm" (ngSubmit)="EditServer()">
       <div class="row">
         <div class="col-lg-12">
           <div class="row">
@@ -53,7 +73,7 @@
               <div class="form-group">
                 <label for="">{{ "name" | translate }}</label>
                 <input type="text" formControlName="name" class="form-control" autocomplete="false" />
-                <div *ngIf="ServerForm?.get('name')?.hasError('required') && ServerForm?.get('name')?.touched">
+                <div *ngIf="ServerEditForm?.get('name')?.hasError('required') && ServerEditForm?.get('name')?.touched">
                   <span class="error-message">{{ "name_required" | translate }}</span>
                 </div>
               </div>
@@ -64,17 +84,35 @@
                 <label for="">{{ "server_url" | translate }}</label>
                 <input type="text" formControlName="server_url" class="form-control" autocomplete="false" />
                 <div
-                  *ngIf="ServerForm?.get('server_url')?.hasError('required') && ServerForm?.get('server_url')?.touched">
+                  *ngIf="ServerEditForm?.get('server_url')?.hasError('required') && ServerEditForm?.get('server_url')?.touched">
                   <span class="error-message">{{ "server_url_required" | translate }}</span>
                 </div>
               </div>
             </div>
-
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="">{{ "platform" | translate }}</label>
+                <mat-form-field appearance="outline" class="multi-select">
+                  <!-- <mat-label>Select Server</mat-label> -->
+                  <mat-select formControlName="platform" class="form-control">
+                    <mat-option value="GPSWOX" >GPSWOX</mat-option>
+                    <mat-option value="GPS-Server" >GPS-Server</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="
+                ServerEditForm?.get('platform')?.hasError('required') &&
+                ServerEditForm?.get('platform')?.touched
+                  ">
+                  <span class="error-message">{{
+                    "platform_required" | translate
+                    }}</span>
+                </div>
+              </div>
+            </div>
             <div class="col-lg-12">
               <div class="form-group">
                   <div class="d-flex gap-2 from-button">
                       <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
-                      <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
                   </div>
                 </div>
             </div>
@@ -88,7 +126,7 @@
 <p-table #dt [value]="servesData" [(selection)]="selectedCustomers" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
             [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [filterDelay]="0" [globalFilterFields]="['name','server_url','created_at']">
+            [filterDelay]="0" [globalFilterFields]="['name','server_url','platform','created_at']">
             <ng-template pTemplate="caption">
                 <div class="table-header mb-4">
                    <h3>List of Servers</h3> 
@@ -107,6 +145,7 @@
                 <tr>
                     <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
                     <th pSortableColumn="server_url">{{ "server_url" | translate }} <p-sortIcon field="server_url"></p-sortIcon></th>
+                    <th pSortableColumn="platform">{{ "platform" | translate }} <p-sortIcon field="platform"></p-sortIcon></th>
                     <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
                     <th>{{ "actions" | translate }}</th>
                 </tr>
@@ -120,6 +159,10 @@
                     <td>
                         <span class="p-column-title">{{ "server_url" | translate }}</span>
                         <span class="image-text">{{servers.server_url}}</span>
+                    </td>
+                    <td>
+                      <span class="p-column-title">{{ "platform" | translate }}</span>
+                      <span class="image-text">{{servers.platform}}</span>
                     </td>
                     <td>
                         <span class="p-column-title">{{ "created_at" | translate }}</span>

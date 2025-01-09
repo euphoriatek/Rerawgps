@@ -110,5 +110,8 @@
     "sales_updated_error_ex":"An error occurred while updating in",
     "sales_deleted_success":"Sales deleted successfully",
     "sales_deleted_error":"Sales could not be deleted",
-    "sales_deleted_error_ex":"An error occurred while deleting in"
+    "sales_deleted_error_ex":"An error occurred while deleting in",
+    "platform":"Platform",
+    "platform_required":"Platform is Required",
+    "inactive_account":"Your account is inactive. Please contact support."
 }

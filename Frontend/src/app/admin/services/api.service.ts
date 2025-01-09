@@ -11,20 +11,32 @@ export class ApiService {
   login(data: any) {
     return this.http.post(this.AdminBaseUrl + 'login', data);
   }
+  updateStatus(user_id:number){
+    return this.http.post(this.AdminBaseUrl + 'update-user-status', {user_id:user_id});
+  }
+  // SupeR Admin Dashboard
+  getServersList() {
+    return this.http.get(this.AdminBaseUrl + 'dashboard-data');
+  }
 
   addServer(data: any) {
     return this.http.post(this.AdminBaseUrl + 'add-server', data);
   }
 
-  updateServer(id: number, data: any) {
-    return this.http.post(`${this.AdminBaseUrl}edit-server/${id}`, data);
-  }
-  updateUser(data: any) {
-    return this.http.post(this.AdminBaseUrl + 'edit-user', data);
+  updateServer(data: any) {
+    return this.http.post(this.AdminBaseUrl + 'update-server', data);
   }
 
   getServers() {
     return this.http.get(this.AdminBaseUrl + 'get-servers');
+  }
+
+  deleteServer(serverId) {
+    return this.http.post(this.AdminBaseUrl + 'delete-server', { server_id: serverId });
+  }
+  
+  updateUser(data: any) {
+    return this.http.post(this.AdminBaseUrl + 'edit-regaykar-user', data);
   }
 
   addAdminUser(data:any){
@@ -35,20 +47,17 @@ export class ApiService {
     return this.http.get(this.AdminBaseUrl + 'get-admin-usr');
   }
 
-  deleteServer(serverId) {
-    return this.http.post(this.AdminBaseUrl + 'delete-server', { server_id: serverId });
-  }
+  
   deleteUser(id: number) {
-    return this.http.delete(this.AdminBaseUrl + 'delete-user/' + id);
+    return this.http.delete(this.AdminBaseUrl + 'delete-regaykar-user/' + id);
   }
 
   addUser(data: any) {
-    return this.http.post(this.AdminBaseUrl + 'register', data);
+    return this.http.post(this.AdminBaseUrl + 'regaykar-user', data);
   }
-  getUserList(type: any = null) {
-    const url = this.AdminBaseUrl + 'users-list';
-    const params = type ? { type } : {};
-    return this.http.get(url, { params });
+  
+  getUserList() {
+    return this.http.get(this.AdminBaseUrl + 'users-list');
   }
 
   logout() {
@@ -83,10 +92,6 @@ export class ApiService {
     return this.http.delete(this.AdminBaseUrl + 'delete-object/' +data);
   }
 
-  getServersList() {
-    return this.http.get(this.AdminBaseUrl + 'get-servers-list');
-  }
-
   getUserInfo(data){
     return this.http.post(this.AdminBaseUrl + 'get-user-info', {user_id:data});
   }
@@ -97,9 +102,7 @@ export class ApiService {
     return this.http.get(this.AdminBaseUrl + 'get-admin-servers');
   }
 
-  getAdminUserList(type: any = null) {
-    const url = this.AdminBaseUrl + 'get-admin-users-list';
-    const params = type ? { type } : {};
-    return this.http.get(url, { params });
+  getAdminUserList() {
+    return this.http.get(this.AdminBaseUrl + 'get-admin-users-list');
   }
 }

@@ -42,7 +42,7 @@ return [
         ],
         'admin' => [
             'driver' => 'sanctum',
-            'provider' => 'sales',
+            'provider' => 'users',
         ],
         'users' => [
             'driver' => 'sanctum',
@@ -81,10 +81,7 @@ return [
             'model' => App\Models\SalesModel::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+
     ],
 
     /*

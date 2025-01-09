@@ -151,7 +151,7 @@
                   </td>
                   <td>
                     <span class="p-column-title">{{ "api_key" | translate }}</span>
-                    {{data.address}}
+                    {{data.api_key}}
                   </td>
                     <td>
                         <span class="p-column-title">{{ "created_at" | translate }}</span>
@@ -162,6 +162,7 @@
                         <button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
                         <button class="btn btn-warning btn-xs me-3" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
                         <button class="btn btn-warning btn-xs" [routerLink]="['/admin/user-view', data.id]">{{ "view" | translate}}</button>
+                        <mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle>
                     </td>
                 </tr>
             </ng-template>

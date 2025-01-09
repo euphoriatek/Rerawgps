@@ -18,7 +18,8 @@ class ServerController extends Controller
 
         $validator = Validator::make($input, [
             'name' => 'required|string|max:255',
-            'server_url' => 'required|string|max:255'
+            'server_url' => 'required|string|max:255',
+            'platform' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -47,7 +48,6 @@ class ServerController extends Controller
     public function GetServers()
     {
         try {
-
             $servers = Servers::whereNull('deleted_at')->get();
             return response()->json([
                 'status' => true,
@@ -62,11 +62,13 @@ class ServerController extends Controller
             ], 500);
         }
     }
-    public function UpdateServers($id, Request $request)
+    public function UpdateServers(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:servers,id',
             'name' => 'required|string|max:255',
-            'server_url' => 'required|string|max:255'
+            'server_url' => 'required|string|max:255',
+            'platform' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -77,7 +79,7 @@ class ServerController extends Controller
             ], 400);
         }
 
-        $server = Servers::find($id);
+        $server = Servers::find($request->id);
 
         if (!$server) {
             return response()->json([
@@ -88,7 +90,8 @@ class ServerController extends Controller
 
         $server->update([
             'name' => $request->name,
-            'server_url' => $request->server_url
+            'server_url' => $request->server_url,
+            'platform' => $request->platform
         ]);
 
         return response()->json([
@@ -113,7 +116,7 @@ class ServerController extends Controller
 
         $assignedCheck = AssigendServer::where('server_id', $request->input('server_id'))
             ->whereNull('deleted_at')
-            ->get();
+            ->exists();
         if($assignedCheck){
             return response()->json([
                 'status' => false,

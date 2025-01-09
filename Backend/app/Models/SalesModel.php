@@ -10,7 +10,7 @@ class SalesModel extends Authenticatable
     use HasApiTokens, HasFactory, SoftDeletes;
     protected $table = 'sales';
     protected $fillable = ['name', 'username', 'password', 'user_id'];
-    protected $hidden = ['remember_token'];
+    protected $hidden = ['remember_token','password'];
     /**
      * Create a token and store it in the `sales_access_tokens` table.
      *
