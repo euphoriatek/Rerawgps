@@ -179,4 +179,22 @@ class SalesController extends Controller
             'token' => $token,
         ], 200);
     }
+
+    public function getsalesObjects(Request $request)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+        $userId = $user->id;
+        $saleData = SalesModel::where('user_id', $userId)->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Sales records fetched successfully!',
+            'data' => $saleData,
+        ], 200);
+    }
 }

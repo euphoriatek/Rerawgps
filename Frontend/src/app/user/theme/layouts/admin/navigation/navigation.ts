@@ -48,6 +48,13 @@ const NavigationItems = [
     url: '/group',
     icon: 'ti ti-users'
   },
+  {
+    id: 'saleagent',
+    title: 'saleagent',
+    type: 'item',
+    url: '/saleagent',
+    icon: 'ti ti-users',
+  }
 ];
 
 @Injectable()

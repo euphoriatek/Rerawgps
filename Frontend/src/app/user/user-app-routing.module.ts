@@ -7,6 +7,7 @@ import { authGuard } from './guard/auth.guard';
 import { GuestComponent } from './theme/layouts/guest/guest.component';
 import { unAuthGuard } from './guard/un-auth.guard';
 import { GroupComponent } from './demo/component/group/group.component';
+import { SalesAgentsViewComponent } from './demo/component/sales-agents-view/sales-agents-view.component';
 const routes: Routes = [
   {
     path: '',
@@ -25,6 +26,11 @@ const routes: Routes = [
       {
         path: 'group',
         component: GroupComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'saleagent',
+        component: SalesAgentsViewComponent,
         canActivate:[authGuard]
       },
       {

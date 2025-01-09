@@ -72,6 +72,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('admin/get-user-info', [ApiController::class, 'getUserInfo'])->middleware('auth:users');
 
     // Admin Api
-    
+    Route::post('/create-group', [GroupController::class, 'store']);
+    Route::get('/get-group-users-list', [GroupController::class, 'getGroupUserList']);
+    Route::post('/edit-group-user', [GroupController::class, 'editGroup']);
+    Route::delete('/delete-group-user/{id}', [GroupController::class, 'deleteGroupUser']);
+    Route::post('/get-sales-objects', [SalesController::class, 'getsalesObjects'])->middleware('auth:users');
     
 });

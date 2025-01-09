@@ -113,5 +113,14 @@
     "sales_deleted_error_ex":"An error occurred while deleting in",
     "platform":"Platform",
     "platform_required":"Platform is Required",
-    "inactive_account":"Your account is inactive. Please contact support."
+    "inactive_account":"Your account is inactive. Please contact support.",
+    "group_list":"Groups List",
+    "add_groups_user":"Add Groups Users",
+    "no_found_record":"No groups found",
+    "global_search":"Global Search",
+    "groups":"Groups",
+    "description":"Description",
+    "showing_first_to_last_of_totalRecords_entries":"Showing {first} to {last} of {totalRecords} Entries",
+    "saleagent":"Sales Agent",
+    "description_required":"Description is Required"
 }

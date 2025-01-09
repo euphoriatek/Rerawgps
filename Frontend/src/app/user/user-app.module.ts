@@ -1,6 +1,4 @@
-// angular import
 import { NgModule } from '@angular/core';
-
 import { TranslateModule } from '@ngx-translate/core';
 // project import
 import { UserAppRoutingModule } from './user-app-routing.module';
@@ -24,8 +22,21 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-
 import { GroupComponent } from './demo/component/group/group.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from "primeng/button";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {TableModule} from 'primeng/table';
+import {CalendarModule} from 'primeng/calendar';
+import {SliderModule} from 'primeng/slider';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {ContextMenuModule} from 'primeng/contextmenu';
+import {ToastModule} from 'primeng/toast';
+import {ProgressBarModule} from 'primeng/progressbar';
+import {DropdownModule} from 'primeng/dropdown';
+import { MatDialogModule } from '@angular/material/dialog';
+import { SalesAgentsViewComponent } from './demo/component/sales-agents-view/sales-agents-view.component';
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -39,14 +50,15 @@ import { GroupComponent } from './demo/component/group/group.component';
     NavCollapseComponent,
     NavGroupComponent,
     NavItemComponent,
-    GroupComponent
+    GroupComponent,
+    SalesAgentsViewComponent
   ],
-  imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule],
+  imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule],
   providers: [NavigationItem,
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: InterceptorInterceptor,
-    //   multi: true, 
+    //   multi: true,
     // },
   ],
   bootstrap: [UserAppComponent]
