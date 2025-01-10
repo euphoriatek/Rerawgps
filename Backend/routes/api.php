@@ -42,7 +42,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/admin/get-admin-usr', [ApiController::class, 'getAdmin'])->middleware('role:superadmin');
     Route::post('/admin/edit-admin-user', [ApiController::class, 'UpdateAdminUser'])->middleware('role:superadmin');
     Route::post('/admin/delete-admin-user', [ApiController::class, 'deleteAdminUser'])->middleware('role:superadmin');
+    Route::post('/admin/change-password', [ApiController::class, 'changePassword'])->middleware('role:superadmin');
 
+
+    Route::get('/admin/get-objects-list', [SalesController::class, 'getObjectsList'])->middleware('role:superadmin');
     // Common API for super Admin and admin
     Route::post('/admin/add-regaykar-user', [ApiController::class, 'register'])->middleware('auth:users');
     Route::post('/admin/edit-regaykar-user', [ApiController::class, 'UpdateUser'])->middleware('auth:users');
@@ -53,7 +56,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/admin/get-admin-servers', [ServerController::class, 'GetAdminServers'])->middleware('role:admin');
     Route::get('/admin/get-admin-regaykar-usrs', [ApiController::class, 'GetAdminRegaykar'])->middleware('role:admin');
     
-   
+    Route::get('/admin/get-admin-objects-list', [SalesController::class, 'getAdminObjectsList'])->middleware('role:admin');
     
     Route::get('/admin/users-list', [ApiController::class, 'UsersList'])->middleware('auth:users');
 
@@ -63,7 +66,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/admin/delete-object/{id}',  [SalesController::class, 'deleteObject'])->middleware('auth:users');
     
     // User
-    Route::get('/admin/get-object-list', [SalesController::class, 'getObjectList'])->middleware('auth:users');
+    // Route::get('/admin/get-object-list', [SalesController::class, 'getObjectList'])->middleware('auth:users');
     Route::get('/get-objects', [SalesController::class, 'getObjects'])->middleware('auth:users');
     // Route::get('/get-object-list', [SalesController::class, 'getObjectList'])->middleware('auth:sales');
 
@@ -78,4 +81,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/delete-group-user/{id}', [GroupController::class, 'deleteGroupUser'])->middleware('auth:users');;
     Route::post('/get-sales-objects', [SalesController::class, 'getsalesObjects'])->middleware('auth:users');
     
+    Route::post('/pois', [PoiController::class, 'store']);
+    Route::get('/pending-pois', [PoiController::class, 'getPendingPois']);
 });

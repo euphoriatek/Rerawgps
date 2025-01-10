@@ -96,6 +96,15 @@ export class ApiService {
     return this.http.post(this.AdminBaseUrl + 'get-user-info', {user_id:data});
   }
 
+  getSalesList(){
+    return this.http.get(this.AdminBaseUrl + 'get-objects-list');
+  }
+  
+  changePassword(data){
+    return this.http.post(this.AdminBaseUrl + 'change-password', data);
+  }
+
+
   // Admin Api
   getAdminServers() {
     return this.http.get(this.AdminBaseUrl + 'get-admin-servers');
@@ -103,4 +112,9 @@ export class ApiService {
   getAdminrRegaykarList() {
     return this.http.get(this.AdminBaseUrl + 'get-admin-regaykar-usrs');
   }
+  getAdminrSalesList() {
+    return this.http.get(this.AdminBaseUrl + 'get-admin-objects-list');
+  }
+
+
 }

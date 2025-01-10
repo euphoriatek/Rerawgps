@@ -111,7 +111,13 @@
             <div *ngFor="let task of profile">
               <a class="dropdown-item">
                 <i class="{{ task.icon }}"></i>
-                <span [routerLink]="[task.url]">{{ task.title }}</span>
+                <span>{{ task.title }}</span>
+              </a>
+            </div>
+            <div>
+              <a class="dropdown-item">
+                <i class="ti ti-power"></i>
+                <span (click)="logOut()">{{ "logout" | translate }}</span>
               </a>
             </div>
           </ng-template>

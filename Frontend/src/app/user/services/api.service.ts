@@ -11,10 +11,6 @@ export class ApiService {
     return this.http.post(this.BaseUrl + 'login', data);
   }
 
-  getSalesAgent(){
-    return this.http.get(this.BaseUrl + 'get-object-list');
-  }
-  
   addGroup(data: any) {
     return this.http.post(this.BaseUrl + 'create-group', data);
   }
@@ -29,5 +25,8 @@ export class ApiService {
   }
   getSales(id:number){
     return this.http.post(this.BaseUrl + 'get-sales-objects', {user_id:id});
+  }
+  getPendingPois(){
+    return this.http.get(this.BaseUrl + 'pending-pois');
   }
 }

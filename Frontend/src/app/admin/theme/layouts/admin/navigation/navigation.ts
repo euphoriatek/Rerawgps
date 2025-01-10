@@ -38,13 +38,6 @@ const NavigationItems = [
     url: '/admin/admin-users',
     icon: 'ti ti-dashboard',
   },
-  // {
-  //   id: 'adduser',
-  //   title: 'add_users',
-  //   type: 'item',
-  //   url: '/admin/add-user',
-  //   icon: 'ti ti-user-plus',
-  // },
   {
     id: 're_gaykar_users',
     title: 're_gaykar_users',
@@ -52,13 +45,6 @@ const NavigationItems = [
     url: '/admin/users',
     icon: 'ti ti-users',
   },
-  // {
-  //   id: 'addsalesagent',
-  //   title: 'add_sales_agent',
-  //   type: 'item',
-  //   url: '/admin/add-sales-agent',
-  //   icon: 'ti ti-user-plus',
-  // },
   {
     id: 'assigned_server',
     title: 'servers',
@@ -74,10 +60,17 @@ const NavigationItems = [
     icon: 'ti ti-users',
   },
   {
+    id: 'sales_agents',
+    title: 'sales_agents',
+    type: 'item',
+    url: '/admin/list-sales-agents',
+    icon: 'ti ti-users',
+  },
+  {
     id: 'setting',
     title: 'setting',
     type: 'item',
-    url: '/admin/dashboard/defaults',
+    url: '/admin/settings',
     icon: 'ti ti-settings',
   }
 ];
@@ -90,7 +83,7 @@ export class NavigationItem {
   }
   get(role:any) {
     if (role === "admin") {
-      return NavigationItems.filter(item => item.id !== 'servers' && item.id !== 'admin_users' && item.id !== 're_gaykar_users');
+      return NavigationItems.filter(item => item.id !== 'servers' && item.id !== 'admin_users' && item.id !== 're_gaykar_users' && item.id !== 'setting');
     }
     if(role === "superadmin"){
       return NavigationItems.filter(item => item.id !== 'regaykar_users' && item.id !== 'assigned_server');

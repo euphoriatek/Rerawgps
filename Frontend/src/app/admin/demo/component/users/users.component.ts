@@ -22,6 +22,7 @@ export class UsersComponent implements OnInit {
   UserForm!: FormGroup;
   server_options: any[] = [];
   customers: Customer[];
+  servers:any;
   selectedCustomers: Customer[];
   @ViewChild('dt') dt: Table | undefined;
   constructor(
@@ -117,7 +118,8 @@ export class UsersComponent implements OnInit {
       next: (response: any) => {
         if (response && response.status) {
           this.server_options = response.data;
-          // console.log(response.data);
+          this.servers = response.data.map(item => item.server_url);
+          console.log(this.servers);
         } else {
         }
       },

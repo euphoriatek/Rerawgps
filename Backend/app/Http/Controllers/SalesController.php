@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\SalesModel;
+use App\Models\AssigendServer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -127,31 +129,6 @@ class SalesController extends Controller
         }
     }
     
-    public function getObjectList(Request $request)
-    {
-        try {
-            $user = Auth::user();
-            if (!$user) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Unauthorized. Please log in.',
-                ], 401);
-            }
-            $objects = SalesModel::where('user_id', $user->id)->get();
-            return response()->json([
-                'status' => true,
-                'message' => 'Sales records fetched successfully!',
-                'data' => $objects,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'An error occurred while fetching sales records.',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
     public function login(Request $request)
     {
         $input = $request->all();
@@ -191,6 +168,39 @@ class SalesController extends Controller
         }
         $userId = $user->id;
         $saleData = SalesModel::where('user_id', $userId)->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Sales records fetched successfully!',
+            'data' => $saleData,
+        ], 200);
+    }
+
+    public function getObjectsList()
+    {
+        $saleData = SalesModel::with(['user' => function($query) {
+            $query->select('id', 'username');
+        }])->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Sales records fetched successfully!',
+            'data' => $saleData,
+        ], 200);
+    }
+
+    public function getAdminObjectsList()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized. Please log in.',
+            ], 401);
+        }
+        $serverIds = AssigendServer::where('user_id', $user->id)->pluck('server_id')->toArray();
+        $users = User::where('server_id', $serverIds)->where('role', 'user')->pluck('id')->toArray();
+        $saleData = SalesModel::with(['user' => function($query) {
+            $query->select('id', 'username');
+        }])->WhereIn('user_id', $users)->get();
         return response()->json([
             'status' => true,
             'message' => 'Sales records fetched successfully!',

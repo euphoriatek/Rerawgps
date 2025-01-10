@@ -1,0 +1,35 @@
+<div *ngIf="pendingPois.length > 0; else noData">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Map Icon</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let poi of pendingPois">
+          <td>{{ poi.id }}</td>
+          <td>{{ poi.name }}</td>
+          <td>{{ poi.description }}</td>
+          <td>{{ poi.map_icon_id || 'N/A' }}</td>
+          <td>{{ poi.lat }}</td>
+          <td>{{ poi.lng }}</td>
+          <td>{{ poi.created_at }}</td>
+          <td>{{ poi.updated_at }}</td>
+          <td>{{ poi.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <ng-template #noData>
+    <p>No pending POIs found.</p>
+  </ng-template>
+  

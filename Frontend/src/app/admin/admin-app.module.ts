@@ -19,7 +19,6 @@ import { NavItemComponent } from './theme/layouts/admin/navigation/nav-content/n
 import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
 // import { AdminInterceptor } from './services/admin.interceptor';
 // import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AddUserComponent } from './demo/component/add-user/add-user.component';
 import { UsersComponent } from './demo/component/users/users.component';
 import { TranslateModule } from '@ngx-translate/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -50,6 +49,8 @@ import { RegayKarUserViewComponent } from './demo/component/regay-kar-user-view/
 import { AdminRegayKarUserComponent } from './demo/component/admin-regay-kar-user/admin-regay-kar-user.component';
 import { AdminRegayKarUserViewComponent } from './demo/component/admin-regay-kar-user-view/admin-regay-kar-user-view.component';
 import { AssignedServerComponent } from './demo/component/assigned-server/assigned-server.component';
+import { SalesAgentsComponent } from './demo/sales-agents/sales-agents.component';
+import { SettingComponent } from './demo/component/setting/setting.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,6 @@ import { AssignedServerComponent } from './demo/component/assigned-server/assign
     NavCollapseComponent,
     NavGroupComponent,
     NavItemComponent,
-    AddUserComponent,
     ServerComponent,
     AdminUsersComponent,
     ConfirmDialogComponent,
@@ -72,7 +72,9 @@ import { AssignedServerComponent } from './demo/component/assigned-server/assign
     RegayKarUserViewComponent,
     AdminRegayKarUserComponent,
     AdminRegayKarUserViewComponent,
-    AssignedServerComponent
+    AssignedServerComponent,
+    SalesAgentsComponent,
+    SettingComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,TranslateModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule,MatDialogModule,MatButtonModule,
     TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ProgressBarModule,DropdownModule

@@ -37,6 +37,8 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import {DropdownModule} from 'primeng/dropdown';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SalesAgentsViewComponent } from './demo/component/sales-agents-view/sales-agents-view.component';
+import { POIsComponent } from './demo/component/pois/pois.component';
+import { PendingRequestComponent } from './demo/component/pendingrequest/pendingrequest.component';
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -51,7 +53,9 @@ import { SalesAgentsViewComponent } from './demo/component/sales-agents-view/sal
     NavGroupComponent,
     NavItemComponent,
     GroupComponent,
-    SalesAgentsViewComponent
+    SalesAgentsViewComponent,
+    POIsComponent,
+    PendingRequestComponent
   ],
   imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule],
   providers: [NavigationItem,

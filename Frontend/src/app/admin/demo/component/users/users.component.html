@@ -111,6 +111,19 @@
             <ng-template pTemplate="caption">
                 <div class="table-header mb-4">
                    <h3>{{ 'regaykar_users_list' | translate}}</h3> 
+                   <p-dropdown
+                   [options]="servers"
+                   (onChange)="dt.filter($event.value, 'server.server_url', 'equals')"
+                   styleClass="p-column-filter"
+                   placeholder="{{'filter_by_url' | translate}}"
+                   [showClear]="true"
+                 >
+                   <ng-template let-option pTemplate="item">
+                     <span [ngClass]="'customer-badge status-' + option">
+                       {{ option }}
+                     </span>
+                   </ng-template>
+                 </p-dropdown>
                    <div>
                     <span class="p-input-icon-left">
                         <i class="ti ti-search"></i>
@@ -124,8 +137,8 @@
                 <tr>
                     <th pSortableColumn="username">{{ "username" | translate }} <p-sortIcon field="username"></p-sortIcon></th>
                     <th pSortableColumn="server.server_url">{{ "server_url" | translate }} <p-sortIcon field="server.server_url"></p-sortIcon></th>
-                    <th pSortableColumn="mobile_number">{{ "mobile_number" | translate }} <p-sortIcon field="mobile_number"></p-sortIcon></th>
-                    <th pSortableColumn="address">{{ "address" | translate }} <p-sortIcon field="address"></p-sortIcon></th>
+                    <!-- <th pSortableColumn="mobile_number">{{ "mobile_number" | translate }} <p-sortIcon field="mobile_number"></p-sortIcon></th>
+                    <th pSortableColumn="address">{{ "address" | translate }} <p-sortIcon field="address"></p-sortIcon></th> -->
                     <th pSortableColumn="api_key">{{ "api_key" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
                     <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
                     <th>{{ "actions" | translate }}</th>
@@ -141,14 +154,14 @@
                         <span class="p-column-title">{{ "server_url" | translate }}</span>
                         <span class="image-text">{{data.server.server_url}}</span>
                     </td>
-                    <td>
+                    <!-- <td>
                       <span class="p-column-title">{{ "mobile_number" | translate }}</span>
                       {{data.mobile_number}}
                   </td>
                   <td>
                     <span class="p-column-title">{{ "address" | translate }}</span>
                     {{data.address}}
-                  </td>
+                  </td> -->
                   <td>
                     <span class="p-column-title">{{ "api_key" | translate }}</span>
                     {{data.api_key}}

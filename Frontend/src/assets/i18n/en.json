@@ -47,7 +47,7 @@
     "name_required":"Name is required",
     "expire_date":"Expire Date",
     "are_you_sure_want_to_expires":"Are you sure want to expire",
-    "sales_agent":"Sales Agent",
+    "sales_agents":"Sales Agents",
     "sales_agent_added_error":"Sales Agent could not be Added",
     "sales_agent_added_success":"Sales Agent added successfully!",
     "sales_agent_added_error_ex":"An error occurred while adding in",
@@ -122,5 +122,15 @@
     "description":"Description",
     "showing_first_to_last_of_totalRecords_entries":"Showing {first} to {last} of {totalRecords} Entries",
     "saleagent":"Sales Agent",
-    "description_required":"Description is Required"
+    "description_required":"Description is Required",
+    "filter_by_regaykar":"Filter by RegayKar user",
+    "filter_by_url":"Filter by url",
+    "filter_by_platform":"Filter by Platform",
+    "new_password":"New password",
+    "confirm_new_password":"Confrim password",
+    "confirm_new_password_required":"Confrim password Required",
+    "new_password_required":"New password Required",
+    "password_changes_sucessfully":"Password Changes Sucessfully!",
+    "password_changes_error":"Password could not be changed",
+    "logout":"Logout"
 }

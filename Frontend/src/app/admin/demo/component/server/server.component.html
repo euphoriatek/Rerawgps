@@ -129,7 +129,20 @@
             [filterDelay]="0" [globalFilterFields]="['name','server_url','platform','created_at']">
             <ng-template pTemplate="caption">
                 <div class="table-header mb-4">
-                   <h3>List of Servers</h3> 
+                   <h3>List of Servers</h3>
+                   <p-dropdown
+                   [options]="platForm"
+                   (onChange)="dt.filter($event.value, 'platform', 'equals')"
+                   styleClass="p-column-filter"
+                   placeholder="{{'filter_by_platform' | translate}}"
+                   [showClear]="true"
+                 >
+                   <ng-template let-option pTemplate="item">
+                     <span [ngClass]="'customer-badge status-' + option">
+                       {{ option }}
+                     </span>
+                   </ng-template>
+                 </p-dropdown> 
                    <div>
                     <span class="p-input-icon-left">
                         <i class="ti ti-search"></i>

@@ -527,4 +527,30 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
+    public function changePassword(Request $request)
+    {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'newpassword' => 'required|string|min:8', 
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $user = Auth::user();
+        $user->password = Hash::make($request->newpassword);
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'data' => $user,
+            'message' => 'Success'
+        ], 200);
+
+    }
+    
 }

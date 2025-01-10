@@ -24,7 +24,7 @@ export class ServerComponent {
   servesData:any;
   showAddserver:boolean=false;
   visible: boolean = false;
-
+  platForm:any;
   customers: Customer[];
   selectedCustomers: Customer[];
 
@@ -90,6 +90,7 @@ export class ServerComponent {
       next: (response: any) => {
         if (response && response.status) {
           this.servesData = response.data;
+          this.platForm = response.data.map(item => item.platform).filter(platform => platform.trim() !== '');;
           this.spinner.hide();
         } else {
         }

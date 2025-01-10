@@ -8,7 +8,6 @@ import { AdminAppComponent } from './admin-app.component';
 import { GuestComponent } from './theme/layouts/guest/guest.component';
 import { authGuard } from './guard/auth.guard';
 import { unAuthGuard } from './guard/un-auth.guard';
-import { AddUserComponent } from './demo/component/add-user/add-user.component';
 import { ServerComponent } from './demo/component/server/server.component';
 import { AdminUsersComponent } from './demo/component/admin-users/admin-users.component';
 import { accessPermissionGuard } from './guard/access-permission.guard';
@@ -18,6 +17,8 @@ import { RegayKarUserViewComponent } from './demo/component/regay-kar-user-view/
 import { AdminRegayKarUserComponent } from './demo/component/admin-regay-kar-user/admin-regay-kar-user.component';
 import { AdminRegayKarUserViewComponent } from './demo/component/admin-regay-kar-user-view/admin-regay-kar-user-view.component';
 import { AssignedServerComponent } from './demo/component/assigned-server/assigned-server.component';
+import { SalesAgentsComponent } from './demo/sales-agents/sales-agents.component';
+import { SettingComponent } from './demo/component/setting/setting.component';
 const routes: Routes = [
   {
     path: '',
@@ -43,16 +44,6 @@ const routes: Routes = [
         component: AdminUsersComponent,
         canActivate:[authGuard, accessPermissionGuard]
       },
-      // {
-      //   path: 'add-user',
-      //   component: AddUserComponent,
-      //   canActivate:[authGuard]
-      // },
-      // {
-      //   path: 'add-sales-agent',
-      //   component: AddSalesAgentComponent,
-      //   canActivate:[authGuard]
-      // },
       {
         path: 'users',
         component: UsersComponent,
@@ -77,6 +68,16 @@ const routes: Routes = [
         path: 'assigned_server',
         component: AssignedServerComponent,
         canActivate:[authGuard, accessPermissionGuardAdmin]
+      },
+      {
+        path: 'list-sales-agents',
+        component: SalesAgentsComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'settings',
+        component: SettingComponent,
+        canActivate:[authGuard, accessPermissionGuard]
       },
     ]
   },

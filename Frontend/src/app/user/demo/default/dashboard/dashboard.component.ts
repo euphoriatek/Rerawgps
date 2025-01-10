@@ -25,22 +25,5 @@ export default class DashboardComponent implements OnInit {
   }
   // life cycle event
   ngOnInit(): void {
-    this.getSalesUsers();
-  }
-  getSalesUsers(): void {
-    this.spinner.show();
-    this.api.getSalesAgent().subscribe({
-      next: (response: any) => {
-        this.spinner.hide();
-        if (response && response.status) {
-          this.salesData = response.data;
-        } else {
-        }
-      },
-      error: (err) => {
-        this.spinner.hide();
-        console.error(err);
-      }
-    });
   }
 }

@@ -54,6 +54,13 @@ const NavigationItems = [
     type: 'item',
     url: '/saleagent',
     icon: 'ti ti-users',
+  },
+  {
+    id: 'pendingrequest',
+    title: 'pendingrequest',
+    type: 'item',
+    url: '/pendingrequest',
+    icon: 'ti ti-users',
   }
 ];
 

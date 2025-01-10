@@ -8,6 +8,8 @@ import { GuestComponent } from './theme/layouts/guest/guest.component';
 import { unAuthGuard } from './guard/un-auth.guard';
 import { GroupComponent } from './demo/component/group/group.component';
 import { SalesAgentsViewComponent } from './demo/component/sales-agents-view/sales-agents-view.component';
+import { POIsComponent } from './demo/component/pois/pois.component';
+import { PendingRequestComponent } from './demo/component/pendingrequest/pendingrequest.component';
 const routes: Routes = [
   {
     path: '',
@@ -31,6 +33,16 @@ const routes: Routes = [
       {
         path: 'saleagent',
         component: SalesAgentsViewComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'pois',
+        component: POIsComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'pendingrequest',
+        component: PendingRequestComponent,
         canActivate:[authGuard]
       },
       {

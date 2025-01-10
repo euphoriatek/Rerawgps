@@ -33,11 +33,11 @@ export class NavRightComponent {
     //   icon: 'ti ti-edit-circle',
     //   title: 'Billing'
     // },
-    {
-      icon: 'ti ti-power',
-      title: 'Logout',
-      url: '/admin/admin-logout',
-    }
+    // {
+    //   icon: 'ti ti-power',
+    //   title: 'Logout',
+    //   url: '/admin/admin-logout',
+    // }
   ];
 
   setting = [
