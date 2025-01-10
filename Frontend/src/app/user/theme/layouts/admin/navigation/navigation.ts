@@ -56,6 +56,13 @@ const NavigationItems = [
     icon: 'ti ti-users',
   },
   {
+    id: 'pois',
+    title: 'pois',
+    type: 'item',
+    url: '/pois',
+    icon: 'ti ti-users',
+  },
+  {
     id: 'pendingrequest',
     title: 'pendingrequest',
     type: 'item',

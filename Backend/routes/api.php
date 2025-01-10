@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PoiController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
