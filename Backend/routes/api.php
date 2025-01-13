@@ -84,4 +84,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     Route::post('/pois', [PoiController::class, 'store']);
     Route::get('/pending-pois', [PoiController::class, 'getPendingPois']);
+    Route::get('/pois', [PoiController::class, 'getPois']);
 });

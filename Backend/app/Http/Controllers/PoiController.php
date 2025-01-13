@@ -57,5 +57,22 @@ class PoiController extends Controller
             ], 500);
         }
     }
+    public function getPois()
+    {
+        try {
+            // Fetch all POIs (no filter on status)
+            $pois = Poi::all();
+    
+            return response()->json([
+                'status' => true,
+                'data' => $pois
+            ], 200);
+    
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while fetching POIs: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }
 

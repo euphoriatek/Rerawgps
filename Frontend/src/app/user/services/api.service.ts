@@ -29,4 +29,10 @@ export class ApiService {
   getPendingPois(){
     return this.http.get(this.BaseUrl + 'pending-pois');
   }
+  addPois(data: any) {
+    return this.http.post(this.BaseUrl+'pois', data);
+  }
+  getAllPois(){
+    return this.http.get(this.BaseUrl + 'pois');
+  }
 }

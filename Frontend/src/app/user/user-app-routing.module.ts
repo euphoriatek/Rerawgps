@@ -10,6 +10,7 @@ import { GroupComponent } from './demo/component/group/group.component';
 import { SalesAgentsViewComponent } from './demo/component/sales-agents-view/sales-agents-view.component';
 import { POIsComponent } from './demo/component/pois/pois.component';
 import { PendingRequestComponent } from './demo/component/pendingrequest/pendingrequest.component';
+import { ReportsComponent } from './demo/component/reports/reports.component';
 const routes: Routes = [
   {
     path: '',
@@ -26,8 +27,8 @@ const routes: Routes = [
         canActivate:[authGuard]
       },
       {
-        path: 'group',
-        component: GroupComponent,
+        path: 'pois',
+        component: POIsComponent,
         canActivate:[authGuard]
       },
       {
@@ -36,13 +37,18 @@ const routes: Routes = [
         canActivate:[authGuard]
       },
       {
-        path: 'pois',
-        component: POIsComponent,
+        path: 'group',
+        component: GroupComponent,
         canActivate:[authGuard]
       },
       {
         path: 'pendingrequest',
         component: PendingRequestComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'reports',
+        component: ReportsComponent,
         canActivate:[authGuard]
       },
       {

@@ -1,35 +1,46 @@
-<div *ngIf="pendingPois.length > 0; else noData">
-    <table>
-      <thead>
+<p-table #dt [value]="pendingPois" dataKey="id" styleClass="p-datatable-customers"
+    [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+    currentPageReportTemplate="{{'showing_first_to_last_of_totalRecords_entries'| translate }} Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+    [globalFilterFields]="['name','description','Map Icon','Lat','Lng','Status']">
+    <ng-template pTemplate="caption">
+        <div class="table-header mb-4">
+            <h3>{{ 'pending_request' | translate}}</h3>
+            <div>
+              <span class="p-input-icon-left">
+                <i class="ti ti-search"></i>
+                <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="{{'global_search'|translate}}" />
+            </span>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Map Icon</th>
-          <th>Latitude</th>
-          <th>Longitude</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-          <th>Status</th>
+            <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
+            <!-- <th pSortableColumn="description">{{ "description" | translate }} <p-sortIcon field="description"></p-sortIcon></th> -->
+            <th pSortableColumn="map_icon">{{ "map_icon" | translate }} <p-sortIcon field="map_icon"></p-sortIcon></th>
+            <th pSortableColumn="lat">{{ "lat" | translate }} <p-sortIcon field="lat"></p-sortIcon></th>
+            <th pSortableColumn="lng">{{ "lng" | translate }} <p-sortIcon field="lng"></p-sortIcon></th>
+            <th pSortableColumn="status">{{ "status" | translate }} <p-sortIcon field="status"></p-sortIcon></th>
         </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let poi of pendingPois">
-          <td>{{ poi.id }}</td>
-          <td>{{ poi.name }}</td>
-          <td>{{ poi.description }}</td>
-          <td>{{ poi.map_icon_id || 'N/A' }}</td>
-          <td>{{ poi.lat }}</td>
-          <td>{{ poi.lng }}</td>
-          <td>{{ poi.created_at }}</td>
-          <td>{{ poi.updated_at }}</td>
-          <td>{{ poi.status }}</td>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+        <tr class="p-selectable-row">
+            <td>{{data.name}}</td>
+            <!-- <td>{{data.description}}</td> -->
+            <td>{{data.map_icon}}</td>
+            <td>{{data.lat}}</td>
+            <td>{{data.lng}}</td>
+       
+            <td [ngClass]="{
+                'text-warning': data.status === 'pending',
+              }">
+                {{ data.status }}
+              </td>
         </tr>
-      </tbody>
-    </table>
-  </div>
-  
-  <ng-template #noData>
-    <p>No pending POIs found.</p>
-  </ng-template>
-  
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="5">{{"no_found_record" | translate }}.</td>
+        </tr>
+    </ng-template>
+</p-table>

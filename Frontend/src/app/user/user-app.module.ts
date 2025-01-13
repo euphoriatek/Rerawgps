@@ -39,6 +39,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { SalesAgentsViewComponent } from './demo/component/sales-agents-view/sales-agents-view.component';
 import { POIsComponent } from './demo/component/pois/pois.component';
 import { PendingRequestComponent } from './demo/component/pendingrequest/pendingrequest.component';
+import { ReportsComponent } from './demo/component/reports/reports.component';
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -55,7 +56,8 @@ import { PendingRequestComponent } from './demo/component/pendingrequest/pending
     GroupComponent,
     SalesAgentsViewComponent,
     POIsComponent,
-    PendingRequestComponent
+    PendingRequestComponent,
+    ReportsComponent
   ],
   imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule],
   providers: [NavigationItem,

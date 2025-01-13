@@ -132,5 +132,14 @@
     "new_password_required":"New password Required",
     "password_changes_sucessfully":"Password Changes Sucessfully!",
     "password_changes_error":"Password could not be changed",
-    "logout":"Logout"
+    "logout":"Logout",
+    "pending_request":"Pending Request",
+    "status":"Status",
+    "map_icon":"Map Icon",
+    "lat":"Lat",
+    "lng":"Lng",
+    "longitude_required":"Longitude is Required",
+    "latitude_required":"Latitude is Required",
+    "add_new_pois":"Add New Pois",
+    "pois_list":"Pois List"
 }

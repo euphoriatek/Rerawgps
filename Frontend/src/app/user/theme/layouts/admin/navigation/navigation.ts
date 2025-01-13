@@ -68,6 +68,13 @@ const NavigationItems = [
     type: 'item',
     url: '/pendingrequest',
     icon: 'ti ti-users',
+  },
+  {
+    id: 'reports',
+    title: 'reports',
+    type: 'item',
+    url: '/reports',
+    icon: 'ti ti-users',
   }
 ];
 
