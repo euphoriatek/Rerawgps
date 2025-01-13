@@ -210,7 +210,7 @@ class ApiController extends Controller
     public function UsersList(Request $request)
     {
         try {
-            $users = User::with('server')->where('role', 'user')->get();
+            $users = User::with(['server','createdby:id,username,name,email'])->where('role', 'user')->get();
             return response()->json([
                 'status' => true,
                 'data' => $users,

@@ -4,7 +4,7 @@
               [filterDelay]="0" [globalFilterFields]="['name','username','user.username','created_at']">
               <ng-template pTemplate="caption">
                   <div class="table-header mb-4">
-                     <h3>List of Servers</h3>
+                     <h3>{{ 'sales_agent_list' | translate}}</h3>
                      <p-dropdown
                    [options]="users"
                    (onChange)="dt.filter($event.value, 'user.username', 'equals')"
@@ -30,7 +30,7 @@
                   <tr>
                       <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
                       <th pSortableColumn="username">{{ "username" | translate }} <p-sortIcon field="username"></p-sortIcon></th>
-                      <th pSortableColumn="user.username">{{ "belongsto" | translate }} <p-sortIcon field="user.username"></p-sortIcon></th>
+                      <th pSortableColumn="user.username">{{ "regaykar_user" | translate }} <p-sortIcon field="user.username"></p-sortIcon></th>
                       <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
                   </tr>
               </ng-template>
@@ -45,7 +45,7 @@
                           <span class="image-text">{{data.username}}</span>
                       </td>
                       <td>
-                        <span class="p-column-title">{{ "belongsto" | translate }}</span>
+                        <span class="p-column-title">{{ "regaykar_user" | translate }}</span>
                         <span class="image-text">{{data.user.username}}</span>
                     </td>
                       <td>

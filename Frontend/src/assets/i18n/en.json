@@ -141,5 +141,8 @@
     "longitude_required":"Longitude is Required",
     "latitude_required":"Latitude is Required",
     "add_new_pois":"Add New Pois",
-    "pois_list":"Pois List"
+    "pois_list":"Pois List",
+    "active":"Active",
+    "regaykar_user":"RegayKar User",
+    "passwords_do_not_match":"Passwords do not match"
 }

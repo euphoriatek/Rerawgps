@@ -141,11 +141,7 @@ addUser(): void {
   resetForm(){
     this.AdminUsr.reset();
   }
-  resetEditForm(){
-    var id = this.EditAdminUsr.get('id').value;
-    this.EditAdminUsr.reset();
-    this.EditAdminUsr.get('id').setValue(id);
-  }
+  
   addAdminUsr(){
     this.showAddUser = true;
   }

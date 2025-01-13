@@ -17,6 +17,10 @@
                       "new_password_required" | translate
                       }}</span>
                   </div>
+                  <div *ngIf="
+                  changePasswordForm?.get('newpassword')?.hasError('minlength')">
+                      <span class="error-message">{{ 'password_length_error' | translate}}</span>
+                  </div>
                 </div>
               </div>
 
@@ -24,13 +28,8 @@
                 <div class="form-group">
                   <label for="">{{ "confirm_new_password" | translate }}</label>
                   <input type="password" formControlName="confirmpassword" class="form-control" autocomplete="false" />
-                  <div *ngIf="
-                        changePasswordForm?.get('confirmpassword')?.hasError('required') &&
-                        changePasswordForm?.get('confirmpassword')?.touched
-                    ">
-                    <span class="error-message">{{
-                      "confirm_new_password_required" | translate
-                      }}</span>
+                  <div *ngIf="changePasswordForm.errors?.['mismatch'] && changePasswordForm?.get('confirmpassword')?.touched">
+                    <span class="error-message">{{ 'passwords_do_not_match' | translate}}</span> 
                   </div>
                 </div>
               </div>

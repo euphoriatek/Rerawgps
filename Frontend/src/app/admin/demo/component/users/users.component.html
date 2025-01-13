@@ -140,7 +140,9 @@
                     <!-- <th pSortableColumn="mobile_number">{{ "mobile_number" | translate }} <p-sortIcon field="mobile_number"></p-sortIcon></th>
                     <th pSortableColumn="address">{{ "address" | translate }} <p-sortIcon field="address"></p-sortIcon></th> -->
                     <th pSortableColumn="api_key">{{ "api_key" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
-                    <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
+                    <th pSortableColumn="api_key">{{ "created_by" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
+                    <th pSortableColumn="createdby.name">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
+                    <th>{{ "active" | translate }}</th>
                     <th>{{ "actions" | translate }}</th>
                 </tr>
             </ng-template>
@@ -166,16 +168,20 @@
                     <span class="p-column-title">{{ "api_key" | translate }}</span>
                     {{data.api_key}}
                   </td>
+                  <td>
+                    <span class="p-column-title">{{ "created_by" | translate }}</span>
+                    {{ data.createdby ? data.createdby.name : 'Admin' }}
+                  </td>
                     <td>
                         <span class="p-column-title">{{ "created_at" | translate }}</span>
                         <span class="image-text">{{ data.created_at | date }}</span>
                     </td>
+                    <td><mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle></td>
                     <td>
                         <span class="p-column-title">{{ "actions" | translate }}</span>
+                        <button class="btn btn-warning btn-xs me-3" [routerLink]="['/admin/user-view', data.id]">{{ "view" | translate}}</button>
                         <button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
-                        <button class="btn btn-warning btn-xs me-3" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
-                        <button class="btn btn-warning btn-xs" [routerLink]="['/admin/user-view', data.id]">{{ "view" | translate}}</button>
-                        <mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle>
+                        <button class="btn btn-warning btn-xs" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
                     </td>
                 </tr>
             </ng-template>
@@ -265,7 +271,6 @@
               <div class="form-group">
                 <div class="d-flex gap-2 from-button">
                   <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
-                  <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate }}">
                 </div>
               </div>
             </div>

@@ -200,7 +200,7 @@ export class UsersComponent implements OnInit {
 
   // Reset form
   resetForm(): void {
-    this.UserEditForm.reset();
+    this.UserForm.reset();
   }
 
   // Delete user

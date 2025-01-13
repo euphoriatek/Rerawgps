@@ -137,11 +137,6 @@ export class RegayKarUserViewComponent {
     this.SalesUserForm.reset();
   }
 
-  resetEditForm(){
-    var id = this.SalesEditForm.get('id').value;
-    this.SalesEditForm.reset();
-    this.SalesEditForm.get('id').setValue(id);
-  }
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }

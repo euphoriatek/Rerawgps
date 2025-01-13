@@ -56,4 +56,10 @@ class User extends Authenticatable
         // Assuming you're storing roles as a string or in a related table
         return $this->role === $role;  // Adjust this based on how you store roles
     }
+
+    public function createdby()
+    {
+        return $this->hasOne(User::class, 'id', 'created_by')->select('id', 'username', 'name', 'email');
+    }
+    
 }

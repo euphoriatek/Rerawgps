@@ -147,6 +147,7 @@
                     <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
                     <th pSortableColumn="server_url">{{ "server_url" | translate }} <p-sortIcon field="server_url"></p-sortIcon></th>
                     <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
+                    <th>{{ "active" | translate }}</th>
                     <th>{{ "actions" | translate }}</th>
                 </tr>
             </ng-template>
@@ -165,10 +166,12 @@
                         <span class="image-text">{{ data.created_at | date }}</span>
                     </td>
                     <td>
+                      <mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle>
+                    </td>
+                    <td>
                         <span class="p-column-title">{{ "actions" | translate }}</span>
                         <button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
                         <button class="btn btn-warning btn-xs" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
-                        <mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle>
                     </td>
                 </tr>
             </ng-template>
@@ -289,7 +292,6 @@
               <div class="form-group">
                   <div class="d-flex gap-2 from-button">
                       <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
-                      <input (click)="resetEditForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
                   </div>
                 </div>
             </div>

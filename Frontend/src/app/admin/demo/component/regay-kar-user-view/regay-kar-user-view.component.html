@@ -1,17 +1,32 @@
 <div class="container">
     <div class="container-fluid">
+        <i style="cursor: pointer;" [routerLink]="['/admin/users']" class="ti ti-arrow-left text-3xl"></i>
         <div class="row">
-          <div class="col-lg-4">
+          <div class="col-lg-3">
             <div class="card">
               <div class="card-body">
-                <strong>Username</strong>: {{ usrInformation?.username }}
+                <strong>{{'username' | translate}}</strong>: {{ usrInformation?.username }}
               </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-3">
             <div class="card">
               <div class="card-body">
-                <strong>Server</strong>: {{ usrInformation?.server?.server_url }}
+                <strong>{{'server' | translate}}</strong>: {{ usrInformation?.server?.server_url }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="card">
+              <div class="card-body">
+                <strong>{{'mobile' | translate}}</strong>: {{ usrInformation?.mobile_number }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="card">
+              <div class="card-body">
+                <strong>{{'address' | translate}}</strong>: {{ usrInformation?.address }}
               </div>
             </div>
           </div>
@@ -114,7 +129,7 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="name">{{ "username" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
                     <th pSortableColumn="username">{{ "username" | translate }} <p-sortIcon field="username"></p-sortIcon></th>
                     <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
                     <th>{{ "actions" | translate }}</th>
@@ -123,7 +138,7 @@
             <ng-template pTemplate="body" let-data>
                 <tr class="p-selectable-row">
                     <td>
-                        <span class="p-column-title">{{ "username" | translate }}</span>
+                        <span class="p-column-title">{{ "name" | translate }}</span>
                         {{data.name}}
                     </td>
                     <td>
@@ -197,7 +212,6 @@
                   <div class="form-group">
                     <div class="d-flex gap-2 from-button">
                       <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
-                      <input (click)="resetEditForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate }}">
                     </div>
                   </div>
                 </div>
