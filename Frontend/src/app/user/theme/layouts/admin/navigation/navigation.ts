@@ -36,46 +36,46 @@ const NavigationItems = [
   // },
   {
     id: 'dashboard',
-    title: 'Dashboard',
+    title: 'dashboard',
     type: 'item',
     url: '/dashboard/default',
-    icon: 'ti ti-dashboard',
-  },
-  {
-    id: 'groups',
-    title: 'groups',
-    type: 'item',
-    url: '/group',
-    icon: 'ti ti-users'
-  },
-  {
-    id: 'saleagent',
-    title: 'saleagent',
-    type: 'item',
-    url: '/saleagent',
-    icon: 'ti ti-users',
+    icon: 'fa-solid fa-server',
   },
   {
     id: 'pois',
     title: 'pois',
     type: 'item',
     url: '/pois',
-    icon: 'ti ti-users',
+    icon: 'fa-solid fa-earth-asia',
   },
   {
-    id: 'pendingrequest',
-    title: 'pendingrequest',
+    id: 'saleagent',
+    title: 'saleagent',
     type: 'item',
-    url: '/pendingrequest',
-    icon: 'ti ti-users',
+    url: '/saleagent',
+    icon: 'fa-solid fa-user',
+  },
+  {
+    id: 'groups',
+    title: 'groups',
+    type: 'item',
+    url: '/group',
+    icon: 'fa-solid fa-people-group'
   },
   {
     id: 'reports',
     title: 'reports',
     type: 'item',
     url: '/reports',
-    icon: 'ti ti-users',
-  }
+    icon: 'fa-solid fa-file-signature',
+  },
+  {
+    id: 'pendingrequest',
+    title: 'pendingrequest',
+    type: 'item',
+    url: '/pendingrequest',
+    icon: 'fa-solid fa-hand-point-up',
+  },
 ];
 
 @Injectable()

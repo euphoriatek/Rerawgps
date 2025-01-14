@@ -39,12 +39,11 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-6">
         <div class="form-group">
           <label for="endDate">{{ 'end_date' | translate }}</label>
           <mat-form-field appearance="fill" class="full-width">
-            <!-- <mat-label>Choose a date</mat-label> -->
             <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" [min]="today" />
             <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #endDatePicker></mat-datepicker>
@@ -54,7 +53,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="col-lg-12">
       <div class="form-group">
         <div class="d-flex gap-2 from-button">
@@ -95,7 +94,7 @@
       <td>{{data.start_date | date}}</td>
       <td>
         <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
-        <button class="btn viewbtn"><i class="fa-solid fa-eye"></i></button>
+        <!-- <button class="btn viewbtn"><i class="fa-solid fa-eye"></i></button> -->
         <button class="btn deletebtn" (click)="deleteRecords(data)"><i class="fa-solid fa-trash"></i></button>
       </td>
     </tr>

@@ -4,12 +4,15 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-confirm-dialog',
   template: `
-    <h2 mat-dialog-title>{{data.title}}</h2>
-    <mat-dialog-content>{{data.message}}</mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="true">{{ 'yes' | translate }}</button>
-      <button mat-button [mat-dialog-close]="false" id="no_btn">{{ 'no' | translate }}</button>
-    </mat-dialog-actions>
+  <div class="delete-modal">
+  <div class="delete-icon"><i class="fa-solid fa-trash"></i></div>
+    <h2>{{data.title}}</h2>
+    <p>{{data.message}}</p>
+    <div class="modal-btn">
+      <button class="orange-btn btn" [mat-dialog-close]="true">{{ 'delete' | translate }}</button>
+      <button class="grey-btn btn" [mat-dialog-close]="false" id="no_btn">{{ 'cancel' | translate }}</button>
+    </div>
+    </div>
   `,
 })
 export class ConfirmDialogComponent {

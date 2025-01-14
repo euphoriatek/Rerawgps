@@ -93,14 +93,16 @@
           <td>{{data.map_icon}}</td>
           <td>{{data.lat}}</td>
           <td>{{data.lng}}</td>
-          <!-- <td>{{data.status}}</td> -->
           <td [ngClass]="{
-            'text-warning': data.status === 'pending', 
-            'text-danger': data.status === 'reject', 
-            'text-success': data.status === 'approved'
-          }">
-            {{ data.status }}
+              'text-warning': data.status === 'pending', 
+              'text-danger': data.status === 'reject', 
+              'text-success': data.status === 'approved'
+            }">
+            <span *ngIf="data.status === 'pending'" class="pending_status">{{ data.status }}</span>
+            <span *ngIf="data.status === 'approved'" class="approved_status">{{ data.status }}</span>
+            <span *ngIf="data.status === 'reject'" class="reject_status">{{ data.status }}</span>
           </td>
+
       </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage">

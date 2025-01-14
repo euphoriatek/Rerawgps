@@ -132,5 +132,21 @@
     "new_password_required":"توشەی نوێ پێویستە",
     "password_changes_sucessfully":"توشەکە بەسەرکەوتویی نوێکرا!",
     "password_changes_error":"توشەکە ناتوانرێت نوێ بکرێت",
-    "logout":"چوونەژورەوە"
+    "logout":"چوونەژورەوە",
+    "pending_request": "داوای هەڵەکراوە",
+    "status": "دۆخ",
+    "map_icon": "شێوازی نەخشە",
+    "lat": "شوێنی ڕووداو",
+    "lng": "شوێنی درێژە",
+    "longitude_required": "پێویستە درێژە بنێریت",
+    "latitude_required": "پێویستە ڕووداو بنێریت",
+    "add_new_pois": "زیادکردنی POI ی نوێ",
+    "pois_list": "لیستی POI",
+    "active": "چالاک",
+    "regaykar_user": "بەکارەهێنەری ریگایکار",
+    "passwords_do_not_match": "ووشەی پاشەکەوتیەکان تێکەڵە ناکرێن",
+    "add_new_groups": "زیادکردنی گرووپە نوێکان",
+    "pois": "POIەکان",
+    "cancel": "هەڵوەشاندن",
+    "pendingrequest": "داوای هەڵەکراوە"
 }

@@ -14,8 +14,8 @@ class Group extends Model
         'name',
         'description',
         'start_date',
-        'end_date',
-        'created_by'
+        // 'end_date',
+        'user_id'
     ];
     public $timestamps = true;
 }

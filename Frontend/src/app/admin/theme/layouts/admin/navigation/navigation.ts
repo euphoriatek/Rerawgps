@@ -22,21 +22,21 @@ const NavigationItems = [
     title: 'dashboard',
     type: 'item',
     url: '/admin/dashboard/default',
-    icon: 'ti ti-dashboard',
+    icon: 'fa-solid fa-server',
   },
   {
     id: 'servers',
     title: 'servers',
     type: 'item',
     url: '/admin/servers',
-    icon: 'ti ti-dashboard',
+    icon: 'fa-solid fa-layer-group',
   },
   {
     id: 'admin_users',
     title: 'admin_users',
     type: 'item',
     url: '/admin/admin-users',
-    icon: 'ti ti-dashboard',
+    icon: 'fa-solid fa-user',
   },
   {
     id: 're_gaykar_users',
@@ -64,7 +64,7 @@ const NavigationItems = [
     title: 'sales_agents',
     type: 'item',
     url: '/admin/list-sales-agents',
-    icon: 'ti ti-users',
+    icon: 'fa-solid fa-people-group',
   },
   {
     id: 'setting',

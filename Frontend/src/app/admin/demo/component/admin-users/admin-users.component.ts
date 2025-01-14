@@ -206,7 +206,7 @@ addUser(): void {
   
   deleteRow(data: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
+      width: '340px',
       data: {
         title: this.translate.instant('Delete_confirmation'),
         message: this.translate.instant('are_you_sure_want_to_delete'),

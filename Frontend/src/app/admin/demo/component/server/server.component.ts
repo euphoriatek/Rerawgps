@@ -182,7 +182,7 @@ export class ServerComponent {
               this.isSubmitted = false;
               this.getServers();
             } else {
-              this.toaster.error(this.translate.instant('server_deleted_error') || this.translate.instant('try_again'), this.translate.instant('server'));
+              this.toaster.success(this.translate.instant('Server is Assigned') || this.translate.instant('try_again'), this.translate.instant('server'));
               this.spinner.hide();
             }
           },

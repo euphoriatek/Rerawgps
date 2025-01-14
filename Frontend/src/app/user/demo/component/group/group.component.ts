@@ -43,7 +43,7 @@ export class GroupComponent implements OnInit {
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       startDate: ['', [Validators.required]],
-      endDate: ['', [Validators.required]]
+      // endDate: ['', [Validators.required]]
     }, { validators: this.validateDates });
 
     this.groupEditForm = this.fb.group({
@@ -57,8 +57,9 @@ export class GroupComponent implements OnInit {
 
   validateDates(group: FormGroup) {
     const start = group.get('startDate')?.value;
-    const end = group.get('endDate')?.value;
-    return start && end && start <= end ? null : { dateInvalid: true };
+    // const end = group.get('endDate')?.value;
+    // return start && end && start <= end ? null : { dateInvalid: true };
+    return start ? null : { dateInvalid: true };
   }
 
   addGroups(): void {
@@ -73,7 +74,7 @@ export class GroupComponent implements OnInit {
       if (!user_id) {
         return;
       }
-      this.groupForm.value.created_by = user_id;
+      this.groupForm.value.user_id = user_id;
       const data = this.groupForm.value;
       this.api.addGroup(data).subscribe({
         next: (response: any) => {

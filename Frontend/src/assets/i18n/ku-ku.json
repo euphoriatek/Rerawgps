@@ -132,5 +132,21 @@
     "new_password_required":"Şîfreya Nû hewce ye",
     "password_changes_sucessfully":"Şîfre bi serkeftin nûve bû!",
     "password_changes_error":"Şîfre nehat nûvekirin",
-    "logout":"Derxistin"
+    "logout":"Derxistin",
+    "pending_request": "Daxwaza li benda",
+    "status": "Rewşa",
+    "map_icon": "Nîşana Nêzîkî",
+    "lat": "Cihê derveyî",
+    "lng": "Cihê dirêjî",
+    "longitude_required": "Cihê dirêjî hewce ye",
+    "latitude_required": "Cihê derveyî hewce ye",
+    "add_new_pois": "Pênûsên nû yên POI zêde bikin",
+    "pois_list": "Lîsteya POI",
+    "active": "Çalak",
+    "regaykar_user": "Bikarhênerê RegayKar",
+    "passwords_do_not_match": "Şîfreyan hevgirtin nake",
+    "add_new_groups": "Komên nû zêde bikin",
+    "pois": "POI'yan",
+    "cancel": "Bersivdan",
+    "pendingrequest": "Daxwaza li benda"
 }

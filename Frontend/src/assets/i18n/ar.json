@@ -132,5 +132,21 @@
     "new_password_required":"كلمة المرور الجديدة مطلوبة",
     "password_changes_sucessfully":"تم تغيير كلمة المرور بنجاح!",
     "password_changes_error":"لم يتم تغيير كلمة المرور",
-    "logout":"تسجيل الخروج"
+    "logout":"تسجيل الخروج",
+    "pending_request": "طلب قيد الانتظار",
+    "status": "الحالة",
+    "map_icon": "رمز الخريطة",
+    "lat": "خط العرض",
+    "lng": "خط الطول",
+    "longitude_required": "الطول الجغرافي مطلوب",
+    "latitude_required": "العرض الجغرافي مطلوب",
+    "add_new_pois": "إضافة نقاط اهتمام جديدة",
+    "pois_list": "قائمة نقاط الاهتمام",
+    "active": "نشط",
+    "regaykar_user": "مستخدم ريجيكار",
+    "passwords_do_not_match": "كلمات المرور لا تتطابق",
+    "add_new_groups": "إضافة مجموعات جديدة",
+    "pois": "نقاط الاهتمام",
+    "cancel": "إلغاء",
+    "pendingrequest": "طلب قيد الانتظار"
 }
