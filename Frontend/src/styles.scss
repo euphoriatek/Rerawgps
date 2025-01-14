@@ -200,6 +200,7 @@ box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(1
 .p-datatable-customers{
   .p-datatable-header{
     background-color: transparent;
+    border:none;
   .table-header {
     display: flex;
     justify-content: space-between;
@@ -210,7 +211,8 @@ box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(1
       font-size: 13px;
     }
     .ti-search{
-      margin-top: -13px;
+      margin-top: -11px;
+      font-size: 20px;
     }
     h3{
       font-size: 22px;
@@ -233,7 +235,7 @@ box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(1
 
 
 .p-datatable-wrapper{
-  border-radius: 10px;
+  // border-radius: 10px;
 
 
   .p-paginator {
@@ -260,6 +262,7 @@ box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(1
     cursor: auto;
     padding: 0.5rem 1rem;
     font-size: 14px;
+    text-transform: capitalize;
 }
 
 .p-dropdown-label:not(.p-placeholder) {
@@ -268,4 +271,68 @@ box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(1
 
 
 }
+
+table tbody tr td button.btn {
+  padding: 5px 9px !important;
+  background: #efefef !important;
+  margin: 2px;
+  border-radius: 3px !important;
+}
+table tbody tr td button.btn i {
+  font-size: 14px;
+}
+table tbody tr td .pending_status{
+    background: #ffe6e6;
+    font-size: 12px;
+    padding: 1px 6px;
+    text-transform: capitalize;
+    border-radius: 2px;
+    color: #ff0000;
+}
+table tbody tr td .approved_status{
+  background: #e9f7ef;
+  font-size: 12px;
+  padding: 1px 6px;
+  text-transform: capitalize;
+  border-radius: 2px;
+  color: #21d16d;
+}
+table tbody tr td  .reject_status{
+  background: #e6f6ff;
+  font-size: 12px;
+  padding: 1px 6px;
+  text-transform: capitalize;
+  border-radius: 2px;
+  color: #42a6df;
+}
+
+
+
+// p-paginator css
+
+p-paginator{
+  .p-paginator{
+    justify-content: flex-end;
+    background: transparent;
+    margin-top: 3rem;
+    .p-paginator-pages .p-paginator-page.p-highlight {
+      background: #3a434b;
+      border-color: #EFF6FF;
+      color: #ffffff;
+      border-radius: 5px;
+    }
+  }
+  .p-dropdown-items{
+    padding: 0;
+    .p-dropdown-item.p-highlight.p-focus {
+      background: #eff3fb;
+      color: #3a434b;
+    }
+  }
+  .p-paginator-current{
+    font-size: 14px;
+  }
+}
+
+
 

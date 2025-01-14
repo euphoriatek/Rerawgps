@@ -170,8 +170,8 @@
                     </td>
                     <td>
                         <span class="p-column-title">{{ "actions" | translate }}</span>
-                        <button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
-                        <button class="btn btn-warning btn-xs" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
+                        <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn deletebtn" (click)="deleteRow(data)"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             </ng-template>

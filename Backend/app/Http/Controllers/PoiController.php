@@ -48,7 +48,7 @@ class PoiController extends Controller
             $pendingPois = Poi::where('status', 'pending')->get(); 
             return response()->json([
                 'status' => true,
-                'pending_pois' => $pendingPois
+                'data' => $pendingPois
             ], 200);
 
         } catch (\Exception $e) {

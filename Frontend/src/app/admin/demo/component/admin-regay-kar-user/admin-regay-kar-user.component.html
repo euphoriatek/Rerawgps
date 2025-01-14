@@ -158,10 +158,10 @@
                           <span class="image-text">{{ data.created_at | date }}</span>
                       </td>
                       <td>
-                          <span class="p-column-title">{{ "actions" | translate }}</span>
-                          <button class="btn btn-warning btn-xs me-3" [routerLink]="['/admin/regayuser-view', data.id]">{{ "view" | translate}}</button>
-                          <button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
-                          <button class="btn btn-warning btn-xs" (click)="deleteRow(data)">{{ "delete" | translate}}</button>
+                          <span class="p-column-title">{{ "actions" | translate }}</span>  
+                          <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
+                          <button class="btn viewbtn" [routerLink]="['/admin/regayuser-view', data.id]"><i class="fa-solid fa-eye"></i></button>
+                          <button class="btn deletebtn" (click)="deleteRow(data)"><i class="fa-solid fa-trash"></i></button>
                       </td>
                   </tr>
               </ng-template>

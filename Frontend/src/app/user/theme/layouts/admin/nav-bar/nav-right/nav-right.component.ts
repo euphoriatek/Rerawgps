@@ -10,8 +10,10 @@ import { Router } from '@angular/router';
 })
 export class NavRightComponent {
   defaultLanguage: string;
+  Username:any;
   constructor(private translate: TranslateService,public toaster:ToasterService,public cookie:UserCookiesService,public route:Router){
     this.defaultLanguage = localStorage.getItem('user_language') ?? 'en';
+    this.Username = this.cookie.getCookie('CurrentUser')?.username;
   }
   // public method
   profile = [
@@ -19,22 +21,22 @@ export class NavRightComponent {
       icon: 'ti ti-edit-circle',
       title: 'Edit Profile'
     },
-    {
-      icon: 'ti ti-user',
-      title: 'View Profile'
-    },
-    {
-      icon: 'ti ti-clipboard',
-      title: 'Social Profile'
-    },
-    {
-      icon: 'ti ti-edit-circle',
-      title: 'Billing'
-    },
-    {
-      icon: 'ti ti-power',
-      title: 'Logout'
-    }
+    // {
+    //   icon: 'ti ti-user',
+    //   title: 'View Profile'
+    // },
+    // {
+    //   icon: 'ti ti-clipboard',
+    //   title: 'Social Profile'
+    // },
+    // {
+    //   icon: 'ti ti-edit-circle',
+    //   title: 'Billing'
+    // },
+    // {
+    //   icon: 'ti ti-power',
+    //   title: 'Logout'
+    // }
   ];
 
   setting = [

@@ -30,12 +30,12 @@
             <td>{{data.map_icon}}</td>
             <td>{{data.lat}}</td>
             <td>{{data.lng}}</td>
-       
-            <td [ngClass]="{
-                'text-warning': data.status === 'pending',
-              }">
-                {{ data.status }}
-              </td>
+            <td [ngClass]="{'text-warning': data.status === 'pending',   }">
+                <span class="pending_status">{{ data.status }}</span>
+                <!-- <span class="approved_status">{{ data.status }}</span> -->
+                <!-- <span class="reject_status">{{ data.status }}</span> -->
+                
+             </td>
         </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">

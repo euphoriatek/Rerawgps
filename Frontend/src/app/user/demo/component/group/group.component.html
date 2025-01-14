@@ -65,47 +65,49 @@
     </div>
   </form>
 </div>
-<p-table #dt [value]="usersData" dataKey="id" styleClass="p-datatable-customers"
-    [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
-    currentPageReportTemplate="{{'showing_first_to_last_of_totalRecords_entries'| translate }} Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
-    [globalFilterFields]="['name','description','start_date','end_date']">
-    <ng-template pTemplate="caption">
-        <div class="table-header mb-4">
-            <h3>{{ 'group_list' | translate}}</h3>
-            <div>
-              <span class="p-input-icon-left">
-                <i class="ti ti-search"></i>
-                <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="{{'global_search'|translate}}" />
-            </span>
-                <button class="btn add_user_btn" (click)="addUserForm()">{{"add_new_groups" | translate }}</button>
-            </div>
-        </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-        <tr>
-            <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
-            <th pSortableColumn="start_date">{{ "start_date" | translate }} <p-sortIcon field="start_date"></p-sortIcon></th>
-            <th>{{ "actions" | translate }}</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-data>
-        <tr class="p-selectable-row">
-            <td>{{data.name}}</td>
-            <td>{{data.start_date | date}}</td>
-            <td>
-                <button class="btn btn-warning btn-xs me-3" (click)="openEditDialog(data)">{{ "edit" | translate}}</button>
-                <button class="btn btn-warning btn-xs me-3" (click)="deleteRecords(data)">{{ "delete" | translate}}</button>
-                <button class="btn btn-warning btn-xs me-3" >{{ "view" | translate}}</button>
-            </td>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-        <tr>
-            <td colspan="5">{{"no_found_record" | translate }}.</td>
-        </tr>
-    </ng-template>
+<p-table #dt [value]="usersData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
+  [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+  currentPageReportTemplate="{{'showing_first_to_last_of_totalRecords_entries'| translate }} Showing {first} to {last} of {totalRecords} entries"
+  [filterDelay]="0" [globalFilterFields]="['name','description','start_date','end_date']">
+  <ng-template pTemplate="caption">
+    <div class="table-header mb-4">
+      <h3>{{ 'group_list' | translate}}</h3>
+      <div>
+        <span class="p-input-icon-left">
+          <i class="ti ti-search"></i>
+          <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+            placeholder="{{'global_search'|translate}}" />
+        </span>
+        <button class="btn add_user_btn" (click)="addUserForm()">{{"add_new_groups" | translate }}</button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
+      <th pSortableColumn="start_date">{{ "start_date" | translate }} <p-sortIcon field="start_date"></p-sortIcon></th>
+      <th>{{ "actions" | translate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-data>
+    <tr class="p-selectable-row">
+      <td>{{data.name}}</td>
+      <td>{{data.start_date | date}}</td>
+      <td>
+        <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn viewbtn"><i class="fa-solid fa-eye"></i></button>
+        <button class="btn deletebtn" (click)="deleteRecords(data)"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5">{{"no_found_record" | translate }}.</td>
+    </tr>
+  </ng-template>
 </p-table>
-<p-dialog id="dialog" header="{{ 'edit' | translate }}" [(visible)]="visible" [style]="{ width: '60vw' }" [modal]="true">
+<p-dialog id="dialog" header="{{ 'edit' | translate }}" [(visible)]="visible" [style]="{ width: '60vw' }"
+  [modal]="true">
   <form action="" [formGroup]="groupEditForm" (ngSubmit)="EditGroupUser()">
     <div class="row">
       <div class="col-lg-7">
@@ -124,7 +126,8 @@
             <div class="form-group">
               <label for="description">{{ "description" | translate }}</label>
               <input type="text" formControlName="description" class="form-control" autocomplete="false" />
-              <div *ngIf="groupEditForm?.get('description')?.hasError('required') && groupEditForm?.get('description')?.touched">
+              <div
+                *ngIf="groupEditForm?.get('description')?.hasError('required') && groupEditForm?.get('description')?.touched">
                 <span class="error-message">{{ "description_required" | translate }}</span>
               </div>
             </div>
@@ -140,7 +143,3 @@
     </div>
   </form>
 </p-dialog>
-
-
-
-
