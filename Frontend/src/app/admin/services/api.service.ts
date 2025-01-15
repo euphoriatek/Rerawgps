@@ -15,7 +15,7 @@ export class ApiService {
     return this.http.post(this.AdminBaseUrl + 'update-user-status', {user_id:user_id});
   }
   // SupeR Admin Dashboard
-  getServersList() {
+  dashboardData() {
     return this.http.get(this.AdminBaseUrl + 'dashboard-data');
   }
 

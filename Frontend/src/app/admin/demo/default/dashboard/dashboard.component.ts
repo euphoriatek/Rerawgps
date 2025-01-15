@@ -20,15 +20,14 @@ export default class DashboardComponent {
 
   ngOnInit(): void {
     this.role = this.adminCookieService.getCookie('AdminUser')?.role;
-    console.log(this.role);
-    this.getUsers();
+    if(this.role === "superadmin"){
+      this.loadDashboard();
+    }
   }
 
-  getUsers(): void {
-    this.api.getServersList().subscribe({
+  loadDashboard(): void {
+    this.api.dashboardData().subscribe({
       next: (response: any) => {
-        console.log(response);
-    
         if (response && response.status) {
           this.serverCount = response.serverCount;
           this.adminUserCount = response.adminUserCount;

@@ -35,7 +35,7 @@ export class ApiService {
   getAllPois(){
     return this.http.get(this.BaseUrl + 'pois');
   }
-  getPoisData(){
-    return this.http.get(this.BaseUrl + 'sync-poi-data');
+  updatePoiStatus(data:any){
+    return this.http.post(this.BaseUrl + 'poi-update-status', data);;
   }
 }

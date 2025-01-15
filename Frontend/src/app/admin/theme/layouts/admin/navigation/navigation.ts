@@ -43,7 +43,7 @@ const NavigationItems = [
     title: 're_gaykar_users',
     type: 'item',
     url: '/admin/users',
-    icon: 'ti ti-users',
+    icon: 'fa-solid fa-user-group',
   },
   {
     id: 'assigned_server',
@@ -57,7 +57,7 @@ const NavigationItems = [
     title: 're_gaykar_users',
     type: 'item',
     url: '/admin/regaykar_users',
-    icon: 'ti ti-users',
+    icon: 'fa-solid fa-user-group',
   },
   {
     id: 'sales_agents',

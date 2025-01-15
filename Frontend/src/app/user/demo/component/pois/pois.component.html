@@ -1,69 +1,7 @@
-<div class="container">
-    <form [formGroup]="poisForm" (ngSubmit)="addPois()" *ngIf="showgroup">
-      <!-- Name Field -->
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="name">{{ 'name' | translate }}</label>
-            <input id="name" formControlName="name" class="form-control" />
-            <div *ngIf="poisForm.get('name').invalid && poisForm.get('name').touched" class="error-message">
-              {{ 'name_required' | translate }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Description Field -->
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="description">{{ 'description' | translate }}</label>
-            <textarea id="description" formControlName="description" class="form-control"></textarea>
-            <div *ngIf="poisForm.get('description').invalid && poisForm.get('description').touched" class="error-message">
-              {{ 'description_required' | translate }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Latitude Field -->
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="lat">{{ 'latitude' | translate }}</label>
-            <input id="lat" formControlName="lat" class="form-control" type="text" />
-            <div *ngIf="poisForm.get('lat').invalid && poisForm.get('lat').touched" class="error-message">
-              {{ 'latitude_required' | translate }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Longitude Field -->
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label for="lng">{{ 'longitude' | translate }}</label>
-            <input id="lng" formControlName="lng" class="form-control" type="text" />
-            <div *ngIf="poisForm.get('lng').invalid && poisForm.get('lng').touched" class="error-message">
-              {{ 'longitude_required' | translate }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Submit and Reset Buttons -->
-      <div class="col-lg-12">
-        <div class="form-group">
-          <div class="d-flex gap-2 from-button">
-            <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
-            <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate }}">
-          </div>
-        </div>
-      </div>
-  
-    </form>
-  </div>
-  <p-table #dt [value]="poisList" dataKey="id" styleClass="p-datatable-customers"
+<p-table #dt [value]="poisList" dataKey="id" styleClass="p-datatable-customers"
   [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
-  currentPageReportTemplate="{{'showing_first_to_last_of_totalRecords_entries'| translate }} Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
-  [globalFilterFields]="['name','description','Map Icon','Lat','Lng','Status']">
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+  [globalFilterFields]="['name','description','lat','lng','status']">
   <ng-template pTemplate="caption">
       <div class="table-header mb-4">
           <h3>{{ 'pois_list' | translate}}</h3>
@@ -72,7 +10,6 @@
               <i class="ti ti-search"></i>
               <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="{{'global_search'|translate}}" />
           </span>
-          <button class="btn add_user_btn" (click)="addUserForm()">{{"add_new_pois" | translate }}</button>
           </div>
       </div>
   </ng-template>
@@ -80,7 +17,6 @@
       <tr>
           <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
           <th pSortableColumn="description">{{ "description" | translate }} <p-sortIcon field="description"></p-sortIcon></th>
-          <th pSortableColumn="map_icon">{{ "map_icon" | translate }} <p-sortIcon field="map_icon"></p-sortIcon></th>
           <th pSortableColumn="lat">{{ "lat" | translate }} <p-sortIcon field="lat"></p-sortIcon></th>
           <th pSortableColumn="lng">{{ "lng" | translate }} <p-sortIcon field="lng"></p-sortIcon></th>
           <th pSortableColumn="status">{{ "status" | translate }} <p-sortIcon field="status"></p-sortIcon></th>
@@ -90,19 +26,15 @@
       <tr class="p-selectable-row">
           <td>{{data.name}}</td>
           <td>{{data.description}}</td>
-          <td>{{data.map_icon}}</td>
-          <td>{{data.lat}}</td>
-          <td>{{data.lng}}</td>
+          <td>{{getLat(data.coordinates)}}</td>
+          <td>{{getLng(data.coordinates)}}</td>
           <td [ngClass]="{
-              'text-warning': data.status === 'pending', 
-              'text-danger': data.status === 'reject', 
-              'text-success': data.status === 'approved'
-            }">
-            <span *ngIf="data.status === 'pending'" class="pending_status">{{ data.status }}</span>
-            <span *ngIf="data.status === 'approved'" class="approved_status">{{ data.status }}</span>
-            <span *ngIf="data.status === 'reject'" class="reject_status">{{ data.status }}</span>
+            'text-warning': data.status === 'pending', 
+            'text-danger': data.status === 'reject', 
+            'text-success': data.status === 'approved'
+          }">
+            {{ data.status }}
           </td>
-
       </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage">

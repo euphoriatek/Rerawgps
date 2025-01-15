@@ -7,7 +7,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   if(userCookieService.checkCookie('CurrentUser')){
     return true;
   } else{
-    console.log("54545");
     _router.navigate(['/login']);
     return false;
   }

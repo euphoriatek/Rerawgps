@@ -224,6 +224,7 @@ class ApiController extends Controller
         }
     }
 
+    // Admin opration Method
     public function addAdmin(Request $request)
     {
         $input = $request->all();
@@ -351,7 +352,6 @@ class ApiController extends Controller
             ], 500);
         }
     }
-
     public function getAdmin(){
         try {
 
@@ -369,6 +369,8 @@ class ApiController extends Controller
             ], 500);
         }
     }
+    // End Admin opration Method
+
     public function UpdateUser(Request $request)
     {
         $input = $request->all();
@@ -495,6 +497,7 @@ class ApiController extends Controller
         }
     }
     
+    // Udpate status for admin and user
     public function updateStatus(Request $request){
         try {
         $input = $request->input('user_id');
@@ -528,6 +531,7 @@ class ApiController extends Controller
         }
     }
 
+    // Change Password for superadmin
     public function changePassword(Request $request)
     {
         $input = $request->all();
@@ -552,5 +556,5 @@ class ApiController extends Controller
         ], 200);
 
     }
-    
+    // End
 }

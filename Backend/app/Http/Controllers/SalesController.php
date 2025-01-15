@@ -42,7 +42,6 @@ class SalesController extends Controller
             ], 500);
         }
     }
-
     public function getObjects(Request $request){
 
         $userId = $request->input('user_id');
@@ -59,7 +58,6 @@ class SalesController extends Controller
             'data' => $saleData,
         ], 200);
     }
-
     public function updateObject(Request $request)
     {
 
@@ -104,7 +102,6 @@ class SalesController extends Controller
             ], 500);
         }
     }
-
     public function deleteObject(Request $request, $id){
         try {
             $sales = SalesModel::find($id);
@@ -128,7 +125,6 @@ class SalesController extends Controller
             ], 500);
         }
     }
-    
     public function login(Request $request)
     {
         $input = $request->all();

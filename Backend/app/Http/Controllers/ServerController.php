@@ -142,7 +142,6 @@ class ServerController extends Controller
             'server' => $server
         ], 200);
     }
-
     // Admin Methods
     public function GetAdminServers()
     {

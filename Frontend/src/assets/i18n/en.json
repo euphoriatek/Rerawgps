@@ -91,7 +91,7 @@
     "yes":"Yes",
     "no":"No",
     "end_date":"End Date",
-    "start_date":"Start Date",
+    "start_date":"Start End",
     "start_date_required":"Start Date Required",
     "end_date_required":"End Date Required",
     "user_updated_success":"User Updated Successfully",
@@ -116,7 +116,7 @@
     "inactive_account":"Your account is inactive. Please contact support.",
     "group_list":"Groups List",
     "add_groups_user":"Add Groups Users",
-    "no_found_record":"No groups found",
+    "no_data_record":"No Data found",
     "global_search":"Global Search",
     "groups":"Groups",
     "description":"Description",
@@ -145,8 +145,11 @@
     "active":"Active",
     "regaykar_user":"RegayKar User",
     "passwords_do_not_match":"Passwords do not match",
-    "add_new_groups":"Add New Groups",
-    "pois":"POI'S",
-    "cancel":"Cancel",
-    "pendingrequest":"Pending Request"
+    "pois":"POI's",
+    "poi_confirmation":"POI Confirmation",
+    "are_you_sure_want_to_approved":"Are you sure want to approved?",
+    "are_you_sure_want_to_denoy":"Are you sure want to reject?",
+    "poi_approved_success":"POI approved sucessfully",
+    "poi_reject_success":"POI request rejected",
+    "add_new_groups":"Add New Groups"
 }

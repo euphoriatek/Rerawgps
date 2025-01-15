@@ -1,0 +1,78 @@
+:host ::ng-deep {
+    .p-paginator {
+        .p-paginator-current {
+            margin-left: auto;
+        }
+    }
+    
+    .p-progressbar {
+        height: .5rem;
+        background-color: #D8DADC;
+    
+        .p-progressbar-value {
+            background-color: #607D8B;
+        }
+    }
+    
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        input.form-control{
+          padding-left: 43px;
+          height: 40px;
+        }
+        .ti-search{
+          margin-top: -13px;
+        }
+        h3{
+          font-size: 20px;
+          font-weight: 400;
+        }
+    }
+    
+    .p-calendar .p-datepicker {
+        min-width: 25rem;
+    
+        td {
+            font-weight: 400;
+        }
+    }
+    
+    .p-datatable.p-datatable-customers {
+        .p-datatable-header {
+          padding: 0;
+          text-align: left;
+          font-size: 1.5rem;
+          background: #cf242400;
+          border: none;
+        }
+    
+        .p-paginator {
+            padding: 1rem;
+        }
+    
+        .p-datatable-thead > tr > th {
+          text-align: left;
+          font-weight: 400;
+          font-size: 14px;
+          font-family: "Poppins", serif;
+          background: #ebf0fb;
+        }
+    
+        .p-datatable-tbody > tr > td {
+            cursor: auto;
+            padding: 0.5rem 1rem;
+            font-size: 14px;
+        }
+    
+        .p-dropdown-label:not(.p-placeholder) {
+            text-transform: uppercase;
+        }
+    }
+    
+    /* Responsive */
+    .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
+        display: none;
+    }
+  }
