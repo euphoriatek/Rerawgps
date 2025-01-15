@@ -1,0 +1,53 @@
+::ng-deep {
+    .filterwithSearch {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .filterwithSearch input {
+        padding-left: 43px;
+        height: 40px;
+        font-size: 13px;
+    }
+
+    .filterwithSearch .p-input-icon-left .ti-search {
+        font-size: 20px;
+        top: 18px;
+    }
+
+    .p-dropdown.p-dropdown-clearable .p-dropdown-label {
+        font-size: 12px;
+        color: #fff;
+    }
+
+    .p-dropdown .p-dropdown-label {
+        padding: 10px;
+    }
+
+    .p-dropdown {
+        background: #3a434b;
+        border: 1px solid #3a434b;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+        border-radius: 0 8px 8px 0px;
+    }
+
+    .filterwithSearch input {
+        background: #fff;
+        border-radius: 8px 0 0 8px;
+        border: solid 1px #d3dbeb;
+        border-right: none;
+    }
+
+    .p-dropdown-items {
+        padding: 0px;
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+    .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+        padding: 0.6rem 0.8rem;
+        font-size: 12px;
+        background: #fff;
+    }
+}

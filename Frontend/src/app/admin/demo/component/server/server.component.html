@@ -1,33 +1,158 @@
-<div class="container">
-  <form action="" [formGroup]="ServerForm" (ngSubmit)="addServer()" *ngIf="showAddserver">
+<p-table #dt [value]="servesData" [(selection)]="selectedCustomers" dataKey="id" styleClass="p-datatable-customers"
+  [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+  [globalFilterFields]="['name','server_url','platform','created_at']">
+  <ng-template pTemplate="caption">
+
+    <div class="table-header mb-4">
+      <h3>List of Servers</h3>
+      <div class="d-flex">
+        <div class="filterwithSearch">
+          <span class="p-input-icon-left">
+            <i class="ti ti-search"></i>
+            <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+              placeholder="Global Search" />
+          </span>
+          <p-dropdown [options]="platForm" (onChange)="dt.filter($event.value, 'platform', 'equals')"
+            styleClass="p-column-filter" placeholder="{{'filter_by_platform' | translate}}" [showClear]="true">
+            <ng-template let-option pTemplate="item">
+              <span [ngClass]="'customer-badge status-' + option">
+                {{ option }}
+              </span>
+            </ng-template>
+          </p-dropdown>
+        </div>
+        <button class="btn add_user_btn" (click)="addServerForm()">
+          {{ "add_server" | translate }}
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
+      <th pSortableColumn="server_url">{{ "server_url" | translate }} <p-sortIcon field="server_url"></p-sortIcon></th>
+      <th pSortableColumn="platform">{{ "platform" | translate }} <p-sortIcon field="platform"></p-sortIcon></th>
+      <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
+      <th>{{ "actions" | translate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-servers>
+    <tr class="p-selectable-row">
+      <td>
+        <span class="p-column-title">{{ "name" | translate }}</span>
+        {{servers.name}}
+      </td>
+      <td>
+        <span class="p-column-title">{{ "server_url" | translate }}</span>
+        <span class="image-text">{{servers.server_url}}</span>
+      </td>
+      <td>
+        <span class="p-column-title">{{ "platform" | translate }}</span>
+        <span class="image-text">{{servers.platform}}</span>
+      </td>
+      <td>
+        <span class="p-column-title">{{ "created_at" | translate }}</span>
+        <span class="image-text">{{ servers.created_at | date }}</span>
+      </td>
+      <td>
+        <span class="p-column-title">{{ "actions" | translate }}</span>
+        <button class="btn editbtn" (click)="openEditDialog(servers)"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn deletebtn" (click)="deleteRow(servers)"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8">No customers found.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<form action="" [formGroup]="ServerForm" (ngSubmit)="addServer()" *ngIf="showAddserver">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="">{{ "name" | translate }}</label>
+        <input type="text" formControlName="name" class="form-control" autocomplete="false" />
+        <div *ngIf="
+                    ServerForm?.get('name')?.hasError('required') &&
+                    ServerForm?.get('name')?.touched
+                  ">
+          <span class="error-message">{{
+            "name_required" | translate
+            }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="">{{ "server_url" | translate }}</label>
+        <input type="text" formControlName="server_url" class="form-control" autocomplete="false" />
+        <div *ngIf="
+                    ServerForm?.get('server_url')?.hasError('required') &&
+                    ServerForm?.get('server_url')?.touched
+                  ">
+          <span class="error-message">{{
+            "server_url_required" | translate
+            }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="">{{ "platform" | translate }}</label>
+        <mat-form-field appearance="outline" class="multi-select">
+          <!-- <mat-label>Select Server</mat-label> -->
+          <mat-select formControlName="platform" class="form-control">
+            <mat-option value="GPSWOX">GPSWOX</mat-option>
+            <mat-option value="GPS-Server">GPS-Server</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="
+                    ServerForm?.get('platform')?.hasError('required') &&
+                    ServerForm?.get('platform')?.touched
+                  ">
+          <span class="error-message">{{
+            "platform_required" | translate
+            }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="form-group">
+        <div class="d-flex gap-2 from-button">
+          <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
+          <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<p-dialog id="dialog" header="{{ 'edit_server' | translate }}" [(visible)]="visible" [style]="{ width: '32vw' }"
+  [modal]="true" [draggable]="false" [resizable]="false" (onHide)="onDialogClose()">
+  <form action="" [formGroup]="ServerEditForm" (ngSubmit)="EditServer()">
     <div class="row">
-      <div class="col-lg-7">
+      <div class="col-lg-12">
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group">
               <label for="">{{ "name" | translate }}</label>
               <input type="text" formControlName="name" class="form-control" autocomplete="false" />
-              <div *ngIf="
-                  ServerForm?.get('name')?.hasError('required') &&
-                  ServerForm?.get('name')?.touched
-                ">
-                <span class="error-message">{{
-                  "name_required" | translate
-                  }}</span>
+              <div *ngIf="ServerEditForm?.get('name')?.hasError('required') && ServerEditForm?.get('name')?.touched">
+                <span class="error-message">{{ "name_required" | translate }}</span>
               </div>
             </div>
           </div>
+
           <div class="col-lg-12">
             <div class="form-group">
               <label for="">{{ "server_url" | translate }}</label>
               <input type="text" formControlName="server_url" class="form-control" autocomplete="false" />
-              <div *ngIf="
-                  ServerForm?.get('server_url')?.hasError('required') &&
-                  ServerForm?.get('server_url')?.touched
-                ">
-                <span class="error-message">{{
-                  "server_url_required" | translate
-                  }}</span>
+              <div
+                *ngIf="ServerEditForm?.get('server_url')?.hasError('required') && ServerEditForm?.get('server_url')?.touched">
+                <span class="error-message">{{ "server_url_required" | translate }}</span>
               </div>
             </div>
           </div>
@@ -37,14 +162,14 @@
               <mat-form-field appearance="outline" class="multi-select">
                 <!-- <mat-label>Select Server</mat-label> -->
                 <mat-select formControlName="platform" class="form-control">
-                  <mat-option value="GPSWOX" >GPSWOX</mat-option>
-                  <mat-option value="GPS-Server" >GPS-Server</mat-option>
+                  <mat-option value="GPSWOX">GPSWOX</mat-option>
+                  <mat-option value="GPS-Server">GPS-Server</mat-option>
                 </mat-select>
               </mat-form-field>
               <div *ngIf="
-                  ServerForm?.get('platform')?.hasError('required') &&
-                  ServerForm?.get('platform')?.touched
-                ">
+                  ServerEditForm?.get('platform')?.hasError('required') &&
+                  ServerEditForm?.get('platform')?.touched
+                    ">
                 <span class="error-message">{{
                   "platform_required" | translate
                   }}</span>
@@ -53,144 +178,13 @@
           </div>
           <div class="col-lg-12">
             <div class="form-group">
-                <div class="d-flex gap-2 from-button">
-                    <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
-                    <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
-                </div>
+              <div class="d-flex gap-2 from-button">
+                <input type="submit" class="btn orange-btn" value="{{ 'save' | translate}}">
               </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </form>
-  <p-dialog id="dialog" header="{{ 'edit_server' | translate }}" [(visible)]="visible" [style]="{ width: '40vw' }"
-    [modal]="true" [draggable]="false" [resizable]="false" (onHide)="onDialogClose()">
-    <form action="" [formGroup]="ServerEditForm" (ngSubmit)="EditServer()">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="">{{ "name" | translate }}</label>
-                <input type="text" formControlName="name" class="form-control" autocomplete="false" />
-                <div *ngIf="ServerEditForm?.get('name')?.hasError('required') && ServerEditForm?.get('name')?.touched">
-                  <span class="error-message">{{ "name_required" | translate }}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="">{{ "server_url" | translate }}</label>
-                <input type="text" formControlName="server_url" class="form-control" autocomplete="false" />
-                <div
-                  *ngIf="ServerEditForm?.get('server_url')?.hasError('required') && ServerEditForm?.get('server_url')?.touched">
-                  <span class="error-message">{{ "server_url_required" | translate }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="">{{ "platform" | translate }}</label>
-                <mat-form-field appearance="outline" class="multi-select">
-                  <!-- <mat-label>Select Server</mat-label> -->
-                  <mat-select formControlName="platform" class="form-control">
-                    <mat-option value="GPSWOX" >GPSWOX</mat-option>
-                    <mat-option value="GPS-Server" >GPS-Server</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <div *ngIf="
-                ServerEditForm?.get('platform')?.hasError('required') &&
-                ServerEditForm?.get('platform')?.touched
-                  ">
-                  <span class="error-message">{{
-                    "platform_required" | translate
-                    }}</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <div class="form-group">
-                  <div class="d-flex gap-2 from-button">
-                      <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
-                  </div>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </p-dialog>
-  
-</div>
-<p-table #dt [value]="servesData" [(selection)]="selectedCustomers" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
-            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
-            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [filterDelay]="0" [globalFilterFields]="['name','server_url','platform','created_at']">
-            <ng-template pTemplate="caption">
-                <div class="table-header mb-4">
-                   <h3>List of Servers</h3>
-                   <p-dropdown
-                   [options]="platForm"
-                   (onChange)="dt.filter($event.value, 'platform', 'equals')"
-                   styleClass="p-column-filter"
-                   placeholder="{{'filter_by_platform' | translate}}"
-                   [showClear]="true"
-                 >
-                   <ng-template let-option pTemplate="item">
-                     <span [ngClass]="'customer-badge status-' + option">
-                       {{ option }}
-                     </span>
-                   </ng-template>
-                 </p-dropdown> 
-                   <div>
-                    <span class="p-input-icon-left">
-                        <i class="ti ti-search"></i>
-                        <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Global Search" />
-                    </span>
-                    <button class="btn add_user_btn" (click)="addServerForm()">
-                      {{ "add_server" | translate }}
-                    </button>
-                  </div>
-                </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
-                    <th pSortableColumn="server_url">{{ "server_url" | translate }} <p-sortIcon field="server_url"></p-sortIcon></th>
-                    <th pSortableColumn="platform">{{ "platform" | translate }} <p-sortIcon field="platform"></p-sortIcon></th>
-                    <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
-                    <th>{{ "actions" | translate }}</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-servers>
-                <tr class="p-selectable-row">
-                    <td>
-                        <span class="p-column-title">{{ "name" | translate }}</span>
-                        {{servers.name}}
-                    </td>
-                    <td>
-                        <span class="p-column-title">{{ "server_url" | translate }}</span>
-                        <span class="image-text">{{servers.server_url}}</span>
-                    </td>
-                    <td>
-                      <span class="p-column-title">{{ "platform" | translate }}</span>
-                      <span class="image-text">{{servers.platform}}</span>
-                    </td>
-                    <td>
-                        <span class="p-column-title">{{ "created_at" | translate }}</span>
-                        <span class="image-text">{{ servers.created_at | date }}</span>
-                    </td>
-                    <td>
-                        <span class="p-column-title">{{ "actions" | translate }}</span>
-                        <button class="btn editbtn" (click)="openEditDialog(servers)"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn deletebtn" (click)="deleteRow(servers)"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td colspan="8">No customers found.</td>
-                </tr>
-            </ng-template>
-        </p-table>
+</p-dialog>

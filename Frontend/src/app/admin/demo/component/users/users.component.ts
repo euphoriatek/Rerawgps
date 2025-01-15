@@ -22,7 +22,7 @@ export class UsersComponent implements OnInit {
   UserForm!: FormGroup;
   server_options: any[] = [];
   customers: Customer[];
-  servers:any;
+  servers: any;
   selectedCustomers: Customer[];
   @ViewChild('dt') dt: Table | undefined;
   constructor(
@@ -58,7 +58,7 @@ export class UsersComponent implements OnInit {
       address: ['', Validators.required],
     });
     this.UserEditForm = this.fb.group({
-      id:['', [Validators.required]],
+      id: ['', [Validators.required]],
       server_id: ['', [Validators.required]],
       username: ['', Validators.required],
       password: [
@@ -118,6 +118,8 @@ export class UsersComponent implements OnInit {
       next: (response: any) => {
         if (response && response.status) {
           this.server_options = response.data;
+          console.log(this.server_options);
+
           this.servers = response.data.map(item => item.server_url);
           console.log(this.servers);
         } else {
@@ -147,11 +149,11 @@ export class UsersComponent implements OnInit {
       }
     });
   }
-  openEditDialog(data: any): void { 
+  openEditDialog(data: any): void {
     if (this.server_options && this.server_options.length > 0) {
       this.UserEditForm.patchValue({
-        id:data.id,
-        server_id: data.server.id, 
+        id: data.id,
+        server_id: data.server.id,
         username: data.username,
         mobile_number: data.mobile_number,
         address: data.address,
@@ -163,8 +165,8 @@ export class UsersComponent implements OnInit {
       this.visible = false;
     }
   }
-  
-  
+
+
   // Edit user and save changes
   EditUser(): void {
     if (this.UserEditForm.invalid) {
@@ -232,7 +234,7 @@ export class UsersComponent implements OnInit {
           }
         });
       }
-  });
+    });
   }
   addUsers() {
     this.showAddUsers = true;
@@ -246,7 +248,7 @@ export class UsersComponent implements OnInit {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
-  updateStatus(user_id:number){
+  updateStatus(user_id: number) {
     this.api.updateStatus(user_id).subscribe({
       next: (response: any) => {
         if (response && response.status) {
@@ -266,13 +268,12 @@ export class UsersComponent implements OnInit {
 }
 
 
-export interface Server
-{
+export interface Server {
   server_url: string;
 }
 export interface Customer {
   id?: number;
-  server:Server;
+  server: Server;
   username?: string;
   mobile_number?: string;
   address?: string;

@@ -1,117 +1,88 @@
-:host ::ng-deep {
-  .p-paginator {
-      .p-paginator-current {
-          margin-left: auto;
-      }
-  }
-  
-  .p-progressbar {
-      height: .5rem;
-      background-color: #D8DADC;
-  
-      .p-progressbar-value {
-          background-color: #607D8B;
-      }
-  }
-  
-  
-  .p-calendar .p-datepicker {
-      min-width: 25rem;
-  
-      td {
-          font-weight: 400;
-      }
-  }
-  
-  
-  /* Responsive */
-  .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
-      display: none;
-  }
-}
+// Dropdown servers
 
-@media screen and (max-width: 960px) {
-  :host ::ng-deep {
-      .p-datatable {
-          &.p-datatable-customers {
-              .p-datatable-thead > tr > th,
-              .p-datatable-tfoot > tr > td {
-                  display: none !important;
-              }
-  
-              .p-datatable-tbody > tr {
-                  border-bottom: 1px solid var(--layer-2);
-  
-                  > td {
-                      text-align: left;
-                      display: block;
-                      border: 0 none !important;
-                      width: 100% !important;
-                      float: left;
-                      clear: left;
-                      border: 0 none;
-  
-                      .p-column-title {
-                          padding: .4rem;
-                          min-width: 30%;
-                          display: inline-block;
-                          margin: -.4rem 1rem -.4rem -.4rem;
-                          font-weight: bold;
-                      }
-  
-                      .p-progressbar {
-                          margin-top: .5rem;
-                      }
-                  }
-              }
-          }
-      }
+::ng-deep {
+
+  mat-form-field {
+    width: 100%;
+
+    .mdc-text-field--outlined {
+      padding: 0px;
+    }
+
+    .mat-mdc-form-field-infix {
+      width: 100%;
+      padding: 0px !important;
+      min-height: auto;
+
+    }
+
+    .mdc-text-field--outlined {
+      --mdc-outlined-text-field-outline-width: 0px;
+    }
+  }
+
+  .cdk-overlay-container {
+    z-index: 1200;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
   }
 
 }
 
-.add_user_btn{
-margin-left: 5px;
-background-color:#134aa0;
-color:white;
-}
-::ng-deep  {
-  .p-component-overlay{
-    background: #00000099;
+::ng-deep {
+  .filterwithSearch {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
   }
-  .p-dialog-content{
-    overflow-x: hidden;
+
+  .filterwithSearch input {
+    padding-left: 43px;
+    height: 40px;
+    font-size: 13px;
   }
-  .p-dialog-header span {
+
+  .filterwithSearch .p-input-icon-left .ti-search {
     font-size: 20px;
-    margin-bottom: 15px;
+    top: 18px;
   }
-.p-dialog {
-  padding: 25px;
-  border-radius: 12px;
-  background-color: #FFFFFF;
-  box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(16, 24, 40, 0.1);
-}
-mat-form-field{
-  width: 100%;
-    .mdc-text-field--outlined{
-        padding: 0px;
-    }
-    .mat-mdc-form-field-infix{
-          width: 100%;
-          padding: 0px !important;
-          min-height: auto;
-          
-    }
-    .mdc-text-field--outlined{
-      --mdc-outlined-text-field-outline-width:0px;
-    }
-}
-.cdk-overlay-container {
-z-index: 1200;
-}
-.mat-mdc-form-field-subscript-wrapper{
-display: none;
+
+  .p-dropdown.p-dropdown-clearable .p-dropdown-label {
+    font-size: 12px;
+    color: #fff;
+  }
+
+  .p-dropdown .p-dropdown-label {
+    padding: 10px;
+  }
+
+  .p-dropdown {
+    background: #3a434b;
+    border: 1px solid #3a434b;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 0 8px 8px 0px;
+  }
+
+  .filterwithSearch input {
+    background: #fff;
+    border-radius: 8px 0 0 8px;
+    border: solid 1px #d3dbeb;
+    border-right: none;
+  }
+
+  .p-dropdown-items {
+    padding: 0px;
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+
+  .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    padding: 0.6rem 0.8rem;
+    font-size: 12px;
+    background: #fff;
+  }
 }
 
-}
+// Dropdown servers

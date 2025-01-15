@@ -1,162 +1,164 @@
-<div class="container">
+<div class="">
   <form action="" [formGroup]="UserForm" (ngSubmit)="addUser()" *ngIf="showAddUsers">
-  <div class="row">
+    <div class="row">
       <div class="col-lg-7">
-          <div class="row">
+        <div class="row">
           <div class="form-group">
-              <label for="">{{ "server" | translate }}</label><br />
-              <mat-form-field appearance="outline" class="multi-select">
-                <!-- <mat-label>Select Server</mat-label> -->
-                <mat-select formControlName="server_id" class="form-control">
-                  <mat-option *ngFor="let option of server_options" [value]="option.id">
-                    {{ option.server_url }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="UserForm?.get('server_id')?.hasError('required') && UserForm?.get('server_id')?.touched">
-                <span class="error-message">{{ "server_required" | translate }}</span>
-              </div>
+            <label for="">{{ "server" | translate }}</label><br />
+            <mat-form-field appearance="outline" class="multi-select">
+              <!-- <mat-label>Select Server</mat-label> -->
+              <mat-select formControlName="server_id" class="form-control">
+                <mat-option *ngFor="let option of server_options" [value]="option.id">
+                  {{ option.server_url }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="UserForm?.get('server_id')?.hasError('required') && UserForm?.get('server_id')?.touched">
+              <span class="error-message">{{ "server_required" | translate }}</span>
             </div>
-            
+          </div>
+
           <div class="col-lg-12">
-              <div class="form-group">
-                  <label for="">{{'username' | translate}}</label>
-                  <input type="text" class="form-control" formControlName="username">
-                  <div *ngIf="
+            <div class="form-group">
+              <label for="">{{'username' | translate}}</label>
+              <input type="text" class="form-control" formControlName="username">
+              <div *ngIf="
                       UserForm?.get('username')?.hasError('required') &&
                       UserForm?.get('username')?.touched">
-                      <span class="error-message">{{'username_required' | translate}}</span>
-                  </div>
+                <span class="error-message">{{'username_required' | translate}}</span>
               </div>
+            </div>
           </div>
           <div class="col-lg-12">
-              <div class="row">
-                  <div class="col-lg-6">
-                      <div class="form-group">
-                          <label for="">{{'password' | translate}}</label>
-                          <input type="password" class="form-control" formControlName="password">
-                          <div *ngIf="
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{'password' | translate}}</label>
+                  <input type="password" class="form-control" formControlName="password">
+                  <div *ngIf="
                               UserForm?.get('password')?.hasError('required') &&
                               UserForm?.get('password')?.touched">
-                              <span class="error-message">{{ 'password_error' | translate}}</span>
-                          </div>
-                          <div *ngIf="
-                              UserForm?.get('password')?.hasError('minlength')">
-                              <span class="error-message">{{ 'password_length_error' | translate}}</span>
-                          </div>
-                          <div *ngIf="
-                              UserForm?.get('password')?.hasError('pattern')">
-                              <span class="error-message">{{ 'strong_password_error' | translate}}</span>
-                          </div>
-                      </div>
+                    <span class="error-message">{{ 'password_error' | translate}}</span>
                   </div>
-                  <div class="col-lg-6">
-                      <div class="form-group">
-                          <label for="">{{ 'mobile_number' | translate}}</label>
-                          <input type="text" class="form-control" formControlName="mobile_number" maxlength="12">
-                          <div *ngIf="
+                  <div *ngIf="
+                              UserForm?.get('password')?.hasError('minlength')">
+                    <span class="error-message">{{ 'password_length_error' | translate}}</span>
+                  </div>
+                  <div *ngIf="
+                              UserForm?.get('password')?.hasError('pattern')">
+                    <span class="error-message">{{ 'strong_password_error' | translate}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ 'mobile_number' | translate}}</label>
+                  <input type="text" class="form-control" formControlName="mobile_number" maxlength="12">
+                  <div *ngIf="
                               UserForm?.get('mobile_number')?.hasError('required') &&
                               UserForm?.get('mobile_number')?.touched">
-                              <span class="error-message">{{'mobile_required' | translate}}</span>
-                          </div>
-                          <div *ngIf="
-                              UserForm?.get('mobile_number')?.hasError('pattern')">
-                              <span class="error-message">{{'mobile_length_required' | translate}}</span>
-                          </div>
-                      </div>
+                    <span class="error-message">{{'mobile_required' | translate}}</span>
                   </div>
+                  <div *ngIf="
+                              UserForm?.get('mobile_number')?.hasError('pattern')">
+                    <span class="error-message">{{'mobile_length_required' | translate}}</span>
+                  </div>
+                </div>
               </div>
+            </div>
           </div>
 
           <div class="col-lg-12">
-              <div class="form-group">
-                  <label for="">{{ 'api_key' | translate}}</label>
-                  <input type="text" formControlName="api_key" class="form-control" autocomplete="false">
-                  <div *ngIf="
+            <div class="form-group">
+              <label for="">{{ 'api_key' | translate}}</label>
+              <input type="text" formControlName="api_key" class="form-control" autocomplete="false">
+              <div *ngIf="
                       UserForm?.get('api_key')?.hasError('required') &&
                       UserForm?.get('api_key')?.touched">
-                      <span class="error-message">{{ 'api_key_required' | translate}}</span>
-                  </div>
+                <span class="error-message">{{ 'api_key_required' | translate}}</span>
               </div>
+            </div>
           </div>
 
           <div class="col-lg-12">
-              <div class="form-group">
-                  <label for="">{{ 'address' | translate}}</label>
-                  <textarea class="form-control" formControlName="address"></textarea>
-                  <div *ngIf="
+            <div class="form-group">
+              <label for="">{{ 'address' | translate}}</label>
+              <textarea class="form-control" formControlName="address"></textarea>
+              <div *ngIf="
                       UserForm?.get('address')?.hasError('required') &&
                       UserForm?.get('address')?.touched">
-                      <span class="error-message">{{ 'address_required' | translate}}</span>
-                  </div>
+                <span class="error-message">{{ 'address_required' | translate}}</span>
               </div>
+            </div>
           </div>
           <div class="col-lg-12">
-              <div class="form-group">
-                  <div class="d-flex gap-2 from-button">
-                      <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
-                      <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
-                  </div>
-                </div>
+            <div class="form-group">
+              <div class="d-flex gap-2 from-button">
+                <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
+                <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
+              </div>
+            </div>
           </div>
+        </div>
       </div>
-      </div>
-  </div>
-</form>
+    </div>
+  </form>
 
-  <p-table #dt [value]="usersData" [(selection)]="selectedCustomers" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
-            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"
-            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [filterDelay]="0" [globalFilterFields]="['username','server.server_url','mobile_number','address','api_key','created_at']">
-            <ng-template pTemplate="caption">
-                <div class="table-header mb-4">
-                   <h3>{{ 'regaykar_users_list' | translate}}</h3> 
-                   <p-dropdown
-                   [options]="servers"
-                   (onChange)="dt.filter($event.value, 'server.server_url', 'equals')"
-                   styleClass="p-column-filter"
-                   placeholder="{{'filter_by_url' | translate}}"
-                   [showClear]="true"
-                 >
-                   <ng-template let-option pTemplate="item">
-                     <span [ngClass]="'customer-badge status-' + option">
-                       {{ option }}
-                     </span>
-                   </ng-template>
-                 </p-dropdown>
-                   <div>
-                    <span class="p-input-icon-left">
-                        <i class="ti ti-search"></i>
-                        <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Global Search" />
-                    </span>
-                    <button class="btn add_user_btn" (click)="addUsers()">{{'add_users' | translate}}</button>
-                  </div>
-                </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th pSortableColumn="username">{{ "username" | translate }} <p-sortIcon field="username"></p-sortIcon></th>
-                    <th pSortableColumn="server.server_url">{{ "server_url" | translate }} <p-sortIcon field="server.server_url"></p-sortIcon></th>
-                    <!-- <th pSortableColumn="mobile_number">{{ "mobile_number" | translate }} <p-sortIcon field="mobile_number"></p-sortIcon></th>
+  <p-table #dt [value]="usersData" [(selection)]="selectedCustomers" dataKey="id" styleClass="p-datatable-customers"
+    [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+    [globalFilterFields]="['username','server.server_url','mobile_number','address','api_key','created_at']">
+    <ng-template pTemplate="caption">
+      <div class="table-header mb-4">
+        <h3>{{ 'regaykar_users_list' | translate}}</h3>
+        <div>
+          <div class="d-flex">
+            <div class="filterwithSearch">
+              <span class="p-input-icon-left">
+                <i class="ti ti-search"></i>
+                <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                  placeholder="Global Search" />
+              </span>
+              <p-dropdown [options]="servers" (onChange)="dt.filter($event.value, 'server.server_url', 'equals')"
+                styleClass="p-column-filter" placeholder="{{'filter_by_url' | translate}}" [showClear]="true">
+                <ng-template let-option pTemplate="item">
+                  <span [ngClass]="'customer-badge status-' + option">
+                    {{ option }}
+                  </span>
+                </ng-template>
+              </p-dropdown>
+              <button class="btn add_user_btn" (click)="addUsers()">{{'add_users' | translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="username">{{ "username" | translate }} <p-sortIcon field="username"></p-sortIcon></th>
+        <th pSortableColumn="server.server_url">{{ "server_url" | translate }} <p-sortIcon
+            field="server.server_url"></p-sortIcon></th>
+        <!-- <th pSortableColumn="mobile_number">{{ "mobile_number" | translate }} <p-sortIcon field="mobile_number"></p-sortIcon></th>
                     <th pSortableColumn="address">{{ "address" | translate }} <p-sortIcon field="address"></p-sortIcon></th> -->
-                    <th pSortableColumn="api_key">{{ "api_key" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
-                    <th pSortableColumn="api_key">{{ "created_by" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
-                    <th pSortableColumn="createdby.name">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
-                    <th>{{ "active" | translate }}</th>
-                    <th>{{ "actions" | translate }}</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-data>
-                <tr class="p-selectable-row">
-                    <td>
-                        <span class="p-column-title">{{ "username" | translate }}</span>
-                        {{data.username}}
-                    </td>
-                    <td>
-                        <span class="p-column-title">{{ "server_url" | translate }}</span>
-                        <span class="image-text">{{data.server.server_url}}</span>
-                    </td>
-                    <!-- <td>
+        <th pSortableColumn="api_key">{{ "api_key" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
+        <th pSortableColumn="api_key">{{ "created_by" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
+        <th pSortableColumn="createdby.name">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon>
+        </th>
+        <th>{{ "active" | translate }}</th>
+        <th>{{ "actions" | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+      <tr class="p-selectable-row">
+        <td>
+          <span class="p-column-title">{{ "username" | translate }}</span>
+          {{data.username}}
+        </td>
+        <td>
+          <span class="p-column-title">{{ "server_url" | translate }}</span>
+          <span class="image-text">{{data.server_url}}</span>
+        </td>
+        <!-- <td>
                       <span class="p-column-title">{{ "mobile_number" | translate }}</span>
                       {{data.mobile_number}}
                   </td>
@@ -164,115 +166,110 @@
                     <span class="p-column-title">{{ "address" | translate }}</span>
                     {{data.address}}
                   </td> -->
-                  <td>
-                    <span class="p-column-title">{{ "api_key" | translate }}</span>
-                    {{data.api_key}}
-                  </td>
-                  <td>
-                    <span class="p-column-title">{{ "created_by" | translate }}</span>
-                    {{ data.createdby ? data.createdby.name : 'Admin' }}
-                  </td>
-                    <td>
-                        <span class="p-column-title">{{ "created_at" | translate }}</span>
-                        <span class="image-text">{{ data.created_at | date }}</span>
-                    </td>
-                    <td><mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle></td>
-                    <td>
-                        <span class="p-column-title">{{ "actions" | translate }}</span>
-                        <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
-                        <button class="btn viewbtn" [routerLink]="['/admin/user-view', data.id]"><i class="fa-solid fa-eye"></i></button>
-                        <button class="btn deletebtn" (click)="deleteRow(data)"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td colspan="8">No customers found.</td>
-                </tr>
-            </ng-template>
-        </p-table>
-  <p-dialog id="dialog" header="{{ 'edit' | translate }}" [(visible)]="visible" [style]="{ width: '60vw' }"
+        <td>
+          <span class="p-column-title">{{ "api_key" | translate }}</span>
+          {{data.api_key}}
+        </td>
+        <td>
+          <span class="p-column-title">{{ "created_by" | translate }}</span>
+          {{ data.createdby ? data.createdby.name : 'Admin' }}
+        </td>
+        <td>
+          <span class="p-column-title">{{ "created_at" | translate }}</span>
+          <span class="image-text">{{ data.created_at | date }}</span>
+        </td>
+        <td><mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle></td>
+        <td>
+          <span class="p-column-title">{{ "actions" | translate }}</span>
+          <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn viewbtn" [routerLink]="['/admin/user-view', data.id]"><i
+              class="fa-solid fa-eye"></i></button>
+          <button class="btn deletebtn" (click)="deleteRow(data)"><i class="fa-solid fa-trash"></i></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">No customers found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-dialog id="dialog" header="{{ 'edit' | translate }}" [(visible)]="visible" [style]="{ width: '32vw' }"
     [modal]="true">
     <form action="" [formGroup]="UserEditForm" (ngSubmit)="EditUser()">
       <div class="row">
-        <div class="col-lg-7">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="">{{ "server" | translate }}</label><br />
-                <mat-form-field appearance="outline" class="multi-select">
-                  <!-- <mat-label>Select Server</mat-label> -->
-                  <mat-select formControlName="server_id" class="form-control">
-                    <mat-option *ngFor="let option of server_options" [value]="option.id" >
-                      {{ option.server_url }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <div *ngIf="UserEditForm?.get('server_id')?.hasError('required') && UserEditForm?.get('server_id')?.touched">
-                  <span class="error-message">{{ "server_required" | translate }}</span>
-                </div>
-              </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="">{{ "server" | translate }}</label>
+            <mat-form-field appearance="outline" class="multi-select">
+              <!-- <mat-label>Select Server</mat-label> -->
+              <mat-select formControlName="server_id" class="form-control">
+                <mat-option *ngFor="let option of server_options" [value]="option.id">
+                  {{ option.server_url }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div
+              *ngIf="UserEditForm?.get('server_id')?.hasError('required') && UserEditForm?.get('server_id')?.touched">
+              <span class="error-message">{{ "server_required" | translate }}</span>
             </div>
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="username">{{ "username" | translate }}</label>
-                <input type="text" formControlName="username" class="form-control" autocomplete="false" />
-                <div
-                  *ngIf="UserEditForm?.get('username')?.hasError('required') && UserEditForm?.get('username')?.touched">
-                  <span class="error-message">{{ "username_required" | translate }}</span>
-                </div>
-              </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="username">{{ "username" | translate }}</label>
+            <input type="text" formControlName="username" class="form-control" autocomplete="false" />
+            <div *ngIf="UserEditForm?.get('username')?.hasError('required') && UserEditForm?.get('username')?.touched">
+              <span class="error-message">{{ "username_required" | translate }}</span>
             </div>
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="password">{{ "password" | translate }}</label>
-                <input type="password" formControlName="password" class="form-control" autocomplete="false" placeholder="{{ 'set_new_password' | translate }}" />
-                <div
-                  *ngIf="UserEditForm?.get('password')?.hasError('required') && UserEditForm?.get('password')?.touched">
-                  <span class="error-message">{{ "password_required" | translate }}</span>
-                </div>
-              </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="password">{{ "password" | translate }}</label>
+            <input type="password" formControlName="password" class="form-control" autocomplete="false"
+              placeholder="{{ 'set_new_password' | translate }}" />
+            <div *ngIf="UserEditForm?.get('password')?.hasError('required') && UserEditForm?.get('password')?.touched">
+              <span class="error-message">{{ "password_required" | translate }}</span>
             </div>
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="mobile_number">{{ "mobile_number" | translate }}</label>
-                <input type="text" formControlName="mobile_number" class="form-control" autocomplete="false" />
-                <div
-                  *ngIf="UserEditForm?.get('mobile_number')?.hasError('required') && UserEditForm?.get('mobile_number')?.touched">
-                  <span class="error-message">{{ "mobile_required" | translate }}</span>
-                </div>
-                <div *ngIf="
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="mobile_number">{{ "mobile_number" | translate }}</label>
+            <input type="text" formControlName="mobile_number" class="form-control" autocomplete="false" />
+            <div
+              *ngIf="UserEditForm?.get('mobile_number')?.hasError('required') && UserEditForm?.get('mobile_number')?.touched">
+              <span class="error-message">{{ "mobile_required" | translate }}</span>
+            </div>
+            <div *ngIf="
                 UserEditForm?.get('mobile_number')?.hasError('pattern')">
-                    <span class="error-message">{{'mobile_length_required' | translate}}</span>
-                </div>
-              </div>
+              <span class="error-message">{{'mobile_length_required' | translate}}</span>
             </div>
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="address">{{ "address" | translate }}</label>
-                <input type="text" formControlName="address" class="form-control" autocomplete="false" />
-                <div
-                  *ngIf="UserEditForm?.get('address')?.hasError('required') && UserEditForm?.get('address')?.touched">
-                  <span class="error-message">{{ "address_required" | translate }}</span>
-                </div>
-              </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="address">{{ "address" | translate }}</label>
+            <input type="text" formControlName="address" class="form-control" autocomplete="false" />
+            <div *ngIf="UserEditForm?.get('address')?.hasError('required') && UserEditForm?.get('address')?.touched">
+              <span class="error-message">{{ "address_required" | translate }}</span>
             </div>
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label for="api_key">{{ "api_key" | translate }}</label>
-                <input type="text" formControlName="api_key" class="form-control" autocomplete="false" />
-                <div
-                  *ngIf="UserEditForm?.get('api_key')?.hasError('required') && UserEditForm?.get('api_key')?.touched">
-                  <span class="error-message">{{ "api_key_required" | translate }}</span>
-                </div>
-              </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="api_key">{{ "api_key" | translate }}</label>
+            <input type="text" formControlName="api_key" class="form-control" autocomplete="false" />
+            <div *ngIf="UserEditForm?.get('api_key')?.hasError('required') && UserEditForm?.get('api_key')?.touched">
+              <span class="error-message">{{ "api_key_required" | translate }}</span>
             </div>
-            <div class="col-lg-12">
-              <div class="form-group">
-                <div class="d-flex gap-2 from-button">
-                  <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
-                </div>
-              </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <div class="d-flex gap-2 from-button">
+              <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
             </div>
           </div>
         </div>
