@@ -109,7 +109,9 @@ export class ServerComponent {
   addServerForm(){
     this.showAddserver = true;
   }
-
+  closeForm(){
+    this.showAddserver = false;
+  }
 
   EditServer(): void {
     if (this.ServerEditForm.invalid) {

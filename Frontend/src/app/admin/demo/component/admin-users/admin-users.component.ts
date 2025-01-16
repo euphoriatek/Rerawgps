@@ -255,6 +255,9 @@ addUser(): void {
   onDialogClose(){
     this.AdminUsr.reset();
   }
+  closeForm(){
+    this.showAddUser = false;
+  }
 
   updateStatus(user_id:number){
     this.api.updateStatus(user_id).subscribe({

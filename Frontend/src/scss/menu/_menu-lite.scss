@@ -164,7 +164,7 @@
         position: relative;
         white-space: nowrap;
         // text-transform: uppercase;
-        font-size: 13px;
+        font-size: 14px;
         letter-spacing: 0.6px;
         width: 100%;
         &:hover{
@@ -183,8 +183,9 @@
           height: auto;
           display: inline-block;
           vertical-align: middle;
-          text-align: center;
+          text-align: left;
           font-weight: bold;
+          width: 23px;
 
           + .coded-mtext {
             position: relative;

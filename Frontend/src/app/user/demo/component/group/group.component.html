@@ -1,7 +1,10 @@
-<div class="container">
-  <form [formGroup]="groupForm" (ngSubmit)="addGroups()" *ngIf="showgroup">
+
+
+  <form class="add-group-form" [formGroup]="groupForm" (ngSubmit)="addGroups()" *ngIf="showgroup">
+<div class="row">
+  <div class="col-lg-6">
     <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-12">
         <div class="form-group">
           <label for="name">{{ 'name' | translate }}</label>
           <input id="name" formControlName="name" class="form-control" />
@@ -10,9 +13,8 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6">
+
+        <div class="col-lg-12">
         <div class="form-group">
           <label for="description">{{ 'description' | translate }}</label>
           <textarea id="description" formControlName="description" class="form-control"></textarea>
@@ -22,12 +24,11 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6">
+
+      <div class="col-lg-12">
         <div class="form-group">
           <label for="startDate">{{ 'start_date' | translate }}</label>
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field appearance="fill" class="form-calendar form-control">
             <!-- <mat-label>Choose a date</mat-label> -->
             <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" [min]="today" />
             <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
@@ -38,9 +39,9 @@
           </div>
         </div>
       </div>
-    </div>
-    <!-- <div class="row">
-      <div class="col-lg-6">
+
+
+      <!-- <div class="col-lg-6">
         <div class="form-group">
           <label for="endDate">{{ 'end_date' | translate }}</label>
           <mat-form-field appearance="fill" class="full-width">
@@ -52,18 +53,22 @@
             {{ 'end_date_required' | translate }}
           </div>
         </div>
-      </div>
-    </div> -->
-    <div class="col-lg-12">
-      <div class="form-group">
-        <div class="d-flex gap-2 from-button">
-          <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
-          <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate }}">
+      </div> -->
+
+      <div class="col-lg-12">
+        <div class="form-group">
+          <div class="d-flex gap-2 from-button">
+            <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
+            <input (click)="resetForm()" type="button" class="btn grey-btn" value="{{ 'reset' | translate }}">
+          </div>
         </div>
       </div>
     </div>
-  </form>
+  </div>
 </div>
+  </form>
+
+
 <p-table #dt [value]="usersData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
   [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
   currentPageReportTemplate="{{'showing_first_to_last_of_totalRecords_entries'| translate }} Showing {first} to {last} of {totalRecords} entries"
@@ -77,7 +82,8 @@
           <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
             placeholder="{{'global_search'|translate}}" />
         </span>
-        <button class="btn add_user_btn" (click)="addUserForm()">{{"add_new_groups" | translate }}</button>
+        <button *ngIf="!showgroup" class="btn add_user_btn" (click)="addUserForm()">{{"add_new_groups" | translate }}</button>
+        <button *ngIf="showgroup" class="btn addclose_btn" (click)="closeForm()"><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
   </ng-template>
@@ -139,3 +145,18 @@
     </div>
   </form>
 </p-dialog>
+
+<script>
+  $('.search-toggle').addClass('closed');
+
+$('.search-toggle .search-icon').click(function(e) {
+  if ($('.search-toggle').hasClass('closed')) {
+    $('.search-toggle').removeClass('closed').addClass('opened');
+    $('.search-toggle, .search-container').addClass('opened');
+    $('#search-terms').focus();
+  } else {
+    $('.search-toggle').removeClass('opened').addClass('closed');
+    $('.search-toggle, .search-container').removeClass('opened');
+  }
+});
+</script>

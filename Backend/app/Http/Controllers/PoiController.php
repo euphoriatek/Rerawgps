@@ -75,4 +75,3 @@ class PoiController extends Controller
         }
     }
 }
-

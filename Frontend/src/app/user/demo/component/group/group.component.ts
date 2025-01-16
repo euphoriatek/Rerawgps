@@ -107,6 +107,9 @@ export class GroupComponent implements OnInit {
   addUserForm() {
     this.showgroup = true;
   }
+  closeForm(){
+    this.showgroup = false;
+  }
 
   getUsers(): void {
     this.spinner.show();

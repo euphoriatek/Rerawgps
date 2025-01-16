@@ -1,25 +1,31 @@
-<div class="container-fluid" *ngIf="role">
+<div class="dashboard-counter" *ngIf="role">
   <div class="row" *ngIf="role === 'superadmin'">
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <strong>Number of Servers</strong>: {{ serverCount }}
+    <div class="col col-lg-4">
+        <div class="card-body countgreen">
+          <div>
+          <span>{{ serverCount }}</span> 
+          <h6> Servers</h6>
         </div>
+        <div class="count-icon"><i class="fa-solid fa-server"></i></div>
+      </div>
+      </div>
+    <div class="col col-lg-4">
+        <div class="card-body countred">
+            <div>
+            <span>{{ adminUserCount }}</span>
+            <h6>Admin Users</h6>
+          </div>
+          <div class="count-icon "><i class="fa-solid fa-user-gear"></i></div>
       </div>
     </div>
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <strong>Number of Admin Users</strong>: {{ adminUserCount }}
+    <div class="col col-lg-4">
+        <div class="card-body countblue">
+          <div>
+            <span>{{ userCount }}</span>
+            <h6>Users</h6>
+          </div>
+          <div class="count-icon"><i class="fa-solid fa-user"></i></div>
         </div>
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <strong>Number of Users</strong>: {{ userCount }}
-        </div>
-      </div>
     </div>
   </div>
 </div>

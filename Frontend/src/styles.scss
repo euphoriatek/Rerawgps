@@ -225,6 +225,14 @@ a{
       border-radius: 7px;
       font-size: 13px;
     }
+    .addclose_btn{
+      margin-left: 5px;
+      background-color: #000000;
+      color: white;
+      padding: 7px 14px;
+      border-radius: 7px;
+      font-size: 16px;
+    }
 }
 }
 .p-sortable-column-icon{
@@ -267,6 +275,7 @@ a{
     padding: 1rem 1rem;
     font-size: 14px;
     text-transform: capitalize;
+    word-break: break-all;
 }
 
 .p-dropdown-label:not(.p-placeholder) {
@@ -287,28 +296,24 @@ table tbody tr td button.btn {
 table tbody tr td button.btn i {
   font-size: 14px;
 }
-table tbody tr td .pending_status{
-    background: #ffe6e6;
+table tbody tr td .pending_status,
+table tbody tr td .approved_status,
+table tbody tr td  .reject_status{
     font-size: 12px;
     padding: 1px 6px;
     text-transform: capitalize;
-    border-radius: 2px;
-    color: #ff0000;
+    border-radius: 4px;
+}
+table tbody tr td .pending_status{
+  background: #ffe6e6;
+  color: #ff0000;
 }
 table tbody tr td .approved_status{
   background: #e9f7ef;
-  font-size: 12px;
-  padding: 1px 6px;
-  text-transform: capitalize;
-  border-radius: 2px;
   color: #21d16d;
 }
 table tbody tr td  .reject_status{
   background: #e6f6ff;
-  font-size: 12px;
-  padding: 1px 6px;
-  text-transform: capitalize;
-  border-radius: 2px;
   color: #42a6df;
 }
 .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover{
@@ -402,12 +407,12 @@ p-paginator{
   background-color: #ec4b0c;
   color: #fff;
 }
-
-.grey-btn{
-  background-color: #ffffff;
-  border: solid 1px #d1cfcf;
-  color: #000000;
+.grey-btn {
+  background-color: transparent;
+  border: solid 1px #adadad;
+  color: #979797;
 }
+
 .grey-btn:hover{
   background-color: #fff;
   border: solid 1px #ec4b0c;
@@ -420,3 +425,24 @@ app-breadcrumb{
 }
 }
 
+.add-group-form{
+  margin: 30px 0px;
+}
+
+// calendar-css
+.form-calendar{
+  padding: 0px;
+  .mat-mdc-form-field-subscript-wrapper{
+    display: none;
+  }
+  .mat-mdc-form-field-infix{
+    min-height: auto;
+    padding: 13px 0px !important;
+  }
+  .mat-mdc-text-field-wrapper{
+    background-color: transparent !important;
+  }
+  .mdc-line-ripple {
+    display: none;
+  }
+} 

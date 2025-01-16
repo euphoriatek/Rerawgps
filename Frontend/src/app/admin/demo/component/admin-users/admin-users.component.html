@@ -1,11 +1,10 @@
-<div class="">
-  <form action="" [formGroup]="AdminUsr" (ngSubmit)="addUser()" *ngIf="showAddUser">
+  <form class="add-group-form" action="" [formGroup]="AdminUsr" (ngSubmit)="addUser()" *ngIf="showAddUser">
     <div class="row">
       <div class="col-lg-5">
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group">
-              <label for="">{{ "server" | translate }}</label><br />
+              <label for="">{{ "server" | translate }}</label>
               <mat-form-field appearance="outline" class="multi-select">
                 <!-- <mat-label>Select Server</mat-label> -->
                 <mat-select multiple formControlName="server_id" class="form-control">
@@ -79,8 +78,8 @@
           <div class="col-lg-12">
             <div class="form-group">
               <div class="d-flex gap-2 from-button">
-                <input type="submit" class="btn btn-primary" value="{{ 'save' | translate}}">
-                <input (click)="resetForm()" type="button" class="btn btn-warning" value="{{ 'reset' | translate}}">
+                <input type="submit" class="btn orange-btn" value="{{ 'save' | translate}}">
+                <input (click)="resetForm()" type="button" class="btn grey-btn" value="{{ 'reset' | translate}}">
               </div>
             </div>
           </div>
@@ -101,9 +100,8 @@
             <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
               placeholder="Global Search" />
           </span>
-          <button class="btn add_user_btn" (click)="addAdminUsr()">
-            {{ "add_admin_user" | translate }}
-          </button>
+          <button *ngIf="!showAddUser" class="btn add_user_btn" (click)="addAdminUsr()"> {{ "add_admin_user" | translate }} </button>
+          <button *ngIf="showAddUser" class="btn addclose_btn" (click)="closeForm()"><i class="fa-solid fa-xmark"></i></button>
         </div>
       </div>
     </ng-template>
@@ -231,4 +229,3 @@
       </div>
     </form>
   </p-dialog>
-</div>

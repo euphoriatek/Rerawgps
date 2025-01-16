@@ -239,6 +239,9 @@ export class UsersComponent implements OnInit {
   addUsers() {
     this.showAddUsers = true;
   }
+  closeForm(){
+    this.showAddUsers = false;
+  }
   // Close dialog
   closeDialog(): void {
     this.visible = false;
