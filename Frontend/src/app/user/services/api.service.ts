@@ -38,4 +38,5 @@ export class ApiService {
   updatePoiStatus(data:any){
     return this.http.post(this.BaseUrl + 'poi-update-status', data);;
   }
+  
 }

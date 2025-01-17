@@ -40,6 +40,8 @@ import { SalesAgentsViewComponent } from './demo/component/sales-agents-view/sal
 import { POIsComponent } from './demo/component/pois/pois.component';
 import { PendingRequestComponent } from './demo/component/pendingrequest/pendingrequest.component';
 import { ReportsComponent } from './demo/component/reports/reports.component';
+import { MatSelectModule } from '@angular/material/select';  // For mat-select
+import { MatOptionModule } from '@angular/material/core'; 
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -57,9 +59,9 @@ import { ReportsComponent } from './demo/component/reports/reports.component';
     SalesAgentsViewComponent,
     POIsComponent,
     PendingRequestComponent,
-    ReportsComponent
+    ReportsComponent,
   ],
-  imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule],
+  imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule],
   providers: [NavigationItem,
     // {
     //   provide: HTTP_INTERCEPTORS,

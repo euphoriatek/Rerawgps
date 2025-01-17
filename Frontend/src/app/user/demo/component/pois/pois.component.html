@@ -1,7 +1,7 @@
 <p-table #dt [value]="poisList" dataKey="id" styleClass="p-datatable-customers"
   [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
-  [globalFilterFields]="['name','description','lat','lng','status']">
+  [globalFilterFields]="['name','description','lat','lng','groups']">
   <ng-template pTemplate="caption">
       <div class="table-header mb-4">
           <h3>{{ 'pois_list' | translate}}</h3>
@@ -19,7 +19,7 @@
           <th pSortableColumn="description">{{ "description" | translate }} <p-sortIcon field="description"></p-sortIcon></th>
           <th pSortableColumn="lat">{{ "lat" | translate }} <p-sortIcon field="lat"></p-sortIcon></th>
           <th pSortableColumn="lng">{{ "lng" | translate }} <p-sortIcon field="lng"></p-sortIcon></th>
-          <th pSortableColumn="status">{{ "status" | translate }} <p-sortIcon field="status"></p-sortIcon></th>
+          <th pSortableColumn="groups">{{ "groups" | translate }} <p-sortIcon field="groups"></p-sortIcon></th>
       </tr>
   </ng-template>
   <ng-template pTemplate="body" let-data>
@@ -28,18 +28,12 @@
           <td>{{data.description}}</td>
           <td>{{getLat(data.coordinates)}}</td>
           <td>{{getLng(data.coordinates)}}</td>
-          <td [ngClass]="{
-            'text-warning': data.status === 'pending', 
-            'text-danger': data.status === 'reject', 
-            'text-success': data.status === 'approved'
-          }">
-            {{ data.status }}
-          </td>
+          <td>{{ data.groupNames || ("unassigned" | translate) }}</td>
       </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage">
       <tr>
-          <td colspan="5">{{"no_found_record" | translate }}.</td>
+        <td colspan="5">{{"no_data_record" | translate }}.</td>
       </tr>
   </ng-template>
 </p-table>

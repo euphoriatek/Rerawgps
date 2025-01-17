@@ -14,8 +14,16 @@ class Group extends Model
         'name',
         'description',
         'start_date',
-        // 'end_date',
-        'user_id'
+        'user_id',
+        'sale_agent_id'
     ];
-    public $timestamps = true;
+
+    public function assignedPois()
+    {
+        return $this->hasMany(AssignedPoi::class, 'group_id', 'id');
+    }
+    public function salesAgent()
+    {
+        return $this->hasMany(SalesModel::class, 'user_id', 'user_id');
+    }
 }

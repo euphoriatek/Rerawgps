@@ -39,14 +39,6 @@ class PoiController extends Controller
                 'message' => 'Poi added successfully!',
                 'data' => $poi,
             ], 200);
-            // $poi = Poi::create([
-            //     'name' => $request->input('name'),
-            //     'description' => $request->input('description'),
-            //     'map_icon_id' => $request->input('map_icon_id', null),
-            //     'lat' => $request->input('lat'),
-            //     'lng' => $request->input('lng'),
-            //     'status' => 'pending',
-            // ]);
         }catch (\Exception $e) {
             return response()->json([
                 'error' => 'An error occurred: ' . $e->getMessage(),
@@ -78,9 +70,7 @@ class PoiController extends Controller
     public function getPois()
     {
         try {
-            // Fetch all POIs (no filter on status)
-            $pois = Poi::all();
-    
+            $pois = Poi::with('groups.group')->get(); 
             return response()->json([
                 'status' => true,
                 'data' => $pois

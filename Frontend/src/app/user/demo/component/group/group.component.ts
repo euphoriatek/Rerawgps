@@ -24,6 +24,9 @@ export class GroupComponent implements OnInit {
   usersData: any[] = [];
   groupEditForm!: FormGroup;
   visible: boolean = false;
+  pois_options: any[];
+  sales_options: any[];
+  userId: any;
   @ViewChild('dt') dt: Table | undefined;
   constructor(
     public route: Router,
@@ -43,22 +46,24 @@ export class GroupComponent implements OnInit {
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       startDate: ['', [Validators.required]],
-      // endDate: ['', [Validators.required]]
+      pois_id: ['', [Validators.required]],
+      sale_agent_id: ['', [Validators.required]],
     }, { validators: this.validateDates });
 
     this.groupEditForm = this.fb.group({
       id: ['', [Validators.required]],
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
+      pois_id: [[], Validators.required],
     });
 
     this.getUsers();
+    this.getPois();
+    this.getSales();
   }
 
   validateDates(group: FormGroup) {
     const start = group.get('startDate')?.value;
-    // const end = group.get('endDate')?.value;
-    // return start && end && start <= end ? null : { dateInvalid: true };
     return start ? null : { dateInvalid: true };
   }
 
@@ -75,7 +80,11 @@ export class GroupComponent implements OnInit {
         return;
       }
       this.groupForm.value.user_id = user_id;
-      const data = this.groupForm.value;
+      const data = {
+        ...this.groupForm.value,
+        pois_id: this.groupForm.value.pois_id || [],
+        sale_agent_id: this.groupForm.value.sale_agent_id
+      };
       this.api.addGroup(data).subscribe({
         next: (response: any) => {
           this.spinner.hide();
@@ -99,7 +108,7 @@ export class GroupComponent implements OnInit {
       this.groupForm.markAllAsTouched();
     }
   }
-
+  
   resetForm() {
     this.groupForm.reset();
   }
@@ -107,7 +116,7 @@ export class GroupComponent implements OnInit {
   addUserForm() {
     this.showgroup = true;
   }
-  closeForm(){
+  closeForm() {
     this.showgroup = false;
   }
 
@@ -116,6 +125,8 @@ export class GroupComponent implements OnInit {
     this.api.getGroupList().subscribe({
       next: (response: any) => {
         this.spinner.hide();
+        console.log(response);
+
         if (response && response.status) {
           this.usersData = response.data;
         }
@@ -131,29 +142,25 @@ export class GroupComponent implements OnInit {
   }
 
   openEditDialog(data: any): void {
-    console.log(data);
+    const poisIds = data.assigned_pois?.map(server => server.pois_id) || [];
     this.groupEditForm.patchValue({
       name: data.name,
       description: data.description,
-      id: data.id // Ensure id is included
+      id: data.id,
+      pois_id: poisIds,
     });
+
     this.visible = true;
   }
-
 
   EditGroupUser(): void {
     if (this.groupEditForm.invalid) {
       this.groupEditForm.markAllAsTouched();
       return;
     }
-
     if (this.groupEditForm.valid) {
       this.spinner.show();
       const data = this.groupEditForm.value;
-
-      // Ensure the id is included
-      console.log('Data to be sent:', data);
-
       this.api.updateGroup(data).subscribe({
         next: (response: any) => {
           if (response.status === true) {
@@ -207,4 +214,31 @@ export class GroupComponent implements OnInit {
       }
     });
   }
+  getPois(): void {
+    this.api.getAllPois().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.pois_options = response.data;
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
+  }
+  getSales() {
+    this.api.getSales(this.userId).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        if (response && response.status) {
+          this.sales_options = response.data;
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
 }

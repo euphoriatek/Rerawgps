@@ -53,8 +53,8 @@ class User extends Authenticatable
     }
     public function hasRole($role)
     {
-        // Assuming you're storing roles as a string or in a related table
-        return $this->role === $role;  // Adjust this based on how you store roles
+       
+        return $this->role === $role;
     }
 
     public function createdby()

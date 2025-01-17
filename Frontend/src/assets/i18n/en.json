@@ -91,7 +91,7 @@
     "yes":"Yes",
     "no":"No",
     "end_date":"End Date",
-    "start_date":"Start End",
+    "start_date":"Start Date",
     "start_date_required":"Start Date Required",
     "end_date_required":"End Date Required",
     "user_updated_success":"User Updated Successfully",
@@ -151,5 +151,12 @@
     "are_you_sure_want_to_denoy":"Are you sure want to reject?",
     "poi_approved_success":"POI approved sucessfully",
     "poi_reject_success":"POI request rejected",
-    "add_new_groups":"Add New Groups"
+    "add_new_groups":"Add New Groups",
+    "pois_required":"POI's is  Required",
+    "pois_pending_list":"POIs Pending List",
+    "belongto":"Belong To",
+    "sales_agent":"Sales Agent",
+    "sale_agent_required":"Sales Agaent is Required",
+    "unassigned":"Unassigned",
+    "sale_agent_id":"Sale Agent Id"
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\AssignedPoi;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -10,25 +11,39 @@ use Illuminate\Support\Facades\Validator;
 
 class GroupController extends Controller
 {
-    // Store the group data
     public function store(Request $request)
     {
+        $input = $request->all();
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'startDate' => 'required|date',
-            // 'endDate' => 'required|date|after_or_equal:startDate',
+            'pois_id' => 'required|array',
+            'pois_id.*' => 'exists:pois,id',
+            'sale_agent_id' => 'required|exists:sales,id',
         ]);
         $userId = $request->input('user_id');
         $startDate = Carbon::parse($request->input('startDate'))->toDateString();
-        $endDate = Carbon::parse($request->input('endDate'))->toDateString();
+        $saleAgentId = $request->input('sale_agent_id');  
         $group = Group::create([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'start_date' => $startDate,
-            // 'end_date' => $endDate,
-            'user_id' => $userId
+            'user_id' => $userId,
+            'sale_agent_id' => $saleAgentId, 
         ]);
+
+        if ($group) {
+            $poisIds = $request->input('pois_id');
+            foreach ($poisIds as $poiId) {
+                AssignedPoi::create([
+                    'group_id' => $group->id,
+                    'pois_id' => $poiId,
+                    'sale_agent_id' =>$saleAgentId
+                ]);
+            }
+        }
 
         return response()->json([
             'status' => true,
@@ -36,31 +51,37 @@ class GroupController extends Controller
             'data' => $group,
         ], 201);
     }
+
     public function getGroupUserList()
     {
         try {
-            $groups = Group::get();
+            $groups = Group::with('assignedPois', 'salesAgent')->get();
             return response()->json([
                 'status' => true,
                 'message' => 'Groups records fetched successfully!',
                 'data' => $groups,
-            ], 200); 
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => 'Failed to fetch groups records.',
-                'error' => $e->getMessage(), 
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
+
     public function editGroup(Request $request)
     {
         $input = $request->all();
+
+        // Validation rules
         $validator = Validator::make($input, [
-            'id' => 'required|exists:groups,id',
+            'id' => 'required|numeric',
             'name' => 'required|string|max:255',
-            'description' => 'required|string'
+            'description' => 'required|string',
+            'pois_id.*' => 'required',
         ]);
+
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
@@ -68,30 +89,36 @@ class GroupController extends Controller
         }
         try {
             $group = Group::find($input['id']);
-
             if (!$group) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Group rRecord not found'
+                    'message' => 'Group record not found!',
                 ], 404);
             }
-            $group->name = $input['name'];
-            $group->description = $input['description'];
-            $group->save();
+            $group->update([
+                'name' => $input['name'],
+                'description' => $input['description'],
+            ]);
+            AssignedPoi::where('group_id', $group->id)->delete();
+            foreach ($input['pois_id'] as $poiId) {
+                AssignedPoi::create([
+                    'group_id' => $group->id,
+                    'pois_id' => $poiId,
+                ]);
+            }
             return response()->json([
                 'status' => true,
-                'message' => 'Groups Record updated successfully!',
+                'message' => 'Group updated successfully!',
                 'data' => $group,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'An error occurred while Group updated!.',
+                'message' => 'An error occurred while updating the group.',
                 'error' => $e->getMessage(),
             ], 500);
         }
     }
-
     public function deleteGroupUser(Request $request, $id)
     {
         try {

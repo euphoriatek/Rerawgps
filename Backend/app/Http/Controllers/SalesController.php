@@ -163,7 +163,7 @@ class SalesController extends Controller
             ], 401);
         }
         $userId = $user->id;
-        $saleData = SalesModel::where('user_id', $userId)->get();
+        $saleData = SalesModel::where('user_id', $userId)->with(['groups.group'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Sales records fetched successfully!',

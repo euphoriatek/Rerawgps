@@ -11,7 +11,7 @@ class SalesModel extends Authenticatable
     use HasApiTokens, HasFactory, SoftDeletes;
     protected $table = 'sales';
     protected $fillable = ['name', 'username', 'password', 'user_id'];
-    protected $hidden = ['remember_token','password'];
+    protected $hidden = ['remember_token', 'password'];
     /**
      * Create a token and store it in the `sales_access_tokens` table.
      *
@@ -22,5 +22,9 @@ class SalesModel extends Authenticatable
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function groups()
+    {
+        return $this->hasMany(AssignedPoi::class, 'sale_agent_id', 'id');
     }
 }

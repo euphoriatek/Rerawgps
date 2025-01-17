@@ -70,8 +70,8 @@ const NavigationItems = [
     icon: 'fa-solid fa-file-signature',
   },
   {
-    id: 'pendingrequest',
-    title: 'pendingrequest',
+    id: 'pending_request',
+    title: 'pending_request',
     type: 'item',
     url: '/pendingrequest',
     icon: 'fa-solid fa-hand-point-up',
