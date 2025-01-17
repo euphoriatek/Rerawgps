@@ -70,7 +70,14 @@ class PoiController extends Controller
     public function getPois()
     {
         try {
-            $pois = Poi::with('groups.group')->get(); 
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized. Please log in.',
+                ], 401);
+            }
+            $pois = Poi::where('regaykar_user_id', $user->id)->where('status','approved')->with('groups.group')->get(); 
             return response()->json([
                 'status' => true,
                 'data' => $pois

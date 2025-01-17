@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-confirm-dialog',
   template: `
   <div class="delete-modal">
-  <div class="delete-icon"><i class="fa-solid fa-trash"></i></div>
     <h2>{{data.title}}</h2>
     <p>{{data.message}}</p>
     <div class="modal-btn">
@@ -18,3 +17,4 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class ConfirmDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { title: string, message: string }) {}
 }
+// <div class="delete-icon"><i class="fa-solid fa-trash"></i></div>

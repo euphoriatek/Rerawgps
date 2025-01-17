@@ -55,7 +55,15 @@ class GroupController extends Controller
     public function getGroupUserList()
     {
         try {
-            $groups = Group::with('assignedPois', 'salesAgent')->get();
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not authenticated.',
+                ], 401);
+            }
+            $userId = $user->id;
+            $groups = Group::where('user_id', $user->id)->with('assignedPois', 'salesAgent')->get();
             return response()->json([
                 'status' => true,
                 'message' => 'Groups records fetched successfully!',
@@ -98,12 +106,14 @@ class GroupController extends Controller
             $group->update([
                 'name' => $input['name'],
                 'description' => $input['description'],
+                'sale_agent_id' => $group->sale_agent_id
             ]);
             AssignedPoi::where('group_id', $group->id)->delete();
             foreach ($input['pois_id'] as $poiId) {
                 AssignedPoi::create([
                     'group_id' => $group->id,
                     'pois_id' => $poiId,
+                    'sale_agent_id' => $group->sale_agent_id
                 ]);
             }
             return response()->json([

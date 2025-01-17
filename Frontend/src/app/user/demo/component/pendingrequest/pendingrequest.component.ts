@@ -5,7 +5,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToasterService } from 'src/app/services/toster.service';
-import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';
+import { ConfirmDialogComponent } from 'src/app/user/services/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-pendingrequest',
@@ -74,6 +74,7 @@ export class PendingRequestComponent {
       data: {
         title: this.translate.instant('poi_confirmation'),
         message: confirmationMessage,
+        type:"poi"
       },
     });
   

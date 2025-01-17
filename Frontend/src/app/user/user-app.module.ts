@@ -15,6 +15,7 @@ import { NavCollapseComponent } from './theme/layouts/admin/navigation/nav-conte
 import { NavGroupComponent } from './theme/layouts/admin/navigation/nav-content/nav-group/nav-group.component';
 import { NavItemComponent } from './theme/layouts/admin/navigation/nav-content/nav-item/nav-item.component';
 import { NavigationItem } from './theme/layouts/admin/navigation/navigation';
+import { ConfirmDialogComponent } from 'src/app/user/services/confirm-dialog.component';
 // import { InterceptorInterceptor } from './services/interceptor.interceptor';
 // import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -60,6 +61,7 @@ import { MatOptionModule } from '@angular/material/core';
     POIsComponent,
     PendingRequestComponent,
     ReportsComponent,
+    ConfirmDialogComponent
   ],
   imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule],
   providers: [NavigationItem,
