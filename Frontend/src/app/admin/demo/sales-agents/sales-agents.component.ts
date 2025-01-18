@@ -39,7 +39,7 @@ export class SalesAgentsComponent {
       next: (response: any) => {
         if (response && response.status) {
           this.salesData = response.data;
-          this.users = response.data.map(item => item.user.username);
+          this.users = response.data.map(item => item?.user?.username);
           this.spinner.hide();
         } else {
         }

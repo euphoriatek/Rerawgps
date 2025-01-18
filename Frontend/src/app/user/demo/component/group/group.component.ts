@@ -161,8 +161,10 @@ export class GroupComponent implements OnInit {
       const data = this.groupEditForm.value;
       if (data.startdate) {
         const adjustedDate = new Date(data.startdate);
-        adjustedDate.setDate(adjustedDate.getDate() + 1);
-        data.startdate = adjustedDate;
+        if (adjustedDate.getHours() === 0 && adjustedDate.getMinutes() === 0) {
+          adjustedDate.setDate(adjustedDate.getDate() + 1);
+          data.startdate = adjustedDate;
+        }
       }
       this.api.updateGroup(data).subscribe({
         next: (response: any) => {

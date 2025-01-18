@@ -34,7 +34,7 @@
             </td>
             <td>
                 <span class="p-column-title">{{ "groups" | translate }}</span>
-                {{ data.groupnames }}
+                {{ data.groupnames || ("unassigned" | translate)}}
             </td>
             <td>
                 <span class="p-column-title">{{ "created_at" | translate }}</span>
