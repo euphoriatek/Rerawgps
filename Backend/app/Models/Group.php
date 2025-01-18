@@ -24,6 +24,6 @@ class Group extends Model
     }
     public function salesAgent()
     {
-        return $this->hasMany(SalesModel::class, 'user_id', 'user_id');
+        return $this->belongsTo(SalesModel::class, 'sale_agent_id', 'id');
     }
 }

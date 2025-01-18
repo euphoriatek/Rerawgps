@@ -87,24 +87,23 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     // --------------
     // RegayKar User
+    // pois
     Route::get('/pois', [PoiController::class, 'getPois'])->middleware('role:user');
+    // pendingrequest
     Route::get('/pending-pois', [PoiController::class, 'getPendingPois'])->middleware('role:user');
     Route::post('/poi-update-status', [PoiController::class, 'updatePoiStatus'])->middleware('role:user');
-    // Route::get('/admin/get-object-list', [SalesController::class, 'getObjectList'])->middleware('auth:users');
-    // Route::get('/get-objects', [SalesController::class, 'getObjects'])->middleware('auth:users');
-    // Route::get('/get-object-list', [SalesController::class, 'getObjectList'])->middleware('auth:sales');
-    Route::post('/admin/create-group', [GroupController::class, 'store'])->middleware('auth:users');
-    // Admin Api
-    Route::post('/create-group', [GroupController::class, 'store'])->middleware('auth:users');;
-    Route::get('/get-group-users-list', [GroupController::class, 'getGroupUserList'])->middleware('auth:users');;
-    Route::post('/edit-group-user', [GroupController::class, 'editGroup'])->middleware('auth:users');;
-    Route::delete('/delete-group-user/{id}', [GroupController::class, 'deleteGroupUser'])->middleware('auth:users');;
+    // Group
+    Route::get('/get-group-list', [GroupController::class, 'getGroupList'])->middleware('auth:users');
+    Route::post('/create-group', [GroupController::class, 'store'])->middleware('auth:users');
+    Route::post('/edit-group', [GroupController::class, 'editGroup'])->middleware('auth:users');;
+    Route::delete('/delete-group/{id}', [GroupController::class, 'deleteGroupUser'])->middleware('auth:users');
+    Route::get('/get-sales-options', [SalesController::class, 'getSalesOptions'])->middleware('auth:users');
+    Route::get('/get-pois-options', [PoiController::class, 'getPoisOptions'])->middleware('auth:users');
+    // saleagent
     Route::post('/get-sales-objects', [SalesController::class, 'getsalesObjects'])->middleware('auth:users');
-    
+    Route::get('/sync-data', [PoiController::class, 'syncData'])->middleware('auth:users');
     // --------------
     // Sales Agent
     Route::post('/pois', [PoiController::class, 'store'])->middleware('auth:sales');
-    
-    
 });
-Route::get('/sync-data', [PoiController::class, 'syncData']);
+// Route::get('/sync-data', [PoiController::class, 'syncData']);

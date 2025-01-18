@@ -14,22 +14,28 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+        $userId = $user->id;
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'startDate' => 'required|date',
+            'startdate' => 'required|date',
             'pois_id' => 'required|array',
             'pois_id.*' => 'exists:pois,id',
             'sale_agent_id' => 'required|exists:sales,id',
         ]);
-        $userId = $request->input('user_id');
-        $startDate = Carbon::parse($request->input('startDate'))->toDateString();
+        $startdate = Carbon::parse($request->input('startdate'))->toDateString();
         $saleAgentId = $request->input('sale_agent_id');  
         $group = Group::create([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'start_date' => $startDate,
+            'start_date' => $startdate,
             'user_id' => $userId,
             'sale_agent_id' => $saleAgentId, 
         ]);
@@ -52,7 +58,7 @@ class GroupController extends Controller
         ], 201);
     }
 
-    public function getGroupUserList()
+    public function getGroupList()
     {
         try {
             $user = auth()->user();
@@ -63,7 +69,7 @@ class GroupController extends Controller
                 ], 401);
             }
             $userId = $user->id;
-            $groups = Group::where('user_id', $user->id)->with('assignedPois', 'salesAgent')->get();
+            $groups = Group::where('user_id', $userId)->with('assignedPois', 'salesAgent')->get();
             return response()->json([
                 'status' => true,
                 'message' => 'Groups records fetched successfully!',
@@ -87,7 +93,9 @@ class GroupController extends Controller
             'id' => 'required|numeric',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'startdate' => 'required|date',
             'pois_id.*' => 'required',
+            'sale_agent_id' => 'required|exists:sales,id',
         ]);
 
         if ($validator->fails()) {
@@ -103,17 +111,19 @@ class GroupController extends Controller
                     'message' => 'Group record not found!',
                 ], 404);
             }
+            $startdate = Carbon::parse($request->input('startdate'))->toDateString();
             $group->update([
                 'name' => $input['name'],
                 'description' => $input['description'],
-                'sale_agent_id' => $group->sale_agent_id
+                'sale_agent_id' => $input['sale_agent_id'],
+                'start_date' => $startdate
             ]);
             AssignedPoi::where('group_id', $group->id)->delete();
             foreach ($input['pois_id'] as $poiId) {
                 AssignedPoi::create([
                     'group_id' => $group->id,
                     'pois_id' => $poiId,
-                    'sale_agent_id' => $group->sale_agent_id
+                    'sale_agent_id' => $input['sale_agent_id']
                 ]);
             }
             return response()->json([

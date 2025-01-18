@@ -104,7 +104,17 @@ usersData: any;
             this.getUsers();
             this.toaster.success(this.translate.instant('user_added_success'), this.translate.instant('user'));
           } else {
-            this.toaster.error(this.translate.instant('user_added_error') || this.translate.instant('try_again'), this.translate.instant('user'));
+            if (response){
+              if(response.type == "username"){
+                this.toaster.error(this.translate.instant('username_unique_error'), this.translate.instant('user'));
+              }else if(response.type == "api_key"){
+                this.toaster.error(this.translate.instant('api_key_unique_error'), this.translate.instant('user'));
+              }else{
+                this.toaster.error(this.translate.instant('user_added_error'), this.translate.instant('user'));
+              }
+            } else{
+              this.toaster.error(this.translate.instant('user_added_error') || this.translate.instant('try_again'), this.translate.instant('user'));
+            }
           }
           this.spinner.hide();
         },

@@ -90,10 +90,61 @@ class PoiController extends Controller
         }
     }
 
+    // public function syncData()
+    // {
+    //     $users = User::with('server')->where('role', 'user')->get();
+    //     foreach ($users as $user) {
+    //         $masterPortsResponse = Http::get($user->server->server_url . '/api/get_user_map_icons', [
+    //             'lang' => 'en',
+    //             'user_api_hash' => $user->api_key,
+    //         ]);
+    //         $mapIcons = $masterPortsResponse->json()['items']['mapIcons'] ?? [];
+    //         foreach ($mapIcons as $mapIcon) {
+    //             $existingPoi = Poi::where('poi_id', $mapIcon['id'])->first();
+    //             if ($existingPoi) {
+    //                 if($existingPoi['updated_at'] != $mapIcon['updated_at']){
+    //                     $data = [
+    //                         'poi_id' => $mapIcon['id'],
+    //                         'regaykar_user_id' => $user->id,
+    //                         'map_icon_id' => $mapIcon['map_icon_id'],
+    //                         'name' => $mapIcon['name'],
+    //                         'description' => $mapIcon['description'],
+    //                         'coordinates' => $mapIcon['coordinates'],
+    //                         'active' => $mapIcon['active'],
+    //                         'created_at' => $mapIcon['created_at'],
+    //                         'updated_at' => $mapIcon['updated_at']
+    //                     ];
+    //                     $existingPoi->update($data);
+    //                 }
+    //             } else {
+    //                 Poi::create([
+    //                     'poi_id' => $mapIcon['id'],
+    //                     'regaykar_user_id' => $user->id,
+    //                     'map_icon_id' => $mapIcon['map_icon_id'],
+    //                     'name' => $mapIcon['name'],
+    //                     'description' => $mapIcon['description'],
+    //                     'coordinates' => $mapIcon['coordinates'],
+    //                     'active' => $mapIcon['active'],
+    //                     'status' => 'approved',
+    //                     'created_at' => $mapIcon['created_at'],
+    //                     'updated_at' => $mapIcon['updated_at'],
+    //                 ]);
+    //             }
+    //         }
+    //     }
+    // }
+
     public function syncData()
     {
-        $users = User::with('server')->where('role', 'user')->get();
-        foreach ($users as $user) {
+        try {
+            $user = Auth::user();
+            if (!$user || $user->role != "user") {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized. Please log in.',
+                ], 401);
+            }
+            $user = User::with('server')->find($user->id);
             $masterPortsResponse = Http::get($user->server->server_url . '/api/get_user_map_icons', [
                 'lang' => 'en',
                 'user_api_hash' => $user->api_key,
@@ -131,6 +182,14 @@ class PoiController extends Controller
                     ]);
                 }
             }
+            return response()->json([
+                'status' => true,
+                'message' => 'Data sync Successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while fetching POIs: ' . $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -212,4 +271,21 @@ class PoiController extends Controller
         }
     }
     
+    public function getPoisOptions()
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+        $userId = $user->id;
+        $Poi = Poi::select('id','name')->where('regaykar_user_id', $userId)->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Poi records fetched successfully!',
+            'data' => $Poi,
+        ], 200);
+    }
 }

@@ -23,7 +23,20 @@ export class POIsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getPois();
+    this.syncData();
+  }
+  syncData(){
+    this.spinner.show();
+    this.api.syncPois().subscribe({
+      next: (response: any) => {
+        this.getPois();
+        // this.spinner.hide();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
   }
   getPois(): void {
     this.spinner.show();

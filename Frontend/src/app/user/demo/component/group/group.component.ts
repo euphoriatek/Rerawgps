@@ -21,7 +21,7 @@ export class GroupComponent implements OnInit {
   isSubmitted = false;
   today: Date;
   showgroup: boolean = false;
-  usersData: any[] = [];
+  groupsData: any[] = [];
   groupEditForm!: FormGroup;
   visible: boolean = false;
   pois_options: any[];
@@ -45,7 +45,7 @@ export class GroupComponent implements OnInit {
     this.groupForm = this.fb.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      startDate: ['', [Validators.required]],
+      startdate: ['', [Validators.required]],
       pois_id: ['', [Validators.required]],
       sale_agent_id: ['', [Validators.required]],
     }, { validators: this.validateDates });
@@ -54,53 +54,50 @@ export class GroupComponent implements OnInit {
       id: ['', [Validators.required]],
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
+      startdate:['', [Validators.required]],
       pois_id: [[], Validators.required],
+      sale_agent_id: ['', [Validators.required]],
     });
 
-    this.getUsers();
     this.getPois();
     this.getSales();
+    this.getGroups();
   }
 
   validateDates(group: FormGroup) {
-    const start = group.get('startDate')?.value;
+    const start = group.get('startdate')?.value;
     return start ? null : { dateInvalid: true };
   }
 
-  addGroups(): void {
-    this.isSubmitted = true;
+  addGroup(): void {
     if (this.groupForm.invalid) {
       this.groupForm.markAllAsTouched();
       this.spinner.hide();
       return;
     } else if (this.groupForm.valid) {
       this.spinner.show();
-      const user_id = this.UserCookiesService.getCookie('CurrentUser')?.id;
-      if (!user_id) {
-        return;
+      const data = this.groupForm.value;
+      if (data.startdate) {
+        const adjustedDate = new Date(data.startdate);
+        adjustedDate.setDate(adjustedDate.getDate() + 1);
+        data.startdate = adjustedDate;
       }
-      this.groupForm.value.user_id = user_id;
-      const data = {
-        ...this.groupForm.value,
-        pois_id: this.groupForm.value.pois_id || [],
-        sale_agent_id: this.groupForm.value.sale_agent_id
-      };
       this.api.addGroup(data).subscribe({
         next: (response: any) => {
           this.spinner.hide();
-          if (response && response.status === true) {
-            this.toaster.success(this.translate.instant('groups_created_success'), this.translate.instant('group'));
+          if (response && response.status) {
+            this.toaster.success(this.translate.instant('group_created_success'), this.translate.instant('group'));
+            this.getGroups();
             this.groupForm.reset();
-            this.getUsers();
-            this.isSubmitted = false;
             this.showgroup = false;
           } else {
-            this.toaster.error(this.translate.instant('groups_created_error') || this.translate.instant('try_again'), this.translate.instant('group'));
+            this.toaster.error(this.translate.instant('group_created_error'), this.translate.instant('group'));
           }
+          this.spinner.hide();
         },
         error: (err) => {
           this.spinner.hide();
-          this.toaster.error(this.translate.instant('groups_creation_failed') || this.translate.instant('try_again'), this.translate.instant('group'));
+          this.toaster.error(this.translate.instant('group_added_error_ex') || this.translate.instant('try_again'), this.translate.instant('group'));
           console.error(err);
         }
       });
@@ -120,16 +117,14 @@ export class GroupComponent implements OnInit {
     this.showgroup = false;
   }
 
-  getUsers(): void {
+  getGroups(): void {
     this.spinner.show();
     this.api.getGroupList().subscribe({
       next: (response: any) => {
-        this.spinner.hide();
-        console.log(response);
-
         if (response && response.status) {
-          this.usersData = response.data;
+          this.groupsData = response.data;
         }
+        this.spinner.hide();
       },
       error: (err) => {
         this.spinner.hide();
@@ -137,17 +132,20 @@ export class GroupComponent implements OnInit {
       }
     });
   }
+
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
   openEditDialog(data: any): void {
-    const poisIds = data.assigned_pois?.map(server => server.pois_id) || [];
+    const poisIds = data.assigned_pois?.map(data => data.pois_id) || [];
     this.groupEditForm.patchValue({
       name: data.name,
       description: data.description,
+      startdate:data.start_date,
       id: data.id,
       pois_id: poisIds,
+      sale_agent_id:data.sale_agent_id
     });
 
     this.visible = true;
@@ -161,12 +159,17 @@ export class GroupComponent implements OnInit {
     if (this.groupEditForm.valid) {
       this.spinner.show();
       const data = this.groupEditForm.value;
+      if (data.startdate) {
+        const adjustedDate = new Date(data.startdate);
+        adjustedDate.setDate(adjustedDate.getDate() + 1);
+        data.startdate = adjustedDate;
+      }
       this.api.updateGroup(data).subscribe({
         next: (response: any) => {
           if (response.status === true) {
             this.visible = false;
             this.groupEditForm.reset();
-            this.getUsers();
+            this.getGroups();
             this.toaster.success(this.translate.instant('group_updated_success'), this.translate.instant('group'));
           } else {
             this.toaster.error(this.translate.instant('group_updated_error') || this.translate.instant('try_again'), this.translate.instant('group'));
@@ -181,9 +184,7 @@ export class GroupComponent implements OnInit {
       });
     }
   }
-  resetEditForm(): void {
-    this.groupEditForm.reset();
-  }
+
   deleteRecords(data: any): void {
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -198,7 +199,7 @@ export class GroupComponent implements OnInit {
         this.api.deleteGroupUser(data.id).subscribe({
           next: (response: any) => {
             if (response.status) {
-              this.getUsers();
+              this.getGroups();
               this.toaster.success(this.translate.instant('user_deleted_success'), this.translate.instant('group'));
             } else {
               this.toaster.error(this.translate.instant('user_deleted_error') || this.translate.instant('try_again'), this.translate.instant('group'));
@@ -215,7 +216,7 @@ export class GroupComponent implements OnInit {
     });
   }
   getPois(): void {
-    this.api.getAllPois().subscribe({
+    this.api.getAllPoisOptionsList().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.pois_options = response.data;
@@ -227,10 +228,10 @@ export class GroupComponent implements OnInit {
       }
     });
   }
+
   getSales() {
-    this.api.getSales(this.userId).subscribe({
+    this.api.getSalesOptionsList().subscribe({
       next: (response: any) => {
-        console.log(response);
         if (response && response.status) {
           this.sales_options = response.data;
         }

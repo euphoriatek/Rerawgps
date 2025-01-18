@@ -1,4 +1,4 @@
-<form class="add-group-form" [formGroup]="groupForm" (ngSubmit)="addGroups()" *ngIf="showgroup">
+<form class="add-group-form" [formGroup]="groupForm" (ngSubmit)="addGroup()" *ngIf="showgroup">
   <div class="row">
      <div class="col-lg-6">
         <div class="row">
@@ -45,11 +45,11 @@
               <div class="form-group">
                  <label for="startDate">{{ 'start_date' | translate }}</label>
                  <mat-form-field appearance="fill" class="form-calendar form-control">
-                    <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" [min]="today" />
+                    <input matInput [matDatepicker]="startDatePicker" formControlName="startdate" [min]="today" />
                     <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #startDatePicker></mat-datepicker>
                  </mat-form-field>
-                 <div *ngIf="groupForm.get('startDate').invalid && groupForm.get('startDate').touched" class="error-message">
+                 <div *ngIf="groupForm.get('startdate').invalid && groupForm.get('startdate').touched" class="error-message">
                     {{ 'start_date_required' | translate }}
                  </div>
               </div>
@@ -87,10 +87,10 @@
      </div>
   </div>
   </form>
-  <p-table #dt [value]="usersData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
+  <p-table #dt [value]="groupsData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
   [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries " [filterDelay]="0"
-  [globalFilterFields]="['name','description','start_date','sales_agent']">
+  [globalFilterFields]="['name','start_date','sales_agent.name']">
   <ng-template pTemplate="caption">
      <div class="table-header mb-4">
         <h3>{{ 'group_list' | translate}}</h3>
@@ -117,11 +117,10 @@
            {{ "start_date" | translate }} 
            <p-sortIcon field="start_date"></p-sortIcon>
         </th>
-        <th pSortableColumn="start_date">
+        <th pSortableColumn="sales_agent.name">
           {{ "sales_agent" | translate }} 
-          <p-sortIcon field="start_date"></p-sortIcon>
+          <p-sortIcon field="sales_agent.name"></p-sortIcon>
        </th>
-       
         <th>{{ "actions" | translate }}</th>
      </tr>
   </ng-template>
@@ -129,7 +128,7 @@
      <tr class="p-selectable-row">
         <td>{{data.name}}</td>
         <td>{{data.start_date | date}}</td>
-        <td>{{data.sales_agent[0].name}}</td>
+        <td>{{data?.sales_agent.name}}</td>
         <td>
            <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
            <button class="btn deletebtn" (click)="deleteRecords(data)"><i class="fa-solid fa-trash"></i></button>
@@ -156,6 +155,14 @@
                  </mat-option>
               </mat-select>
            </mat-form-field>
+           <div *ngIf="
+           groupEditForm?.get('pois_id')?.hasError('required') &&
+           groupEditForm?.get('pois_id')?.touched
+                    ">
+                    <span class="error-message">{{
+                    "pois_required" | translate
+                    }}</span>
+                 </div>
         </div>
      </div>
      <div class="col-lg-12">
@@ -177,6 +184,40 @@
            </div>
         </div>
      </div>
+     <div class="col-lg-12">
+         <div class="form-group">
+            <label for="startDate">{{ 'start_date' | translate }}</label>
+            <mat-form-field appearance="fill" class="form-calendar form-control">
+               <input matInput [matDatepicker]="startDatePicker" formControlName="startdate" [min]="today" />
+               <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+               <mat-datepicker #startDatePicker></mat-datepicker>
+            </mat-form-field>
+            <div *ngIf="groupEditForm.get('startdate').invalid && groupEditForm.get('startdate').touched" class="error-message">
+               {{ 'start_date_required' | translate }}
+            </div>
+         </div>
+      </div>
+     <div class="col-lg-12">
+      <div class="form-group">
+         <label for="">{{ "sale_agent_id" | translate }}</label>
+         <mat-form-field appearance="outline" class="multi-select">
+            <mat-select formControlName="sale_agent_id" class="form-control">
+               <mat-option *ngFor="let sales of sales_options" [value]="sales.id">
+               {{ sales.name }}
+               </mat-option>
+            </mat-select>
+         </mat-form-field>
+         <div *ngIf="
+         groupEditForm?.get('sale_agent_id')?.hasError('required') &&
+         groupEditForm?.get('sale_agent_id')?.touched
+         ">
+         <span class="error-message">{{
+         "sale_agent_required" | translate
+         }}</span>
+      </div>
+      </div>
+   </div>
+     
   </div>
   <!-- Submit and Cancel buttons (optional) -->
   <div class="d-flex gap-2 from-button mt-4">
@@ -184,17 +225,3 @@
   </div>
   </form>
   </p-dialog>
-  <script>
-     $('.search-toggle').addClass('closed');
-     
-     $('.search-toggle .search-icon').click(function (e) {
-       if ($('.search-toggle').hasClass('closed')) {
-         $('.search-toggle').removeClass('closed').addClass('opened');
-         $('.search-toggle, .search-container').addClass('opened');
-         $('#search-terms').focus();
-       } else {
-         $('.search-toggle').removeClass('opened').addClass('closed');
-         $('.search-toggle, .search-container').removeClass('opened');
-       }
-     });
-  </script>

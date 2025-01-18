@@ -163,7 +163,7 @@ class SalesController extends Controller
             ], 401);
         }
         $userId = $user->id;
-        $saleData = SalesModel::where('user_id', $userId)->with(['groups.group'])->get();
+        $saleData = SalesModel::where('user_id', $userId)->with('group')->get();
         return response()->json([
             'status' => true,
             'message' => 'Sales records fetched successfully!',
@@ -197,6 +197,24 @@ class SalesController extends Controller
         $saleData = SalesModel::with(['user' => function($query) {
             $query->select('id', 'username');
         }])->WhereIn('user_id', $users)->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Sales records fetched successfully!',
+            'data' => $saleData,
+        ], 200);
+    }
+
+    public function getSalesOptions()
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+        $userId = $user->id;
+        $saleData = SalesModel::select('id','name')->where('user_id', $userId)->get();
         return response()->json([
             'status' => true,
             'message' => 'Sales records fetched successfully!',

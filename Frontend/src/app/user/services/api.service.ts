@@ -10,21 +10,28 @@ export class ApiService {
   login(data:any){
     return this.http.post(this.BaseUrl + 'login', data);
   }
-
+  // Groups
   addGroup(data: any) {
     return this.http.post(this.BaseUrl + 'create-group', data);
   }
   getGroupList() {
-    return this.http.get(this.BaseUrl + 'get-group-users-list');
+    return this.http.get(this.BaseUrl + 'get-group-list');
   }
   updateGroup(data){
-    return this.http.post(this.BaseUrl + 'edit-group-user',data);
+    return this.http.post(this.BaseUrl + 'edit-group',data);
   }
   deleteGroupUser(id: number) {
-    return this.http.delete(this.BaseUrl + 'delete-group-user/' + id);
+    return this.http.delete(this.BaseUrl + 'delete-group/' + id);
   }
-  getSales(id:number){
-    return this.http.post(this.BaseUrl + 'get-sales-objects', {user_id:id});
+  getSalesOptionsList(){
+    return this.http.get(this.BaseUrl + 'get-sales-options');
+  }
+  getAllPoisOptionsList(){
+    return this.http.get(this.BaseUrl + 'get-pois-options');
+  }
+  // Sales
+  getSales(){
+    return this.http.post(this.BaseUrl + 'get-sales-objects', {});
   }
   getPendingPois(){
     return this.http.get(this.BaseUrl + 'pending-pois');
@@ -37,6 +44,9 @@ export class ApiService {
   }
   updatePoiStatus(data:any){
     return this.http.post(this.BaseUrl + 'poi-update-status', data);;
+  }
+  syncPois(){
+    return this.http.get(this.BaseUrl + 'sync-data');;
   }
   
 }

@@ -37,7 +37,7 @@ class ApiController extends Controller
 
         $validator = Validator::make($input, [
             'server_id' => 'required|numeric',
-            'username' => 'required|string|max:255|unique:users,username',
+            'username' => 'required|string|max:255',
             'api_key' => 'required',
             'mobile_number' => 'required|numeric|min:10',
             'password' => 'required|string|min:8',
@@ -51,6 +51,30 @@ class ApiController extends Controller
         }
 
         try {
+            $existingUser = User::withTrashed()->where('username', $input['username'])->first();
+            if ($existingUser) {
+                if($existingUser->deleted_at){
+                    $existingUser->forceDelete();
+                }else{
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Username already taken.',
+                        'type' => 'username'
+                    ], 200);
+                }
+            }
+            $existingUser = User::withTrashed()->where('api_key', $input['api_key'])->first();
+            if ($existingUser) {
+                if($existingUser->deleted_at){
+                    $existingUser->forceDelete();
+                }else{
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Api key is already exiest.',
+                        'type' => 'api_key'
+                    ], 200);
+                }
+            }
             $user = $this->createUser($input);
 
             return response()->json([

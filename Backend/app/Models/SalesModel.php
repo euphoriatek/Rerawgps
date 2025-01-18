@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 use App\Models\User;
+use App\Models\Group;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
@@ -25,6 +26,10 @@ class SalesModel extends Authenticatable
     }
     public function groups()
     {
-        return $this->hasMany(AssignedPoi::class, 'sale_agent_id', 'id');
+        return $this->belongsTo(AssignedPoi::class, 'sale_agent_id', 'id');
+    }
+    public function group()
+    {
+        return $this->hasMany(Group::class, 'sale_agent_id', 'id');
     }
 }

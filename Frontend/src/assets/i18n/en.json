@@ -158,5 +158,17 @@
     "sales_agent":"Sales Agent",
     "sale_agent_required":"Sales Agaent is Required",
     "unassigned":"Unassigned",
-    "sale_agent_id":"Sale Agent Id"
+    "sale_agent_id":"Sale Agent Id",
+    "group":"Group",
+    "group_created_success":"Group created successfully!",
+    "group_created_error":"Group could not be created",
+    "group_added_error_ex":"An error occurred while adding in",
+    "created_by":"Created By",
+    "group_updated_success":"Group Updated successfully",
+    "group_updated_error":"Group could not be updated",
+    "group_updated_error_ex":"An error occurred while updating in",
+    "username_unique_error":"Username already taken.",
+    "api_key_unique_error":"Api key is already exiest.",
+    "cancel":"Cancel",
+    "pendingrequest":"Pending Request"
 }
