@@ -90,7 +90,8 @@ export class ServerComponent {
       next: (response: any) => {
         if (response && response.status) {
           this.servesData = response.data;
-          this.platForm = response.data.map(item => item.platform).filter(platform => platform.trim() !== '');;
+          this.platForm = [...new Set(response.data.map(item => item.platform).filter(platform => platform.trim() !== ''))];
+          // this.platForm = response.data.map(item => item.platform).filter(platform => platform.trim() !== '');
           this.spinner.hide();
         } else {
         }

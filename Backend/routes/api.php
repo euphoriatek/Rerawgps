@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
@@ -7,6 +8,10 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PoiController;
+use App\Http\Controllers\RegayKarPlansController;
+use App\Http\Controllers\HistoryController;
+
+
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +63,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // List all Sales
     Route::get('/admin/get-objects-list', [SalesController::class, 'getObjectsList'])->middleware('role:superadmin');
     
+    Route::post('/admin/masquerade/{userId}', [ApiController::class, 'masquerade'])->middleware('role:superadmin');
+
     // Common API for super Admin and admin
     // RegayKar user opration
     Route::post('/admin/add-regaykar-user', [ApiController::class, 'register'])->middleware('auth:users');
@@ -91,14 +98,23 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/pois', [PoiController::class, 'getPois'])->middleware('role:user');
     // pendingrequest
     Route::get('/pending-pois', [PoiController::class, 'getPendingPois'])->middleware('role:user');
+    Route::post('/edit-poi', [PoiController::class, 'updatePoi'])->middleware('role:user');
     Route::post('/poi-update-status', [PoiController::class, 'updatePoiStatus'])->middleware('role:user');
     // Group
     Route::get('/get-group-list', [GroupController::class, 'getGroupList'])->middleware('auth:users');
     Route::post('/create-group', [GroupController::class, 'store'])->middleware('auth:users');
-    Route::post('/edit-group', [GroupController::class, 'editGroup'])->middleware('auth:users');;
+    Route::post('/edit-group', [GroupController::class, 'editGroup'])->middleware('auth:users');
     Route::delete('/delete-group/{id}', [GroupController::class, 'deleteGroupUser'])->middleware('auth:users');
     Route::get('/get-sales-options', [SalesController::class, 'getSalesOptions'])->middleware('auth:users');
     Route::get('/get-pois-options', [PoiController::class, 'getPoisOptions'])->middleware('auth:users');
+    // Plans
+    Route::get('/get-regaykar-plans', [RegayKarPlansController::class, 'getCurrentPlans'])->middleware('role:user');
+    Route::post('/create-plan', [RegayKarPlansController::class, 'store'])->middleware('role:user');
+    Route::post('/update-plan', [RegayKarPlansController::class, 'updatePlan'])->middleware('role:user');
+    Route::delete('/delete-plan/{id}', [RegayKarPlansController::class, 'deletePlan'])->middleware('role:user');
+    // history
+    Route::get('/get-history', [HistoryController::class, 'getHistory'])->middleware('role:user');
+
     // saleagent
     Route::post('/get-sales-objects', [SalesController::class, 'getsalesObjects'])->middleware('auth:users');
     Route::get('/sync-data', [PoiController::class, 'syncData'])->middleware('auth:users');

@@ -581,4 +581,26 @@ class ApiController extends Controller
 
     }
     // End
+
+    public function masquerade(Request $request, $userId)
+    {
+        if (!Auth::user()->isAdmin()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        session(['original_admin_id' => Auth::id()]);
+        Auth::guard('web')->login($user);
+        $token = $user->createToken('remember_token')->plainTextToken;
+        $user->remember_token = $token;
+        $user->save();
+        $user->token = $token;
+        return response()->json([
+            'status' => true,
+            'data' => $user,
+            'message' => 'Masquerading as user'
+        ], 200);
+    }
 }

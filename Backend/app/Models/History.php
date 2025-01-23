@@ -4,15 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class AssignedPoi extends Model
+class History extends Model
 {
     use HasFactory;
-    protected $table = 'assigned_pois';
-    protected $fillable = ['group_id', 'poi_id','plan_id'];
-    public function poi()
+
+    protected $table = 'history';
+
+    protected $fillable = [
+        'group_id',
+        'sale_agent_id',
+        'pois_id',
+        'user_id',
+        'plan_id'
+    ];
+    public function pois()
     {
-        return $this->belongsTo(Poi::class, 'pois_id', 'id');
+        return $this->hasMany(Poi::class, 'id', 'pois_id');
     }
     public function group()
     {

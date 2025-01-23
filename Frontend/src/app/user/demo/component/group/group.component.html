@@ -43,39 +43,6 @@
            </div>
            <div class="col-lg-12">
               <div class="form-group">
-                 <label for="startDate">{{ 'start_date' | translate }}</label>
-                 <mat-form-field appearance="fill" class="form-calendar form-control">
-                    <input matInput [matDatepicker]="startDatePicker" formControlName="startdate" [min]="today" />
-                    <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #startDatePicker></mat-datepicker>
-                 </mat-form-field>
-                 <div *ngIf="groupForm.get('startdate').invalid && groupForm.get('startdate').touched" class="error-message">
-                    {{ 'start_date_required' | translate }}
-                 </div>
-              </div>
-           </div>
-           <div class="col-lg-12">
-            <div class="form-group">
-               <label for="">{{ "sale_agent_id" | translate }}</label>
-               <mat-form-field appearance="outline" class="multi-select">
-                  <mat-select formControlName="sale_agent_id" class="form-control">
-                     <mat-option *ngFor="let sales of sales_options" [value]="sales.id">
-                     {{ sales.name }}
-                     </mat-option>
-                  </mat-select>
-               </mat-form-field>
-               <div *ngIf="
-               groupForm?.get('sale_agent_id')?.hasError('required') &&
-               groupForm?.get('sale_agent_id')?.touched
-               ">
-               <span class="error-message">{{
-               "sale_agent_required" | translate
-               }}</span>
-            </div>
-            </div>
-         </div>
-           <div class="col-lg-12">
-              <div class="form-group">
                  <div class="d-flex gap-2 from-button">
                     <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
                     <input (click)="resetForm()" type="button" class="btn grey-btn" value="{{ 'reset' | translate }}">
@@ -90,7 +57,7 @@
   <p-table #dt [value]="groupsData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
   [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries " [filterDelay]="0"
-  [globalFilterFields]="['name','start_date','sales_agent.name']">
+  [globalFilterFields]="['name','description','created_at']">
   <ng-template pTemplate="caption">
      <div class="table-header mb-4">
         <h3>{{ 'group_list' | translate}}</h3>
@@ -113,13 +80,13 @@
            {{ "name" | translate }} 
            <p-sortIcon field="name"></p-sortIcon>
         </th>
-        <th pSortableColumn="start_date">
-           {{ "start_date" | translate }} 
-           <p-sortIcon field="start_date"></p-sortIcon>
+        <th pSortableColumn="description">
+         {{ "description" | translate }} 
+           <p-sortIcon field="description"></p-sortIcon>
         </th>
-        <th pSortableColumn="sales_agent.name">
-          {{ "sales_agent" | translate }} 
-          <p-sortIcon field="sales_agent.name"></p-sortIcon>
+        <th pSortableColumn="created_at">
+          {{ "created_at" | translate }} 
+          <p-sortIcon field="created_at"></p-sortIcon>
        </th>
         <th>{{ "actions" | translate }}</th>
      </tr>
@@ -127,8 +94,8 @@
   <ng-template pTemplate="body" let-data>
      <tr class="p-selectable-row">
         <td>{{data.name}}</td>
-        <td>{{data.start_date | date}}</td>
-        <td>{{data?.sales_agent.name}}</td>
+        <td>{{data.description}}</td>
+        <td>{{data.created_at | date}}</td>
         <td>
            <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
            <button class="btn deletebtn" (click)="deleteRecords(data)"><i class="fa-solid fa-trash"></i></button>
@@ -184,40 +151,6 @@
            </div>
         </div>
      </div>
-     <div class="col-lg-12">
-         <div class="form-group">
-            <label for="startDate">{{ 'start_date' | translate }}</label>
-            <mat-form-field appearance="fill" class="form-calendar form-control">
-               <input matInput [matDatepicker]="startDatePicker" formControlName="startdate" [min]="today" />
-               <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-               <mat-datepicker #startDatePicker></mat-datepicker>
-            </mat-form-field>
-            <div *ngIf="groupEditForm.get('startdate').invalid && groupEditForm.get('startdate').touched" class="error-message">
-               {{ 'start_date_required' | translate }}
-            </div>
-         </div>
-      </div>
-     <div class="col-lg-12">
-      <div class="form-group">
-         <label for="">{{ "sale_agent_id" | translate }}</label>
-         <mat-form-field appearance="outline" class="multi-select">
-            <mat-select formControlName="sale_agent_id" class="form-control">
-               <mat-option *ngFor="let sales of sales_options" [value]="sales.id">
-               {{ sales.name }}
-               </mat-option>
-            </mat-select>
-         </mat-form-field>
-         <div *ngIf="
-         groupEditForm?.get('sale_agent_id')?.hasError('required') &&
-         groupEditForm?.get('sale_agent_id')?.touched
-         ">
-         <span class="error-message">{{
-         "sale_agent_required" | translate
-         }}</span>
-      </div>
-      </div>
-   </div>
-     
   </div>
   <!-- Submit and Cancel buttons (optional) -->
   <div class="d-flex gap-2 from-button mt-4">

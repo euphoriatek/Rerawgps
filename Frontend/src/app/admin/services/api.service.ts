@@ -116,5 +116,9 @@ export class ApiService {
     return this.http.get(this.AdminBaseUrl + 'get-admin-objects-list');
   }
 
+  // 
+  loginAsUser(user_id:any){
+    return this.http.post(this.AdminBaseUrl + 'masquerade/' + user_id, {});
+  }
 
 }

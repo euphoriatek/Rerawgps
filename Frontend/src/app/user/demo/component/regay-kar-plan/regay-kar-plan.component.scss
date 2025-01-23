@@ -1,0 +1,24 @@
+::ng-deep{
+    mat-form-field{
+        width: 100%;
+          .mdc-text-field--outlined{
+              padding: 0px;
+          }
+          .mat-mdc-form-field-infix{
+                width: 100%;
+                padding: 0px !important;
+                min-height: auto;
+                
+          }
+          .mdc-text-field--outlined{
+            --mdc-outlined-text-field-outline-width:0px;
+          }
+    }
+    .cdk-overlay-container {
+      z-index: 1200;
+    }
+    .mat-mdc-form-field-subscript-wrapper{
+      display: none;
+    }
+  
+  }

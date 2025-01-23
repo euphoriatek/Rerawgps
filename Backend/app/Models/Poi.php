@@ -19,7 +19,7 @@ class Poi extends Model
     public $timestamps = true;
     public function groups()
     {
-        return $this->hasMany(AssignedPoi::class, 'pois_id', 'id');
+        return $this->hasMany(AssignedPoi::class, 'poi_id', 'id');
     }
   
 }

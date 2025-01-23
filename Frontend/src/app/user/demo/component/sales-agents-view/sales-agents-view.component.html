@@ -1,7 +1,7 @@
 <p-table #dt [value]="salesData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
-    [globalFilterFields]="['name','username','groupnames','created_at']">
+    [globalFilterFields]="['name','username','created_at']">
     <ng-template pTemplate="caption">
         <div class="table-header mb-4">
             <h3>{{ 'sales_agent_list' | translate}}</h3>
@@ -18,7 +18,7 @@
         <tr>
             <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
             <th pSortableColumn="username">{{ "username" | translate }} <p-sortIcon field="username"></p-sortIcon></th>
-            <th pSortableColumn="groupnames">{{ "groups" | translate }} <p-sortIcon field="groupnames"></p-sortIcon></th>
+            <!-- <th pSortableColumn="groupnames">{{ "groups" | translate }} <p-sortIcon field="groupnames"></p-sortIcon></th> -->
             <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
         </tr>
     </ng-template>
@@ -32,10 +32,10 @@
                 <span class="p-column-title">{{ "username" | translate }}</span>
                 <span class="image-text">{{data.username}}</span>
             </td>
-            <td>
+            <!-- <td>
                 <span class="p-column-title">{{ "groups" | translate }}</span>
                 {{ data.groupnames || ("unassigned" | translate)}}
-            </td>
+            </td> -->
             <td>
                 <span class="p-column-title">{{ "created_at" | translate }}</span>
                 <span class="image-text">{{ data.created_at | date }}</span>

@@ -11,6 +11,8 @@ import { SalesAgentsViewComponent } from './demo/component/sales-agents-view/sal
 import { POIsComponent } from './demo/component/pois/pois.component';
 import { PendingRequestComponent } from './demo/component/pendingrequest/pendingrequest.component';
 import { ReportsComponent } from './demo/component/reports/reports.component';
+import { RegayKarPlanComponent } from './demo/component/regay-kar-plan/regay-kar-plan.component'; 
+import { HistoryComponent } from './demo/component/history/history.component';
 const routes: Routes = [
   {
     path: '',
@@ -39,6 +41,16 @@ const routes: Routes = [
       {
         path: 'group',
         component: GroupComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'regaykar-plans',
+        component: RegayKarPlanComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'history',
+        component: HistoryComponent,
         canActivate:[authGuard]
       },
       {

@@ -11,20 +11,23 @@ import { MatDialog } from '@angular/material/dialog';
 import { Table } from 'primeng/table';
 import { ApiService } from 'src/app/user/services/api.service';
 import { Title } from '@angular/platform-browser';
-import { json } from 'stream/consumers';
+
 
 @Component({
-  selector: 'app-group',
-  templateUrl: './group.component.html',
-  styleUrls: ['./group.component.scss']
+  selector: 'app-regay-kar-plan',
+  templateUrl: './regay-kar-plan.component.html',
+  styleUrls: ['./regay-kar-plan.component.scss']
 })
-export class GroupComponent implements OnInit {
-  groupForm: FormGroup;
-  showgroup: boolean = false;
-  groupsData: any[] = []; 
-  groupEditForm!: FormGroup;
+export class RegayKarPlanComponent {
+  planForm: FormGroup;
+  isSubmitted = false;
+  today: Date;
+  showplan: boolean = false;
+  plansData: any[] = [];
+  planEditForm!: FormGroup;
   visible: boolean = false;
-  pois_options: any[];
+  sales_options: any[];
+  groups_options: any[];
   userId: any;
   @ViewChild('dt') dt: Table | undefined;
   constructor(
@@ -42,39 +45,44 @@ export class GroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle('xyz');
-    this.groupForm = this.fb.group({
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      pois_id: ['', [Validators.required]],
+    this.today = new Date();
+    this.planForm = this.fb.group({
+      groups_id: ['', [Validators.required]],
+      startdate: ['', [Validators.required]],
+      sale_agent_id: ['', [Validators.required]],
     });
 
-    this.groupEditForm = this.fb.group({
+    this.planEditForm = this.fb.group({
       id: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      pois_id: [[], Validators.required],
+      startdate:['', [Validators.required]],
+      sale_agent_id: ['', [Validators.required]],
     });
-
-    this.getPois();
     this.getGroups();
+    this.getSales();
+    this.getPlans();
   }
 
-  addGroup(): void {
-    if (this.groupForm.invalid) {
-      this.groupForm.markAllAsTouched();
+  createPlan(): void {
+    if (this.planForm.invalid) {
+      this.planForm.markAllAsTouched();
       this.spinner.hide();
       return;
-    } else if (this.groupForm.valid) {
+    } else if (this.planForm.valid) {
       this.spinner.show();
-      const data = this.groupForm.value;
-      this.api.addGroup(data).subscribe({
+      const data = this.planForm.value;
+      if (data.startdate) {
+        const adjustedDate = new Date(data.startdate);
+        adjustedDate.setDate(adjustedDate.getDate() + 1);
+        data.startdate = adjustedDate;
+      }
+      this.api.createPlan(data).subscribe({
         next: (response: any) => {
           this.spinner.hide();
           if (response && response.status) {
             this.toaster.success(this.translate.instant('group_created_success'), this.translate.instant('group'));
-            this.getGroups();
-            this.groupForm.reset();
-            this.showgroup = false;
+            this.getPlans();
+            this.planForm.reset();
+            this.showplan = false;
           } else {
             this.toaster.error(this.translate.instant('group_created_error'), this.translate.instant('group'));
           }
@@ -87,27 +95,27 @@ export class GroupComponent implements OnInit {
         }
       });
     } else {
-      this.groupForm.markAllAsTouched();
+      this.planForm.markAllAsTouched();
     }
   }
   
   resetForm() {
-    this.groupForm.reset();
+    this.planForm.reset();
   }
 
-  addUserForm() {
-    this.showgroup = true;
+  addNewPlan() {
+    this.showplan = true;
   }
   closeForm() {
-    this.showgroup = false;
+    this.showplan = false;
   }
 
-  getGroups(): void {
+  getPlans(): void {
     this.spinner.show();
-    this.api.getGroupList().subscribe({
+    this.api.getPlans().subscribe({
       next: (response: any) => {
         if (response && response.status) {
-          this.groupsData = response.data;
+          this.plansData = response.data;
         }
         this.spinner.hide();
       },
@@ -123,31 +131,36 @@ export class GroupComponent implements OnInit {
   }
 
   openEditDialog(data: any): void {
-    const poisIds = JSON.parse(data.pois_id);
-    this.groupEditForm.patchValue({
-      name: data.name,
-      description: data.description,
+    this.planEditForm.patchValue({
+      startdate:data.activation_date,
       id: data.id,
-      pois_id: poisIds,
+      sale_agent_id:data.sale_agent_id
     });
 
     this.visible = true;
   }
 
-  EditGroupUser(): void {
-    if (this.groupEditForm.invalid) {
-      this.groupEditForm.markAllAsTouched();
+  updatePlan(): void {
+    if (this.planEditForm.invalid) {
+      this.planEditForm.markAllAsTouched();
       return;
     }
-    if (this.groupEditForm.valid) {
+    if (this.planEditForm.valid) {
       this.spinner.show();
-      const data = this.groupEditForm.value;
-      this.api.updateGroup(data).subscribe({
+      const data = this.planEditForm.value;
+      if (data.startdate) {
+        const adjustedDate = new Date(data.startdate);
+        if (adjustedDate.getHours() === 0 && adjustedDate.getMinutes() === 0) {
+          adjustedDate.setDate(adjustedDate.getDate() + 1);
+          data.startdate = adjustedDate;
+        }
+      }
+      this.api.updatePlan(data).subscribe({
         next: (response: any) => {
           if (response.status) {
             this.visible = false;
-            this.groupEditForm.reset();
-            this.getGroups();
+            this.planEditForm.reset();
+            this.getPlans();
             this.toaster.success(this.translate.instant('group_updated_success'), this.translate.instant('group'));
           } else {
             this.toaster.error(this.translate.instant('group_updated_error') || this.translate.instant('try_again'), this.translate.instant('group'));
@@ -164,7 +177,6 @@ export class GroupComponent implements OnInit {
   }
 
   deleteRecords(data: any): void {
-
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
@@ -174,30 +186,32 @@ export class GroupComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        this.api.deleteGroupUser(data.id).subscribe({
+        this.spinner.show();
+        this.api.deletePlan(data.id).subscribe({
           next: (response: any) => {
             if (response.status) {
-              this.getGroups();
-              this.toaster.success(this.translate.instant('user_deleted_success'), this.translate.instant('group'));
+              this.getPlans();
+              this.toaster.success(this.translate.instant('plan_deleted_success'), this.translate.instant('plan'));
             } else {
-              this.toaster.error(this.translate.instant('user_deleted_error') || this.translate.instant('try_again'), this.translate.instant('group'));
+              this.toaster.error(this.translate.instant('plan_deleted_error') || this.translate.instant('try_again'), this.translate.instant('plan'));
             }
             this.spinner.hide();
           },
           error: (err) => {
             this.spinner.hide();
-            this.toaster.error(this.translate.instant('user_deleted_error_ex') || this.translate.instant('try_again'), this.translate.instant('group'));
+            this.toaster.error(this.translate.instant('plan_deleted_error_ex') || this.translate.instant('try_again'), this.translate.instant('plan'));
             console.error(err);
           }
         });
       }
     });
   }
-  getPois(): void {
-    this.api.getAllPoisOptionsList().subscribe({
+
+  getGroups(): void {
+    this.api.getGroupList().subscribe({
       next: (response: any) => {
         if (response && response.status) {
-          this.pois_options = response.data;
+          this.groups_options = response.data;
         }
       },
       error: (err) => {
@@ -206,4 +220,18 @@ export class GroupComponent implements OnInit {
       }
     });
   }
+
+  getSales() {
+    this.api.getSalesOptionsList().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.sales_options = response.data;
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+  
 }

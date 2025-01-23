@@ -24,7 +24,7 @@
     "username":"Username",
     "username_required":"Username is required",
     "password_length_error":"Password must be at least 8 characters",
-    "strong_password_error":"Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character",
+    "strong_password_error":"Password must contain at least one uppercase letter, one lowercase letter, one digit",
     "mobile_required":"Mobile number is required",
     "mobile_length_required":"Mobile number must be 10 digits",
     "api_key":"User Access Key",
@@ -170,5 +170,16 @@
     "username_unique_error":"Username already taken.",
     "api_key_unique_error":"Api key is already exiest.",
     "cancel":"Cancel",
-    "pendingrequest":"Pending Request"
+    "pendingrequest":"Pending Request",
+    "activation_date":"Activation Date",
+    "activation_date_required":"Activation Date Required",
+    "poi_updated_success":"Poi Updated successfully",
+    "poi_updated_error":"Poi could not be updated",
+    "poi_updated_error_ex":"An error occurred while updating in",
+    "regaykar_plans":"RegayKar Plans",
+    "current_plans":"RegayKar Plans List",
+    "create_new_plan":"Create New Plan",
+    "group_name":"Group Name",
+    "group_required":"Group is Required",
+    "history":"History"
 }

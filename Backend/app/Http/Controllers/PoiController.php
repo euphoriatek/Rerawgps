@@ -45,6 +45,35 @@ class PoiController extends Controller
             ], 500);
         }
     }
+    public function updatePoi(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|exists:pois,id',
+                'name' => 'required|string',
+                'description' => 'required|string'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'errors' => $validator->errors(),
+                ], 400);
+            }
+            $input = $request->all();
+            $poi = Poi::find($input['id']);
+            $poi->update(['name' => $input['name'],'description' => $input['description']]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Poi updated successfully!',
+                'data' => $poi,
+            ], 200);
+        }catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
     public function getPendingPois()
     {
         try {

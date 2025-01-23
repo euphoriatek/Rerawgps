@@ -42,7 +42,9 @@ import { POIsComponent } from './demo/component/pois/pois.component';
 import { PendingRequestComponent } from './demo/component/pendingrequest/pendingrequest.component';
 import { ReportsComponent } from './demo/component/reports/reports.component';
 import { MatSelectModule } from '@angular/material/select';  // For mat-select
-import { MatOptionModule } from '@angular/material/core'; 
+import { MatOptionModule } from '@angular/material/core';
+import { RegayKarPlanComponent } from './demo/component/regay-kar-plan/regay-kar-plan.component';
+import { HistoryComponent } from './demo/component/history/history.component'; 
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -61,7 +63,9 @@ import { MatOptionModule } from '@angular/material/core';
     POIsComponent,
     PendingRequestComponent,
     ReportsComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    RegayKarPlanComponent,
+    HistoryComponent
   ],
   imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule],
   providers: [NavigationItem,

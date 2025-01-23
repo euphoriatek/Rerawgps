@@ -42,6 +42,11 @@ class User extends Authenticatable
         'password'
     ];
 
+    public function isAdmin()
+    {
+        return $this->role === 'superadmin';
+    }
+
     public function assigned_servers()
     {
         return $this->hasMany(AssigendServer::class,'user_id','id');

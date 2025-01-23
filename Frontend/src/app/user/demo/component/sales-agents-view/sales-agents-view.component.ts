@@ -25,10 +25,10 @@ export class SalesAgentsViewComponent {
         if (response && response.status) {
           if(response.status){
             this.salesData = response.data;
-            this.salesData = response.data.map((sale: any) => {
-              sale.groupnames = this.getGroupNames(sale.group);
-              return sale;
-            });
+            // this.salesData = response.data.map((sale: any) => {
+            //   sale.groupnames = this.getGroupNames(sale.group);
+            //   return sale;
+            // });
           }
           this.spinner.hide();
         }

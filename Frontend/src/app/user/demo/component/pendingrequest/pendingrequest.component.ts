@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class PendingRequestComponent {
   pendingPois: any[] = [];
+  poiEditForm:FormGroup;
    poisForm: FormGroup;
     isSubmitted = false;
     today: Date;
@@ -21,10 +22,15 @@ export class PendingRequestComponent {
     usersData: any[] = [];
     visible: boolean = false;
   @ViewChild('dt') dt: Table | undefined;
-  constructor(private api: ApiService, public spinner: NgxSpinnerService, private translate: TranslateService,public toaster: ToasterService,private dialog: MatDialog) { }
+  constructor(private api: ApiService, public spinner: NgxSpinnerService, private translate: TranslateService,public toaster: ToasterService,private dialog: MatDialog, public fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.loadPendingPois();
+    this.poiEditForm = this.fb.group({
+      id: ['', [Validators.required]],
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]]
+    });
   }
   loadPendingPois(): void {
     this.spinner.show();
@@ -102,5 +108,42 @@ export class PendingRequestComponent {
         });
       }
     });
+  }
+
+  openEditDialog(data: any): void {
+    this.poiEditForm.patchValue({
+      name: data.name,
+      description: data.description,
+      id: data.id
+    });
+    this.visible = true;
+  }
+  EditPoi(){
+    if (this.poiEditForm.invalid) {
+      this.poiEditForm.markAllAsTouched();
+      return;
+    }
+    if (this.poiEditForm.valid) {
+      this.spinner.show();
+      const data = this.poiEditForm.value;
+      this.api.editPoi(data).subscribe({
+        next: (response: any) => {
+          if (response.status === true) {
+            this.visible = false;
+            this.poiEditForm.reset();
+            this.loadPendingPois();
+            this.toaster.success(this.translate.instant('poi_updated_success'), this.translate.instant('poi'));
+          } else {
+            this.toaster.error(this.translate.instant('poi_updated_error') || this.translate.instant('try_again'), this.translate.instant('poi'));
+          }
+          this.spinner.hide();
+        },
+        error: (err) => {
+          this.spinner.hide();
+          this.toaster.error(this.translate.instant('poi_updated_error_ex') || this.translate.instant('try_again'), this.translate.instant('poi'));
+          console.error(err);
+        }
+      });
+    }
   }
 }

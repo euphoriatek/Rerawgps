@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ApiService } from 'src/app/admin/services/api.service';
 import { AdminCookiesService } from 'src/app/admin/services/admincookies.service';
 import { CommonModule } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -16,9 +17,10 @@ export default class DashboardComponent {
   usersData: any;
   servers:any;
   role:string;
-  constructor(private api: ApiService, public adminCookieService:AdminCookiesService) { }
+  constructor(private api: ApiService, public adminCookieService:AdminCookiesService,private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('RegayKar | Dashboard');
     this.role = this.adminCookieService.getCookie('AdminUser')?.role;
     if(this.role === "superadmin"){
       this.loadDashboard();

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -32,7 +33,8 @@ export class UsersComponent implements OnInit {
     private toaster: ToasterService,
     private translate: TranslateService,
     public route: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cookiesService: UserCookiesService
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +47,8 @@ export class UsersComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(8),
-          Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$')
+
         ],
       ],
       mobile_number: [
@@ -65,7 +68,7 @@ export class UsersComponent implements OnInit {
         '',
         [
           Validators.minLength(8),
-          Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$')
         ],
       ],
       mobile_number: [
@@ -279,6 +282,25 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  loginAsUser(data:any){
+    this.api.loginAsUser(data.id).subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          const UserInfo = response.data;
+          this.cookiesService.setCookie('CurrentUser', UserInfo);
+          // this.route.navigate(['/dashboard/default']);
+          window.open('/dashboard/default', '_blank');
+          this.toaster.success(this.translate.instant('login_success'), this.translate.instant('login'));
+        } else {
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        this.toaster.error(this.translate.instant('try_again'), this.translate.instant('user'));
+        console.error(err);
+      }
+    });
+  }
 }
 
 

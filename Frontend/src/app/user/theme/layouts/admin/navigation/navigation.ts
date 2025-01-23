@@ -63,6 +63,20 @@ const NavigationItems = [
     icon: 'fa-solid fa-people-group'
   },
   {
+    id: 'regaykar_plans',
+    title: 'regaykar_plans',
+    type: 'item',
+    url: '/regaykar-plans',
+    icon: 'fa-solid fa-people-group'
+  },
+  {
+    id: 'history',
+    title: 'history',
+    type: 'item',
+    url: '/history',
+    icon: 'fa-solid fa-people-group'
+  },
+  {
     id: 'reports',
     title: 'reports',
     type: 'item',

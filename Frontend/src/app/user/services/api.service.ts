@@ -39,6 +39,9 @@ export class ApiService {
   addPois(data: any) {
     return this.http.post(this.BaseUrl+'pois', data);
   }
+  editPoi(data: any) {
+    return this.http.post(this.BaseUrl+'edit-poi', data);
+  }
   getAllPois(){
     return this.http.get(this.BaseUrl + 'pois');
   }
@@ -47,6 +50,22 @@ export class ApiService {
   }
   syncPois(){
     return this.http.get(this.BaseUrl + 'sync-data');;
+  }
+  // Plans
+  getPlans(){
+    return this.http.get(this.BaseUrl + 'get-regaykar-plans');
+  }
+  createPlan(data:any){
+    return this.http.post(this.BaseUrl + 'create-plan', data);
+  }
+  updatePlan(data:any){
+    return this.http.post(this.BaseUrl + 'update-plan', data);
+  }
+  deletePlan(id: number) {
+    return this.http.delete(this.BaseUrl + 'delete-plan/' + id);
+  }
+  getHistory(){
+    return this.http.get(this.BaseUrl + 'get-history');
   }
   
 }

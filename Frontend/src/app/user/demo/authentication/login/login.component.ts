@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ApiService } from 'src/app/user/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -23,11 +24,12 @@ export default class LoginComponent {
   defaultLanguage: any;
   submitted = true;
   constructor(public cookiesService: UserCookiesService, public route: Router, public fb: FormBuilder, private translate: TranslateService, public spinner: NgxSpinnerService,
-    public api: ApiService, public toaster: ToasterService
+    public api: ApiService, public toaster: ToasterService,private titleService: Title
   ) {
 
   }
   ngOnInit(): void {
+    this.titleService.setTitle('RegayKar | Login');
     this.LoginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', Validators.required],

@@ -11,6 +11,7 @@ import { SharedModule } from 'src/app/user/theme/shared/shared.module';
 import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { Title } from '@angular/platform-browser';
 @Component({   
   selector: 'app-dashboard',
   standalone: true,
@@ -21,9 +22,10 @@ import { TranslateModule } from '@ngx-translate/core';
 export default class DashboardComponent implements OnInit {
   salesData: any;
   // constructor
-  constructor(public spinner: NgxSpinnerService, public api: ApiService) {
+  constructor(public spinner: NgxSpinnerService, public api: ApiService,private titleService: Title) {
   }
   // life cycle event
   ngOnInit(): void {
+    this.titleService.setTitle('RegayKar | Dashboard');
   }
 }
