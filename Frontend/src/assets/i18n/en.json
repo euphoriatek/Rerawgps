@@ -168,7 +168,7 @@
     "group_updated_error":"Group could not be updated",
     "group_updated_error_ex":"An error occurred while updating in",
     "username_unique_error":"Username already taken.",
-    "api_key_unique_error":"Api key is already exiest.",
+    "api_key_unique_error":"User Access Key is already exiest.",
     "cancel":"Cancel",
     "pendingrequest":"Pending Request",
     "activation_date":"Activation Date",

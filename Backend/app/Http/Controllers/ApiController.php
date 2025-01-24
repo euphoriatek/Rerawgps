@@ -58,7 +58,8 @@ class ApiController extends Controller
                 'user_api_hash' => $input['api_key'],
             ]);
             $response = $masterPortsResponse->json() ?? [];
-            if($response['status']==0){
+            
+            if(isset($response['status']) && $response['status'] === 0) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Invalid Api key.',
