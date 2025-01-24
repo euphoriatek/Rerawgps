@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 class ApiController extends Controller
 {
     /**
@@ -51,6 +52,19 @@ class ApiController extends Controller
         }
 
         try {
+            $getServer=Servers::find($input['server_id']);
+            $masterPortsResponse = Http::get($getServer->server_url . '/api/get_user_data', [
+                'lang' => 'en',
+                'user_api_hash' => $input['api_key'],
+            ]);
+            $response = $masterPortsResponse->json() ?? [];
+            if($response['status']==0){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid Api key.',
+                    'type' => 'invalid_key'
+                ], 200);
+            }
             $existingUser = User::withTrashed()->where('username', $input['username'])->first();
             if ($existingUser) {
                 if($existingUser->deleted_at){

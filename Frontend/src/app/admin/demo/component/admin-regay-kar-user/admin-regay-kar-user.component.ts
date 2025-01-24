@@ -109,6 +109,8 @@ usersData: any;
                 this.toaster.error(this.translate.instant('username_unique_error'), this.translate.instant('user'));
               }else if(response.type == "api_key"){
                 this.toaster.error(this.translate.instant('api_key_unique_error'), this.translate.instant('user'));
+              }else if(response.type == "invalid_key"){
+                this.toaster.error(this.translate.instant('api_key_invalid_error'), this.translate.instant('user'));
               }else{
                 this.toaster.error(this.translate.instant('user_added_error'), this.translate.instant('user'));
               }
