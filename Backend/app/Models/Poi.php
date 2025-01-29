@@ -12,6 +12,8 @@ class Poi extends Model
         'regaykar_user_id',
         'description',
         'map_icon_id',
+        'group_id',
+        'group_name',
         'active',
         'status',
         'coordinates'

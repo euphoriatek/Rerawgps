@@ -77,4 +77,22 @@ export class SalesAgentsComponent {
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
+
+  updateStatus(user_id: number) {
+    this.api.updateStatusSalesAgent(user_id).subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.toaster.success(this.translate.instant('sales_agent_updated_success'), this.translate.instant('user'));
+        } else {
+          this.toaster.error(this.translate.instant('try_again'), this.translate.instant('user'));
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        this.toaster.error(this.translate.instant('try_again'), this.translate.instant('user'));
+        console.error(err);
+      }
+    });
+  }
+
 }

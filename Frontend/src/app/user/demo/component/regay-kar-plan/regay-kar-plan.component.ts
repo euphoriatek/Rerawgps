@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Table } from 'primeng/table';
 import { ApiService } from 'src/app/user/services/api.service';
 import { Title } from '@angular/platform-browser';
-
+import { DatashareService } from 'src/app/user/services/datashare.service';
 
 @Component({
   selector: 'app-regay-kar-plan',
@@ -29,6 +29,7 @@ export class RegayKarPlanComponent {
   sales_options: any[];
   groups_options: any[];
   userId: any;
+  sharedData:any;
   @ViewChild('dt') dt: Table | undefined;
   constructor(
     public route: Router,
@@ -40,7 +41,8 @@ export class RegayKarPlanComponent {
     private translate: TranslateService,
     private dialog: MatDialog,
     public UserCookiesService: UserCookiesService,
-    private titleService: Title
+    private titleService: Title,
+    private dataShareService:DatashareService
   ) { }
 
   ngOnInit(): void {
@@ -60,6 +62,16 @@ export class RegayKarPlanComponent {
     this.getGroups();
     this.getSales();
     this.getPlans();
+    this.dataShareService.data.subscribe(data => { 
+      if(data){
+        this.sharedData = data; 
+        this.showplan = true;
+        this.planForm.patchValue({
+          groups_id:[data.group_id],
+          sale_agent_id:data.sale_agent_id
+        });
+      }
+     });
   }
 
   createPlan(): void {

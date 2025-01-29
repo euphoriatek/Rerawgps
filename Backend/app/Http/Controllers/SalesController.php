@@ -221,4 +221,37 @@ class SalesController extends Controller
             'data' => $saleData,
         ], 200);
     }
+
+    public function  updateSalesAgentStatus(Request $request){
+        try {
+            $input = $request->input('user_id');
+            if($input){
+                $salesAgent = SalesModel::find($input);
+                if (!$salesAgent) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'SalesAgent not found.',
+                    ], 404);
+                }
+                $salesAgent->update(['is_active' => $salesAgent->is_active == 1 ? 0 : 1]);
+    
+                return response()->json([
+                    'status' => true,
+                    'message' => 'SalesAgent status updated successfully.'
+                ], 200);
+    
+            }else{
+                return response()->json([
+                        'status' => false,
+                        'message' => 'SalesAgent id is required.',
+                    ], 404);
+            }
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'An error occurred while updating data.',
+                    'error' => $e->getMessage(),
+                ], 500);
+            }
+    }
 }

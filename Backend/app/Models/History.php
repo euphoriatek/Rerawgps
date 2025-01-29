@@ -15,7 +15,8 @@ class History extends Model
         'sale_agent_id',
         'pois_id',
         'user_id',
-        'plan_id'
+        'plan_id',
+        'activation_date'
     ];
     public function pois()
     {

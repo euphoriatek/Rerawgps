@@ -16,7 +16,8 @@ class RegayKarPlans extends Model
         'group_id',
         'user_id',
         'sale_agent_id',
-        'activation_date'
+        'activation_date',
+        'status'
     ];
 
     public function group()

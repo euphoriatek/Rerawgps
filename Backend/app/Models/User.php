@@ -44,7 +44,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->role === 'superadmin';
+        return $this->role === 'superadmin' || $this->role === 'admin' ;
     }
 
     public function assigned_servers()

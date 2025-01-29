@@ -33,6 +33,7 @@
                     field="user.username"></p-sortIcon></th>
             <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon>
             </th>
+            <th>{{ "active" | translate }}</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>
@@ -53,6 +54,7 @@
                 <span class="p-column-title">{{ "created_at" | translate }}</span>
                 <span class="image-text">{{ data.created_at | date }}</span>
             </td>
+            <td><mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle></td>
         </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">

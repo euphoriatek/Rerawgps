@@ -119,10 +119,103 @@ class PoiController extends Controller
         }
     }
 
+    public function syncData()
+    {
+        try {
+            $user = Auth::user();
+            if (!$user || $user->role != "user") {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized. Please log in.',
+                ], 401);
+            }
+            $user = User::with('server')->find($user->id);
+            $masterPortsResponse = Http::get($user->server->server_url . '/api/get_user_map_icons', [
+                'lang' => 'en',
+                'user_api_hash' => $user->api_key,
+            ]);
+            $mapIcons = $masterPortsResponse->json()['items']['mapIcons'] ?? [];
+            // Fetch the group data from the provided external API
+            $groupResponse = Http::get($user->server->server_url . '/api/pois_groups', [
+                'lang' => 'en',
+                'user_api_hash' => $user->api_key, 
+            ]);
+            $groups = $groupResponse->json() ?? [];
+    
+            foreach ($mapIcons as $mapIcon) {
+                $group_id = isset($mapIcon['group_id']) ? $mapIcon['group_id'] : 0;
+                $groupTitle = null;
+            
+                foreach ($groups as $group) {
+                    // Check if 'id' exists in $group
+                    if (isset($group['id']) && $group['id'] == $group_id) {
+                        $groupTitle = $group['title'];
+                        break;
+                    }
+                }
+            
+                if (!isset($mapIcon['id'])) {
+                    continue;
+                }
+            
+                $existingPoi = Poi::where('poi_id', $mapIcon['id'])->first();
+                if ($existingPoi) {
+                    if ($existingPoi['updated_at'] != $mapIcon['updated_at']) {
+                        $data = [
+                            'poi_id' => $mapIcon['id'],
+                            'regaykar_user_id' => $user->id,
+                            'map_icon_id' => $mapIcon['map_icon_id'],
+                            'group_id' => $group_id,
+                            'group_name' => $groupTitle,
+                            'name' => $mapIcon['name'],
+                            'description' => $mapIcon['description'],
+                            'coordinates' => $mapIcon['coordinates'],
+                            'active' => $mapIcon['active'],
+                            'created_at' => $mapIcon['created_at'],
+                            'updated_at' => $mapIcon['updated_at']
+                        ];
+                        $existingPoi->update($data);
+                    }
+                } else {
+                    Poi::create([
+                        'poi_id' => $mapIcon['id'],
+                        'regaykar_user_id' => $user->id,
+                        'map_icon_id' => $mapIcon['map_icon_id'],
+                        'group_id' => $group_id,
+                        'group_name' => $groupTitle,
+                        'name' => $mapIcon['name'],
+                        'description' => $mapIcon['description'],
+                        'coordinates' => $mapIcon['coordinates'],
+                        'active' => $mapIcon['active'],
+                        'status' => 'approved',
+                        'created_at' => $mapIcon['created_at'],
+                        'updated_at' => $mapIcon['updated_at'],
+                    ]);
+                }
+            }
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Data sync Successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while fetching POIs: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
     // public function syncData()
     // {
-    //     $users = User::with('server')->where('role', 'user')->get();
-    //     foreach ($users as $user) {
+    //     try {
+    //         $user = Auth::user();
+    //         if (!$user || $user->role != "user") {
+    //             return response()->json([
+    //                 'status' => false,
+    //                 'message' => 'Unauthorized. Please log in.',
+    //             ], 401);
+    //         }
+    //         $user = User::with('server')->find($user->id);
     //         $masterPortsResponse = Http::get($user->server->server_url . '/api/get_user_map_icons', [
     //             'lang' => 'en',
     //             'user_api_hash' => $user->api_key,
@@ -160,67 +253,16 @@ class PoiController extends Controller
     //                 ]);
     //             }
     //         }
+    //         return response()->json([
+    //             'status' => true,
+    //             'message' => 'Data sync Successfully',
+    //         ], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'error' => 'An error occurred while fetching POIs: ' . $e->getMessage(),
+    //         ], 500);
     //     }
     // }
-
-    public function syncData()
-    {
-        try {
-            $user = Auth::user();
-            if (!$user || $user->role != "user") {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Unauthorized. Please log in.',
-                ], 401);
-            }
-            $user = User::with('server')->find($user->id);
-            $masterPortsResponse = Http::get($user->server->server_url . '/api/get_user_map_icons', [
-                'lang' => 'en',
-                'user_api_hash' => $user->api_key,
-            ]);
-            $mapIcons = $masterPortsResponse->json()['items']['mapIcons'] ?? [];
-            foreach ($mapIcons as $mapIcon) {
-                $existingPoi = Poi::where('poi_id', $mapIcon['id'])->first();
-                if ($existingPoi) {
-                    if($existingPoi['updated_at'] != $mapIcon['updated_at']){
-                        $data = [
-                            'poi_id' => $mapIcon['id'],
-                            'regaykar_user_id' => $user->id,
-                            'map_icon_id' => $mapIcon['map_icon_id'],
-                            'name' => $mapIcon['name'],
-                            'description' => $mapIcon['description'],
-                            'coordinates' => $mapIcon['coordinates'],
-                            'active' => $mapIcon['active'],
-                            'created_at' => $mapIcon['created_at'],
-                            'updated_at' => $mapIcon['updated_at']
-                        ];
-                        $existingPoi->update($data);
-                    }
-                } else {
-                    Poi::create([
-                        'poi_id' => $mapIcon['id'],
-                        'regaykar_user_id' => $user->id,
-                        'map_icon_id' => $mapIcon['map_icon_id'],
-                        'name' => $mapIcon['name'],
-                        'description' => $mapIcon['description'],
-                        'coordinates' => $mapIcon['coordinates'],
-                        'active' => $mapIcon['active'],
-                        'status' => 'approved',
-                        'created_at' => $mapIcon['created_at'],
-                        'updated_at' => $mapIcon['updated_at'],
-                    ]);
-                }
-            }
-            return response()->json([
-                'status' => true,
-                'message' => 'Data sync Successfully',
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'An error occurred while fetching POIs: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
 
     public function updatePoiStatus(Request $request)
     {

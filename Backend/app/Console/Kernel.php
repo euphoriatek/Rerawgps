@@ -17,7 +17,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('update:plans')
-                  ->hourly();
+         ->everyMinute()
+         ->sendOutputTo(storage_path('logs/command_output.log'));
+        // $schedule->command('update:plans')
+        //           ->hourly();
     }
 
     /**

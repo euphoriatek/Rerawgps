@@ -570,6 +570,8 @@ class ApiController extends Controller
         }
     }
 
+    
+
     // Change Password for superadmin
     public function changePassword(Request $request)
     {

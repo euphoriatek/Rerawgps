@@ -63,8 +63,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // List all Sales
     Route::get('/admin/get-objects-list', [SalesController::class, 'getObjectsList'])->middleware('role:superadmin');
     
-    Route::post('/admin/masquerade/{userId}', [ApiController::class, 'masquerade'])->middleware('role:superadmin');
 
+    Route::post('/admin/masquerade/{userId}', [ApiController::class, 'masquerade'])->middleware('auth:users');
+    
     // Common API for super Admin and admin
     // RegayKar user opration
     Route::post('/admin/add-regaykar-user', [ApiController::class, 'register'])->middleware('auth:users');
@@ -90,7 +91,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/admin/get-admin-regaykar-usrs', [ApiController::class, 'GetAdminRegaykar'])->middleware('role:admin');
     // Sale agent List
     Route::get('/admin/get-admin-objects-list', [SalesController::class, 'getAdminObjectsList'])->middleware('role:admin');
-    
+    Route::post('/admin/update-sales-agent-status', [SalesController::class, 'updateSalesAgentStatus'])->middleware('role:admin');
     
     // --------------
     // RegayKar User

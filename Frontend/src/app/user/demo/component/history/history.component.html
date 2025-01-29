@@ -29,10 +29,11 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries "
         {{ "pois" | translate }} 
         <p-sortIcon field="pois"></p-sortIcon>
      </th>
-     <th pSortableColumn="created_at">
-        {{ "created_at" | translate }} 
-        <p-sortIcon field="created_at"></p-sortIcon>
+     <th pSortableColumn="activation_date">
+        {{ "activation_date" | translate }} 
+        <p-sortIcon field="activation_date"></p-sortIcon>
      </th>
+     <th>{{ "action" | translate }} </th>
    </tr>
 </ng-template>
 <ng-template pTemplate="body" let-data>
@@ -40,7 +41,8 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries "
        <td>{{data?.group?.name}}</td>
        <td>{{data?.sales_agent?.name}}</td>
        <td>{{data?.pois}}</td>
-       <td>{{data.created_at | date}}</td>
+       <td>{{data.activation_date | date}}</td>
+       <td><button class="btn editbtn" (click)="ReActivePlan(data)"><i class="fas fa-undo"></i></button></td>
     </tr>
  </ng-template>
  <ng-template pTemplate="emptymessage">

@@ -9,6 +9,7 @@ import { Table } from 'primeng/table';
 import { ConfirmDialogComponent } from 'src/app/admin/services/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminCookiesService } from 'src/app/admin/services/admincookies.service';
+import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 @Component({
   selector: 'app-admin-regay-kar-user',
   templateUrl: './admin-regay-kar-user.component.html',
@@ -33,7 +34,8 @@ usersData: any;
     private translate: TranslateService,
     public route: Router,
     private dialog: MatDialog,
-    private adminCookiesService:AdminCookiesService
+    private adminCookiesService:AdminCookiesService,
+    private userCookiesService:UserCookiesService
   ) { }
 
   ngOnInit(): void {
@@ -262,6 +264,27 @@ usersData: any;
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
+
+  loginAsUser(data:any){
+    this.api.loginAsUser(data.id).subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          const UserInfo = response.data;
+          this.userCookiesService.setCookie('CurrentUser', UserInfo);
+          // this.route.navigate(['/dashboard/default']);
+          window.open('/dashboard/default', '_blank');
+          this.toaster.success(this.translate.instant('login_success'), this.translate.instant('login'));
+        } else {
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        this.toaster.error(this.translate.instant('try_again'), this.translate.instant('user'));
+        console.error(err);
+      }
+    });
+  }
+  
 }
 
 export interface Server

@@ -14,7 +14,7 @@ class UpdatePlans extends Command
      *
      * @var string
      */
-    protected $signature = 'update-plans';
+    protected $signature = 'update:plans';
 
     /**
      * The console command description.
@@ -35,14 +35,15 @@ class UpdatePlans extends Command
             $findPlan = RegayKarPlans::find($plan->id);
             $poi = AssignedPoi::where('group_id', $findPlan->group_id)->pluck('poi_id')->toArray();
             $findPlan->update([
-                'status' => 1
+                'status' => 0
             ]);
             $createHistory =History::create([
                 'group_id' => $findPlan->group_id,
                 'sale_agent_id' => $findPlan->sale_agent_id,
                 'pois_id' =>json_encode($poi),
                 'plan_id'=>$plan->id,
-                'user_id' =>$plan->user_id
+                'user_id' =>$plan->user_id,
+                'activation_date' =>$plan->activation_date
             ]);
          }
        }

@@ -164,6 +164,7 @@
         <button class="btn viewbtn" [routerLink]="['/admin/regayuser-view', data.id]"><i
             class="fa-solid fa-eye"></i></button>
         <button class="btn deletebtn" (click)="deleteRow(data)"><i class="fa-solid fa-trash"></i></button>
+        <button title="Login with User" class="btn deletebtn" (click)="loginAsUser(data)"><i class="fa-solid fa-mask"></i></button>
       </td>
     </tr>
   </ng-template>

@@ -104,6 +104,9 @@ export class ApiService {
     return this.http.post(this.AdminBaseUrl + 'change-password', data);
   }
 
+  updateStatusSalesAgent(user_id:number){
+    return this.http.post(this.AdminBaseUrl + 'update-sales-agent-status', {user_id:user_id});
+  }
 
   // Admin Api
   getAdminServers() {

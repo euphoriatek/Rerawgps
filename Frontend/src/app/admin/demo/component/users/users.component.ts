@@ -284,7 +284,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  loginAsUser(data:any){
+loginAsUser(data:any){
     this.api.loginAsUser(data.id).subscribe({
       next: (response: any) => {
         if (response && response.status) {

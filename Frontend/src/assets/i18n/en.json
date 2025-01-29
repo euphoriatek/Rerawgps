@@ -182,5 +182,9 @@
     "group_name":"Group Name",
     "group_required":"Group is Required",
     "history":"History",
+<<<<<<< Updated upstream
     "api_key_invalid_error":"User Access Key is Invalid"
+=======
+    "sales_agent_updated_success":"Sales Agent Status Updated successfully!"
+>>>>>>> Stashed changes
 }
