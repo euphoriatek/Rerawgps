@@ -57,7 +57,7 @@
   <p-table #dt [value]="groupsData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
   [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries " [filterDelay]="0"
-  [globalFilterFields]="['name','description','created_at']">
+  [globalFilterFields]="['name','poisNames','created_at']">
   <ng-template pTemplate="caption">
      <div class="table-header mb-4">
         <h3>{{ 'group_list' | translate}}</h3>
@@ -80,9 +80,9 @@
            {{ "name" | translate }} 
            <p-sortIcon field="name"></p-sortIcon>
         </th>
-        <th pSortableColumn="description">
-         {{ "description" | translate }} 
-           <p-sortIcon field="description"></p-sortIcon>
+        <th pSortableColumn="poisNames">
+         {{ "pois" | translate }} 
+           <p-sortIcon field="poisNames"></p-sortIcon>
         </th>
         <th pSortableColumn="created_at">
           {{ "created_at" | translate }} 
@@ -94,7 +94,7 @@
   <ng-template pTemplate="body" let-data>
      <tr class="p-selectable-row">
         <td>{{data.name}}</td>
-        <td>{{data.description}}</td>
+        <td>{{data.poisNames}}</td>
         <td>{{data.created_at | date}}</td>
         <td>
            <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>

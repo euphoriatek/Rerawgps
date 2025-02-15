@@ -121,7 +121,7 @@
     "groups":"Groups",
     "description":"Description",
     "showing_first_to_last_of_totalRecords_entries":"Showing {first} to {last} of {totalRecords} Entries",
-    "saleagent":"Sales Agent",
+    "salesagent":"Sales Agent",
     "description_required":"Description is Required",
     "filter_by_regaykar":"Filter by RegayKar user",
     "filter_by_url":"Filter by url",
@@ -182,9 +182,7 @@
     "group_name":"Group Name",
     "group_required":"Group is Required",
     "history":"History",
-<<<<<<< Updated upstream
+    "history_list":"History List",
     "api_key_invalid_error":"User Access Key is Invalid"
-=======
-    "sales_agent_updated_success":"Sales Agent Status Updated successfully!"
->>>>>>> Stashed changes
+
 }

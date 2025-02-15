@@ -16,7 +16,7 @@
   <ng-template pTemplate="header">
       <tr>
           <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
-          <th pSortableColumn="description">{{ "description" | translate }} <p-sortIcon field="description"></p-sortIcon></th>
+          <!-- <th pSortableColumn="description">{{ "description" | translate }} <p-sortIcon field="description"></p-sortIcon></th> -->
           <th pSortableColumn="lat">{{ "lat" | translate }} <p-sortIcon field="lat"></p-sortIcon></th>
           <th pSortableColumn="lng">{{ "lng" | translate }} <p-sortIcon field="lng"></p-sortIcon></th>
           <th pSortableColumn="groups">{{ "groups" | translate }} <p-sortIcon field="groups"></p-sortIcon></th>
@@ -25,7 +25,7 @@
   <ng-template pTemplate="body" let-data>
       <tr class="p-selectable-row">
           <td>{{data.name}}</td>
-          <td>{{data.description}}</td>
+          <!-- <td>{{data.description}}</td> -->
           <td>{{getLat(data.coordinates)}}</td>
           <td>{{getLng(data.coordinates)}}</td>
           <td>{{ data.groupNames || ("unassigned" | translate) }}</td>

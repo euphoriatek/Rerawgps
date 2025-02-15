@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RegayKarPlans;
 use DB;
+use App\Models\History;
 use App\Models\AssignedPoi;
 use App\Models\Group;
 use Illuminate\Http\Request;
@@ -159,7 +160,35 @@ class RegayKarPlansController extends Controller
             ], 500);
         }
     }
-    
+    // public function moveToHistory(Request $request)
+    // {
+    //     $today = Carbon::today()->toDateString();
+    //     $plans = RegayKarPlans::where('activation_date', '<=', $today)->get();
 
+    //     if ($plans->isEmpty()) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'No records found to move.',
+    //         ], 404);
+    //     }
+    //     foreach ($plans as $plan) {
+    //         $pois_id = json_decode($plan->pois_id);
+    //         History::create([
+    //             'user_id' => $plan->user_id,
+    //             'plan_id' => $plan->id,
+    //             'group_id' => $plan->group_id,
+    //             'sale_agent_id' => $plan->sale_agent_id,
+    //             'pois_id' => json_encode($pois_id),
+    //             'activation_date' => $plan->activation_date,
+    //             'created_at' => $plan->created_at,
+    //             'updated_at' => $plan->updated_at,
+    //         ]);
+    //         $plan->delete();
+    //     }
 
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Records moved to history successfully.',
+    //     ], 200);
+    // }
 }

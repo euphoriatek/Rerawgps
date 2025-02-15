@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs/internal/Observable';
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   BaseUrl = environment.basePath;
-  constructor(public http:HttpClient) { }
-  login(data:any){
+  constructor(public http: HttpClient) { }
+  login(data: any) {
     return this.http.post(this.BaseUrl + 'login', data);
   }
   // Groups
@@ -17,55 +18,65 @@ export class ApiService {
   getGroupList() {
     return this.http.get(this.BaseUrl + 'get-group-list');
   }
-  updateGroup(data){
-    return this.http.post(this.BaseUrl + 'edit-group',data);
+  updateGroup(data) {
+    return this.http.post(this.BaseUrl + 'edit-group', data);
   }
   deleteGroupUser(id: number) {
     return this.http.delete(this.BaseUrl + 'delete-group/' + id);
   }
-  getSalesOptionsList(){
+  getSalesOptionsList() {
     return this.http.get(this.BaseUrl + 'get-sales-options');
   }
-  getAllPoisOptionsList(){
+  getAllPoisOptionsList() {
     return this.http.get(this.BaseUrl + 'get-pois-options');
   }
   // Sales
-  getSales(){
+  getSales() {
     return this.http.post(this.BaseUrl + 'get-sales-objects', {});
   }
-  getPendingPois(){
+  getPendingPois() {
     return this.http.get(this.BaseUrl + 'pending-pois');
   }
   addPois(data: any) {
-    return this.http.post(this.BaseUrl+'pois', data);
+    return this.http.post(this.BaseUrl + 'pois', data);
   }
   editPoi(data: any) {
-    return this.http.post(this.BaseUrl+'edit-poi', data);
+    return this.http.post(this.BaseUrl + 'edit-poi', data);
   }
-  getAllPois(){
+  getAllPois() {
     return this.http.get(this.BaseUrl + 'pois');
   }
-  updatePoiStatus(data:any){
+  updatePoiStatus(data: any) {
     return this.http.post(this.BaseUrl + 'poi-update-status', data);;
   }
-  syncPois(){
+  syncPois() {
     return this.http.get(this.BaseUrl + 'sync-data');;
   }
   // Plans
-  getPlans(){
+  getPlans() {
     return this.http.get(this.BaseUrl + 'get-regaykar-plans');
   }
-  createPlan(data:any){
+  createPlan(data: any) {
     return this.http.post(this.BaseUrl + 'create-plan', data);
   }
-  updatePlan(data:any){
+  updatePlan(data: any) {
     return this.http.post(this.BaseUrl + 'update-plan', data);
   }
   deletePlan(id: number) {
     return this.http.delete(this.BaseUrl + 'delete-plan/' + id);
   }
-  getHistory(){
+  getHistory() {
     return this.http.get(this.BaseUrl + 'get-history');
   }
-  
+  getDevice() {
+    return this.http.get(this.BaseUrl + 'sync-device');
+  }
+
+  getRepots(requestData: any) {
+    return this.http.post(this.BaseUrl + 'sync-reports', { data: requestData });
+  }
+  syncHistory(payload: any): Observable<any> {
+    return this.http.post(this.BaseUrl + 'sync-history', payload);
+  }
+
 }

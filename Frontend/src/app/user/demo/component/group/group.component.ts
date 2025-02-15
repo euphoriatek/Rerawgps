@@ -102,12 +102,40 @@ export class GroupComponent implements OnInit {
     this.showgroup = false;
   }
 
+  // getGroups(): void {
+  //   this.spinner.show();
+  //   this.api.getGroupList().subscribe({
+  //     next: (response: any) => {
+  //       if (response && response.status) {
+  //         this.groupsData = response.data;
+  //         console.log(this.groupsData);
+          
+  //       }
+  //       this.spinner.hide();
+  //     },
+  //     error: (err) => {
+  //       this.spinner.hide();
+  //       console.error(err);
+  //     }
+  //   });
+  // }
   getGroups(): void {
     this.spinner.show();
     this.api.getGroupList().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.groupsData = response.data;
+          // Ensure pois_options is loaded before mapping
+          if (this.pois_options && this.pois_options.length > 0) {
+            this.groupsData = this.groupsData.map(group => {
+              const poisIds = JSON.parse(group.pois_id);
+              group.poisNames = poisIds.map(poiId => {
+                const poi = this.pois_options.find(p => p.id === poiId);
+                return poi ? poi.name : 'Unknown POI';
+              }).join(', ');
+              return group;
+            });
+          }
         }
         this.spinner.hide();
       },
@@ -117,6 +145,7 @@ export class GroupComponent implements OnInit {
       }
     });
   }
+  
 
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);

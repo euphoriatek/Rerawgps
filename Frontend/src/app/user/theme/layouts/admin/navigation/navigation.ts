@@ -49,10 +49,10 @@ const NavigationItems = [
     icon: 'fa-solid fa-earth-asia',
   },
   {
-    id: 'saleagent',
-    title: 'saleagent',
+    id: 'salesagent',
+    title: 'salesagent',
     type: 'item',
-    url: '/saleagent',
+    url: '/salesagent',
     icon: 'fa-solid fa-user',
   },
   {

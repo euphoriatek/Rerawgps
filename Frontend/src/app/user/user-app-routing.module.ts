@@ -34,7 +34,7 @@ const routes: Routes = [
         canActivate:[authGuard]
       },
       {
-        path: 'saleagent',
+        path: 'salesagent',
         component: SalesAgentsViewComponent,
         canActivate:[authGuard]
       },

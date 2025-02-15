@@ -49,7 +49,8 @@ export class POIsComponent implements OnInit {
               ...poi,
               lat: this.getLat(poi.coordinates),
               lng: this.getLng(poi.coordinates),
-              groupNames: poi.groups.map(group => group.group ? group.group.name : null).filter(name => name).join(', ')
+              groupNames: Array.from(new Set(poi.groups.map(group => group.group ? group.group.name : null).filter(name => name))).join(', ')
+              // groupNames: poi.groups.map(group => group.group ? group.group.name : null).filter(name => name).join(', ')
             }));
         }
       },

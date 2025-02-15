@@ -1,53 +1,176 @@
-
 <p-table #dt [value]="historyData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
-[showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
-currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries " [filterDelay]="0"
-[globalFilterFields]="['group.name','sales_agent.name','pois','created_at']">
+   [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries " [filterDelay]="0"
+   [globalFilterFields]="['group.name','sales_agent.name','pois','created_at']">
+   <ng-template pTemplate="caption">
+      <div class="table-header mb-4">
+         <h3>{{ 'history_list' | translate}}</h3>
+         <div>
+            <span class="p-input-icon-left">
+               <i class="ti ti-search"></i>
+               <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                  placeholder="{{'global_search'|translate}}" />
+            </span>
+         </div>
+      </div>
+   </ng-template>
+   <ng-template pTemplate="header">
+      <tr>
+         <th pSortableColumn="group.name">
+            {{ "group_name" | translate }}
+            <p-sortIcon field="group.name"></p-sortIcon>
+         </th>
+         <th pSortableColumn="sales_agent.name">
+            {{ "sales agent" | translate }}
+            <p-sortIcon field="sales_agent.name"></p-sortIcon>
+         </th>
+         <th pSortableColumn="pois">
+            {{ "pois" | translate }}
+            <p-sortIcon field="pois"></p-sortIcon>
+         </th>
+         <th pSortableColumn="activation_date">
+            {{ "activation_date" | translate }}
+            <p-sortIcon field="activation_date"></p-sortIcon>
+         </th>
+         <th>{{ "action" | translate }} </th>
+      </tr>
+   </ng-template>
+   <ng-template pTemplate="body" let-data>
+      <tr class="p-selectable-row">
+         <td>{{data?.group?.name}}</td>
+         <td>{{data?.sales_agent?.name}}</td>
+         <!-- <td>{{data?.pois}}</td> -->
+         <td>
+            <span *ngIf="data?.pois && data.pois.length">
+              <span *ngFor="let poi of data.pois; let last = last">
+                {{ poi.name }}<span *ngIf="!last">, </span>
+              </span>
+            </span>
+          </td>
+          
+         <td>{{data.activation_date | date}}</td>
+         <td><button class="btn editbtn" (click)="ReActivePlan(data)"><i class="fas fa-undo"></i></button>
+            <button class="btn editbtn" (click)="getDeviceName(data)"><i class="fa-solid fa-clipboard"></i></button>
+         </td>
+      </tr>
+   </ng-template>
+   <ng-template pTemplate="emptymessage">
+      <tr>
+         <td colspan="5">{{"no_data_record" | translate }}.</td>
+      </tr>
+   </ng-template>
+</p-table>
 <ng-template pTemplate="caption">
    <div class="table-header mb-4">
-      <h3>{{ 'history_list' | translate}}</h3>
-      <div>
-         <span class="p-input-icon-left">
-         <i class="ti ti-search"></i>
-         <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
-            placeholder="{{'global_search'|translate}}" />
-         </span>
-      </div>
+      <h3>Device: {{ reportsData[0]?.meta['device.name']?.value || '' }}</h3>
    </div>
 </ng-template>
-<ng-template pTemplate="header">
-   <tr>
-      <th pSortableColumn="group.name">
-         {{ "group_name" | translate }} 
-         <p-sortIcon field="group.name"></p-sortIcon>
-      </th>
-      <th pSortableColumn="sales_agent.name">
-       {{ "sales agent" | translate }} 
-         <p-sortIcon field="sales_agent.name"></p-sortIcon>
-      </th>
-      <th pSortableColumn="pois">
-        {{ "pois" | translate }} 
-        <p-sortIcon field="pois"></p-sortIcon>
-     </th>
-     <th pSortableColumn="activation_date">
-        {{ "activation_date" | translate }} 
-        <p-sortIcon field="activation_date"></p-sortIcon>
-     </th>
-     <th>{{ "action" | translate }} </th>
-   </tr>
-</ng-template>
-<ng-template pTemplate="body" let-data>
-    <tr class="p-selectable-row">
-       <td>{{data?.group?.name}}</td>
-       <td>{{data?.sales_agent?.name}}</td>
-       <td>{{data?.pois}}</td>
-       <td>{{data.activation_date | date}}</td>
-       <td><button class="btn editbtn" (click)="ReActivePlan(data)"><i class="fas fa-undo"></i></button></td>
-    </tr>
- </ng-template>
- <ng-template pTemplate="emptymessage">
-    <tr>
-       <td colspan="5">{{"no_data_record" | translate }}.</td>
-    </tr>
- </ng-template>
-</p-table>
+
+<p-dialog id="dialog" header="Select Device" [(visible)]="visible" [style]="{ width: '50vw', height: '60vh' }"
+   [modal]="true">
+   <form [formGroup]="deviceForm" (ngSubmit)="submitForm()">
+      <div class="row">
+         <div class="col-md-12">
+            <mat-form-field appearance="outline" class="multi-select">
+               <mat-select multiple formControlName="device" placeholder="Choose devices" class="form-control">
+                  <mat-option *ngFor="let device of devices" [value]="device.value">
+                     {{ device.label }}
+                  </mat-option>
+               </mat-select>
+            </mat-form-field>
+            <div *ngIf="planForm?.get('device')?.hasError('required') && planForm?.get('device')?.touched">
+               <span class="error-message">Please select a device</span>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-12">
+            <button class="btn btn-primary m-1" [disabled]="deviceForm.invalid" type="submit" (click)="openDialog()">Generate</button>
+         </div>
+      </div>
+   </form>
+</p-dialog>
+<p-dialog header="Report Type: POI - Stop Duration" [(visible)]="dialogVisible" [style]="{width: '80vw'}" [closable]="true">
+   <ng-container *ngFor="let report of reportsData">
+      <div class="table-header mb-4">
+         <!-- <h4>Report Type: POI - Stop Duration</h4> -->
+         <p>Device: {{ report?.meta['device.name']?.value || '' }}</p>
+      </div>
+      <ng-container *ngIf="report?.table?.rows?.length; else noData">
+         <p-table #dt [value]="report?.table?.rows" dataKey="start_at" styleClass="p-datatable-customers"
+            [rowHover]="true" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,25,50]"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+            
+            <ng-template pTemplate="header">
+               <tr>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Duration</th>
+                  <th>Engine Idle</th>
+                  <th>Nearby</th>
+                  <th>Stop Position</th>
+               </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-data>
+               <tr>
+                  <td>{{ data.start_at }}</td>
+                  <td>{{ data.end_at }}</td>
+                  <td>{{ data.duration }}</td>
+                  <td>{{ data.engine_idle }}</td>
+                  <td>{{ data.near }}</td>
+                  <td [innerHTML]="data.location"></td>
+               </tr>
+            </ng-template>
+         </p-table>
+      </ng-container>
+
+      <!-- Show message when no data is found -->
+      <ng-template #noData>
+         <p >Nothing has been found on your request.</p>
+      </ng-template>
+
+      <hr />
+   </ng-container>
+</p-dialog>
+
+<!-- <p-dialog header="" [(visible)]="dialogVisible" [style]="{width: '80vw'}" [closable]="true">
+   <p-table #dt [value]="reportsData[0]?.table?.rows" dataKey="start_at" styleClass="p-datatable-customers"
+      [rowHover]="true" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,25,50]"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+      <ng-template pTemplate="caption">
+         <div class="table-header mb-4">
+            <h3>Device: {{ reportsData[0]?.meta['device.name']?.value || 'N/A' }}</h3>
+         </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+         <tr>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Duration</th>
+            <th>Engine Idle</th>
+            <th>Nearby</th>
+            <th>Stop Position</th>
+         </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-data>
+         <tr>
+            <td>{{ data.start_at }}</td>
+            <td>{{ data.end_at }}</td>
+            <td>{{ data.duration }}</td>
+            <td>{{ data.engine_idle }}</td>
+            <td>{{ data.near }}</td>
+            <td [innerHTML]="data.location"></td>
+         </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+         <tr>
+            <td colspan="6">No data available.</td>
+         </tr>
+      </ng-template>
+   </p-table>
+
+</p-dialog> -->
