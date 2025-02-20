@@ -123,6 +123,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Sales Agent
     Route::post('/pois', [PoiController::class, 'store'])->middleware('auth:sales');
     Route::get('/sync-device', [HistoryController::class, 'syncDevice'])->middleware('auth:users');
-    Route::post('/sync-reports', [HistoryController::class, 'gerGenerateReports'])->middleware('auth:users');
+    Route::post('/sync-reports', [HistoryController::class, 'getGenerateReports'])->middleware('auth:users');
+    Route::post('/generate-reports', [HistoryController::class, 'generateReports'])->middleware('auth:users');
     Route::post('/sync-history', [HistoryController::class, 'syncHistory'])->middleware('auth:users');
 });

@@ -30,6 +30,7 @@ export class RegayKarPlanComponent {
   groups_options: any[];
   userId: any;
   sharedData:any;
+  devices:any;
   @ViewChild('dt') dt: Table | undefined;
   constructor(
     public route: Router,
@@ -52,26 +53,29 @@ export class RegayKarPlanComponent {
       groups_id: ['', [Validators.required]],
       startdate: ['', [Validators.required]],
       sale_agent_id: ['', [Validators.required]],
+      device:['',[Validators.required]]
     });
 
     this.planEditForm = this.fb.group({
       id: ['', [Validators.required]],
       startdate:['', [Validators.required]],
       sale_agent_id: ['', [Validators.required]],
+      device:['', [Validators.required]],
+    });
+    this.dataShareService.data.subscribe(data => { 
+      if(data){
+        window.scrollTo(0, 0);
+        this.showplan = true;
+        this.planForm.patchValue({
+          groups_id:[data.group_id],
+          sale_agent_id:data.sale_agent_id,
+        }); 
+      }
     });
     this.getGroups();
     this.getSales();
     this.getPlans();
-    this.dataShareService.data.subscribe(data => { 
-      if(data){
-        this.sharedData = data; 
-        this.showplan = true;
-        this.planForm.patchValue({
-          groups_id:[data.group_id],
-          sale_agent_id:data.sale_agent_id
-        });
-      }
-     });
+    this.getDevice();
   }
 
   createPlan(): void {
@@ -129,7 +133,6 @@ export class RegayKarPlanComponent {
         if (response && response.status) {
           this.plansData = response.data;
         }
-        this.spinner.hide();
       },
       error: (err) => {
         this.spinner.hide();
@@ -143,10 +146,12 @@ export class RegayKarPlanComponent {
   }
 
   openEditDialog(data: any): void {
+    const device = this.devices.find((data_:any) => data_.value === data.device_id);
     this.planEditForm.patchValue({
       startdate:data.activation_date,
       id: data.id,
-      sale_agent_id:data.sale_agent_id
+      sale_agent_id:data.sale_agent_id,
+      device:device
     });
 
     this.visible = true;
@@ -242,6 +247,33 @@ export class RegayKarPlanComponent {
       },
       error: (err) => {
         console.error(err);
+      }
+    });
+  }
+
+  getDevice() {
+    this.spinner.show();
+    this.api.getDevice().subscribe({
+      next: (response: any) => {
+        if (response && response.status && response.data.length > 0) {
+          this.devices = response.data[0].items.map((device: any) => ({
+            label: device.name,
+            value: device.id
+          }));
+          this.dataShareService.data.subscribe(data => { 
+            if(data){
+              const device = this.devices.find((data_:any) => data_.value === data.device_id);
+              this.planForm.patchValue({
+                device:device
+              });
+            }
+          });
+        }
+        this.spinner.hide();
+      },
+      error: (err) => {
+        console.error('Error fetching devices:', err);
+        this.spinner.hide();
       }
     });
   }

@@ -5,6 +5,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ApiService } from 'src/app/user/services/api.service';
 import { DatashareService } from 'src/app/user/services/datashare.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Renderer2 } from '@angular/core'
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
@@ -20,6 +21,7 @@ export class HistoryComponent implements OnInit {
   pois_options: any[];
   planForm: FormGroup;
   isTableVisible: boolean = false;
+  selectedDeviceNames: string[] = [];
   devices: { label: string, value: string }[] = [];
   deviceForm = new FormGroup({
     device: new FormControl([])
@@ -32,7 +34,8 @@ export class HistoryComponent implements OnInit {
     public route: Router,
     private dataShareService: DatashareService,
     private cdr: ChangeDetectorRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -76,7 +79,7 @@ export class HistoryComponent implements OnInit {
       }
     });
   }
-  
+
   getPois(): void {
     this.api.getAllPoisOptionsList().subscribe({
       next: (response: any) => {
@@ -116,40 +119,37 @@ export class HistoryComponent implements OnInit {
     });
   }
 
-  getDeviceName(data: any): void {
-    this.visible = true;
-    this.report_data = data;
-    this.deviceForm.reset();
+  generateReport(data:any){
+    this.submitForm(data);
   }
-  submitForm(): void {
-    if (this.deviceForm.valid) {
-      const selectedDevices = this.deviceForm.value.device;
-      const pois = this.report_data?.pois|| [];
+
+  submitForm(data:any) {
       const requestData = {
-        title: "Report Generate",
-        type: 54,
-        date_from: this.report_data.activation_date,
-        date_to: this.report_data.activation_date,
-        format: "json",
-        devices: selectedDevices,
-        stop_duration: "2",
-        distance_tolerance: "50",
-        pois: pois,
+        date_from: data.activation_date,
+        date_to: data.activation_date,
+        devices: data.device_id ? [data.device_id] : [],
+        pois: data.pois,
+        selectedDeviceNames: data.device_name ? [data.device_name] : []
       };
-       console.log(requestData);
       this.spinner.show();
       this.api.getRepots(requestData).subscribe({
         next: (response: any) => {
           if (response && response.status) {
-            this.reportsData = response.data || [];
-            console.log(this.reportsData);
-            this.visible = false;
-            this.isTableVisible = true;
+            const link = this.renderer.createElement('a');
+            link.setAttribute('target', '_blank');
+            link.setAttribute('href', response.data);
+            link.setAttribute('download', response.data);
+            link.click();
+            link.remove();
           }
           this.spinner.hide();
+          this.visible = false;
         },
+        error: (err) => {
+          console.error('Error fetching report:', err);
+          this.spinner.hide();
+        }
       });
-    }
   }
   
   openDialog() {

@@ -30,6 +30,9 @@ class RegayKarPlansController extends Controller
             'groups_id.*' => 'exists:groups,id',
             'startdate' => 'required|date',
             'sale_agent_id' => 'required|exists:sales,id',
+            'device' => 'required|array',
+            'device.label' => 'required|string',
+            'device.value' => 'required|numeric',
         ]);
         $startdate = Carbon::parse($request->input('startdate'))->toDateString();
         foreach($input['groups_id'] as $data){
@@ -39,7 +42,9 @@ class RegayKarPlansController extends Controller
                     'group_id' => $data,
                     'user_id' => $userId,
                     'activation_date' => $startdate,
-                    'sale_agent_id' => $input['sale_agent_id']
+                    'sale_agent_id' => $input['sale_agent_id'],
+                    'device_id' => $input['device']['value'],
+                    'device_name' => $input['device']['label'],
                 ]);
                 $groupFind = Group::find($data);
                 if($groupFind){
@@ -102,7 +107,10 @@ class RegayKarPlansController extends Controller
         $validator = Validator::make($input, [
             'id' => 'required|numeric',
             'startdate' => 'required|date',
-            'sale_agent_id' => 'required|exists:sales,id'
+            'sale_agent_id' => 'required|exists:sales,id',
+            'device' => 'required|array',
+            'device.label' => 'required|string',
+            'device.value' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -122,7 +130,9 @@ class RegayKarPlansController extends Controller
             $plan->update([
                 'user_id' => $userId,
                 'activation_date' => $startdate,
-                'sale_agent_id' => $input['sale_agent_id']
+                'sale_agent_id' => $input['sale_agent_id'],
+                'device_id' => $input['device']['value'],
+                'device_name' => $input['device']['label'],
             ]);
             return response()->json([
                 'status' => true,

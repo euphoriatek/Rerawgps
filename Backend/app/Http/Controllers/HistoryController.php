@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Servers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 class HistoryController extends Controller
 {
     public function getHistory()
@@ -67,13 +68,11 @@ class HistoryController extends Controller
         return response()->json([
             'status' => true,
             'data' => $devices,
-        ]);
+        ], 200);
 
     }
-
-    public function gerGenerateReports(Request $request)
+    public function getGenerateReports(Request $request)
     {
-
         $user = auth()->user();
         if (!$user || $user->role != "user") {
             return response()->json([
@@ -81,35 +80,76 @@ class HistoryController extends Controller
                 'message' => 'Unauthorized. Please log in.',
             ], 401);
         }
-        $user = User::with('server')->find($user->id);
-        $pois = $request->input('data.pois', []);
-        $poiIds = array_map(function ($poi) {
-            return $poi['poi_id'] ?? null;
-        }, $pois);
-        $params = [
-            'title' => $request->input('data.title'),
-            'type' => $request->input('data.type'),
-            // 'date_from' => '2025-01-22',
-            'date_from' => $request->input('data.date_from'),
-            // 'date_to' => '2025-02-24',
-            'date_to' => $request->input('data.date_to'),
-            'format' => 'json',
-            'devices' => $request->input('data.devices'),
-            'stop_duration' => $request->input('data.stop_duration'),
-            'distance_tolerance' => $request->input('data.distance_tolerance'),
-            'pois' => $poiIds
-        ];
-        $apiEndPoint = $user->server->server_url . '/api/generate_report?lang=en&user_api_hash=' . $user->api_key . '&generate=1';
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-        ])
-            ->post($apiEndPoint, $params);
-        $reports = $response->json();
 
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'devices' => 'required|array',
+            'date_from' => 'required',
+            'date_to' => 'required',
+            'pois' => 'required|array'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+        $visit_poi = [];
+        $unvisited_poi = [];
+        $user = User::with('server')->find($user->id);
+        $pois = $input['pois'] ?? [];
+        foreach ($pois as $poi) {
+            $params = [
+                'title' => 'Report Generate',
+                'type' => 54,
+                'date_from' => $input['date_from'],
+                'date_to' => $input['date_to'],
+                'from_time' => "00:00",
+                "to_time" => "23:59",
+                'format' => 'json',
+                'devices' => $input['devices'],
+                'stop_duration' => 2,
+                'distance_tolerance' => 50,
+                'pois' => [$poi['poi_id']]
+            ];
+
+            $apiEndPoint = $user->server->server_url . '/api/generate_report?lang=en&user_api_hash=' . $user->api_key . '&generate=1';
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ])->post($apiEndPoint, $params);
+
+            $reports = $response->json();
+
+            if (!empty($reports['items'][0])) {
+                $table = $reports['items'][0];
+                if (isset($table['table']['rows']) && count($table['table']['rows']) > 0) {
+                    $row_data = $table['table']['rows'];
+
+                    $data = [
+                        "name" => $poi['name'],
+                        "poi_id" => $poi['poi_id'],
+                        "row" => $row_data
+                    ];
+                    array_push($visit_poi, $data);
+                    unset($unvisited_poi[$poi['poi_id']]);
+                } else {
+                    array_push($unvisited_poi, $poi);
+                }
+            } else {
+                array_push($unvisited_poi, $poi);
+            }
+        }
+        $time = time();
+        $filePath = storage_path('app/public/reports/report_' . $time . '.html');
+        $htmlContent = view('report', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'],'date_from' => $input['date_from'], 'date_to' => $input['date_to']])->render();
+        file_put_contents($filePath, $htmlContent);
+        $path = url('storage/reports/report_' . $time . '.html');
+        //   return response()->download($filePath)->deleteFileAfterSend(true);
         return response()->json([
             'status' => true,
-            'data' => $reports['items'] ?? [],
+            'data' => $path,
         ]);
     }
     public function syncHistory()
@@ -140,4 +180,56 @@ class HistoryController extends Controller
         ]);
     }
 
+    public function generateReports(Request $request)
+    {
+        $user = auth()->user();
+        if (!$user || $user->role != "user") {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized. Please log in.',
+            ], 401);
+        }
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'devices' => 'required|array',
+            'pois' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+        $user = User::with('server')->find($user->id);
+        $params = [
+            'title' => $input['title'],
+            'type' => 54,
+            'date_from' => $input['date_from'],
+            'date_to' => $input['date_to'],
+            'from_time' => $input['from_time'] ?? '00:00',
+            'to_time' => $input['to_time'] ?? '23:59',
+            'format' => 'json',
+            'devices' => $input['devices'],
+            'stop_duration' => 2,
+            'distance_tolerance' => 50,
+            'pois' => $input['pois']
+        ];
+        $apiEndPoint = $user->server->server_url . '/api/generate_report?lang=en&user_api_hash=' . $user->api_key . '&generate=1';
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ])->post($apiEndPoint, $params);
+          
+        $reports = $response->json();
+        $time = time();
+        $filePath = storage_path('app/public/reports_all/report_' . $time . '.html');
+        $htmlContent = view('reports', ['data' => $reports['items'], 'date_from' =>$input['date_from'], 'date_to' => $input['date_to']])->render();
+        file_put_contents($filePath, $htmlContent);
+        $path = url('storage/reports_all/report_' . $time . '.html');
+        return response()->json([
+            'status' => true,
+            'data' => $path,
+        ]);
+        
+    }
 }

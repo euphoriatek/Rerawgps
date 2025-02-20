@@ -72,11 +72,14 @@ export class ApiService {
     return this.http.get(this.BaseUrl + 'sync-device');
   }
 
-  getRepots(requestData: any) {
-    return this.http.post(this.BaseUrl + 'sync-reports', { data: requestData });
+  getRepots(data: any) {
+    return this.http.post(this.BaseUrl + 'sync-reports', data );
   }
   syncHistory(payload: any): Observable<any> {
     return this.http.post(this.BaseUrl + 'sync-history', payload);
+  }
+  generateRepots(data: any) {
+    return this.http.post(this.BaseUrl + 'generate-reports', data );
   }
 
 }

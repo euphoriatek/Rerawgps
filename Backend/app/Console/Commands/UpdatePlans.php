@@ -43,7 +43,9 @@ class UpdatePlans extends Command
                 'pois_id' =>json_encode($poi),
                 'plan_id'=>$plan->id,
                 'user_id' =>$plan->user_id,
-                'activation_date' =>$plan->activation_date
+                'activation_date' =>$plan->activation_date,
+                'device_id' =>$plan->device_id,
+                'device_name' =>$plan->device_name
             ]);
          }
        }
