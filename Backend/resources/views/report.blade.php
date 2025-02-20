@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ReBeen GPS </title>
+    <title>RegayKar</title>
     <style>
         /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
         html {
@@ -1853,7 +1853,7 @@
             <div class="header-left">
                 <div class="report-wrap">
                     <div class="report-logo" style="background: none;">
-                        <img src="{{ asset('images/regayKar-logo.png') }}" class="logo" alt="Logo">
+                        <img src="{{ url('images/regayKar-logo.png') }}" class="logo" alt="Logo">
                     </div>
                 </div>
                 <div class="report-curve"></div>
@@ -1863,7 +1863,7 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-            <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format('d-m-Y') ?? 'N/A' }} - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }}</span> </div>
+            <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format('d-m-Y') ?? 'N/A' }} 00:00:00 - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }} 11:59:00</span> </div>
                 <div class="report-bars"></div>
                 Report type: POI - Stop duration
             </div>

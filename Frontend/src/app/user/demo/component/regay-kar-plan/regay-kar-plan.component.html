@@ -60,14 +60,14 @@
                <div class="form-group">
                   <label for="">{{ "device" | translate }}</label>
                   <mat-form-field appearance="outline">
-                     <mat-select formControlName="device" placeholder="Choose device" class="form-control">
+                     <mat-select formControlName="device" placeholder="{{ 'choose_devices' | translate }}" class="form-control">
                         <mat-option *ngFor="let device of devices" [value]="device">
                            {{ device.label }}
                         </mat-option>
                      </mat-select>
                   </mat-form-field>
                   <div *ngIf="planForm?.get('device')?.hasError('required') && planForm?.get('device')?.touched">
-                     <span class="error-message">Please select a device</span>
+                     <span class="error-message">{{"please_select_a_device" | translate}}</span>
                   </div>
                </div>
             </div>
@@ -205,14 +205,14 @@
             <div class="form-group">
                <label for="">{{ "device" | translate }}</label>
                <mat-form-field appearance="outline">
-                  <mat-select formControlName="device" placeholder="Choose device" class="form-control">
+                  <mat-select formControlName="device" placeholder="{{ 'choose_devices' | translate }}" class="form-control">
                      <mat-option *ngFor="let device of devices" [value]="device">
                         {{ device.label }}
                      </mat-option>
                   </mat-select>
                </mat-form-field>
                <div *ngIf="planEditForm?.get('device')?.hasError('required') && planEditForm?.get('device')?.touched">
-                  <span class="error-message">Please select a device</span>
+                  <span class="error-message">{{"please_select_a_device" | translate}}</span>
                </div>
             </div>
          </div>

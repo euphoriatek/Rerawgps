@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\History;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Poi;
 use App\Models\User;
 use App\Models\Servers;
@@ -141,42 +142,10 @@ class HistoryController extends Controller
                 array_push($unvisited_poi, $poi);
             }
         }
-        $time = time();
-        $filePath = storage_path('app/public/reports/report_' . $time . '.html');
         $htmlContent = view('report', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'],'date_from' => $input['date_from'], 'date_to' => $input['date_to']])->render();
-        file_put_contents($filePath, $htmlContent);
-        $path = url('storage/reports/report_' . $time . '.html');
-        //   return response()->download($filePath)->deleteFileAfterSend(true);
         return response()->json([
             'status' => true,
-            'data' => $path,
-        ]);
-    }
-    public function syncHistory()
-    {
-        $user = auth()->user();
-        if (!$user || $user->role != "user") {
-            return response()->json([
-                'status' => false,
-                'message' => 'Unauthorized. Please log in.',
-            ], 401);
-        }
-        $user = User::with('server')->find($user->id);
-        $payload = [
-            'lang' => 'en',
-            'user_api_hash' => $user->api_key,
-            'device_id' => 2869,
-            'from_date' => '2025-02-12',
-            'to_date' => '2025-02-14',
-            'from_time' => '00:00',
-            'to_time' => '23:59'
-        ];
-        $ReportsResponse = Http::post($user->server->server_url . '/api/get_history', $payload);
-        $history = $ReportsResponse->json();
-
-        return response()->json([
-            'status' => true,
-            'data' => $history,
+            'data' => $htmlContent,
         ]);
     }
 
@@ -201,11 +170,13 @@ class HistoryController extends Controller
             ], 400);
         }
         $user = User::with('server')->find($user->id);
+        $date_from = Carbon::parse($request->input('date_from'))->toDateString();
+        $date_to = Carbon::parse($request->input('date_to'))->toDateString();
         $params = [
             'title' => $input['title'],
             'type' => 54,
-            'date_from' => $input['date_from'],
-            'date_to' => $input['date_to'],
+            'date_from' => $date_from,
+            'date_to' => $date_to,
             'from_time' => $input['from_time'] ?? '00:00',
             'to_time' => $input['to_time'] ?? '23:59',
             'format' => 'json',
@@ -221,14 +192,10 @@ class HistoryController extends Controller
             ])->post($apiEndPoint, $params);
           
         $reports = $response->json();
-        $time = time();
-        $filePath = storage_path('app/public/reports_all/report_' . $time . '.html');
-        $htmlContent = view('reports', ['data' => $reports['items'], 'date_from' =>$input['date_from'], 'date_to' => $input['date_to']])->render();
-        file_put_contents($filePath, $htmlContent);
-        $path = url('storage/reports_all/report_' . $time . '.html');
+        $htmlContent = view('reports', ['data' => $reports['items'], 'date_from' =>$input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00',  'to_time' => $input['to_time'] ?? '23:59'])->render();
         return response()->json([
             'status' => true,
-            'data' => $path,
+            'data' => $htmlContent,
         ]);
         
     }

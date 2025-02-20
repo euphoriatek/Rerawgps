@@ -1,7 +1,7 @@
 <p-table #dt [value]="historyData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries " [filterDelay]="0"
-   [globalFilterFields]="['group.name','sales_agent.name','pois','created_at']">
+   [globalFilterFields]="['group.name','sales_agent.name','pois','activation_date']">
    <ng-template pTemplate="caption">
       <div class="table-header mb-4">
          <h3>{{ 'history_list' | translate}}</h3>
@@ -28,6 +28,10 @@
             {{ "pois" | translate }}
             <p-sortIcon field="pois"></p-sortIcon>
          </th>
+         <th pSortableColumn="device_name">
+            {{ "device_name" | translate }}
+            <p-sortIcon field="device_name"></p-sortIcon>
+         </th>
          <th pSortableColumn="activation_date">
             {{ "activation_date" | translate }}
             <p-sortIcon field="activation_date"></p-sortIcon>
@@ -47,7 +51,7 @@
               </span>
             </span>
           </td>
-          
+          <td>{{data.device_name}}</td>
          <td>{{data.activation_date | date}}</td>
          <td><button class="btn editbtn" (click)="ReActivePlan(data)"><i class="fas fa-undo"></i></button>
             <button class="btn editbtn" (click)="generateReport(data)"><i class="fa-solid fa-clipboard"></i></button>

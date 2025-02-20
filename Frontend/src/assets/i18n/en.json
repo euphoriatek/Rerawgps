@@ -183,6 +183,19 @@
     "group_required":"Group is Required",
     "history":"History",
     "history_list":"History List",
-    "api_key_invalid_error":"User Access Key is Invalid"
-
+    "api_key_invalid_error":"User Access Key is Invalid",
+    "generate":"Generate",
+    "period":"Period",
+    "date_from":"Date from",
+    "date_to":"Date to",
+    "devices":"Devices",
+    "please_select_a_device":"Please select a device",
+    "please_select_a_pois":"Please select a POI's",
+    "title":"Title",
+    "nothing_selected":"Nothing selected",
+    "choose_devices":"Choose Devices",
+    "choose_pois":"Choose POI's",
+    "device_name":"Device Name",
+    "deselect_all":"Deselect All",
+    "select_all":"Select All"
 }

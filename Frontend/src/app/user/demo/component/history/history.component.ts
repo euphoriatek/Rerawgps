@@ -135,15 +135,16 @@ export class HistoryComponent implements OnInit {
       this.api.getRepots(requestData).subscribe({
         next: (response: any) => {
           if (response && response.status) {
-            const link = this.renderer.createElement('a');
-            link.setAttribute('target', '_blank');
-            link.setAttribute('href', response.data);
-            link.setAttribute('download', response.data);
-            link.click();
-            link.remove();
+            const date = new Date();
+            let time = date.getTime();
+            var blob = new Blob([response.data], {type: "text/plain"});
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = 'report_'+time+'.html';
+            a.click();
           }
           this.spinner.hide();
-          this.visible = false;
         },
         error: (err) => {
           console.error('Error fetching report:', err);

@@ -199,12 +199,14 @@ export class ReportsComponent {
       this.api.generateRepots(requestData).subscribe({
         next: (response: any) => {
           if (response && response.status) {
-            const link = this.renderer.createElement('a');
-            link.setAttribute('target', '_blank');
-            link.setAttribute('href', response.data);
-            link.setAttribute('download', response.data);
-            link.click();
-            link.remove();
+            const date = new Date();
+            let time = date.getTime();
+            var blob = new Blob([response.data], {type: "text/plain"});
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = 'report_'+time+'.html';
+            a.click();
           }
           this.spinner.hide();
         },
@@ -236,7 +238,7 @@ export class ReportsComponent {
   }
   
   isAllSelected(): boolean {
-    return this.selectedDeviceIds.length === this.devices.length;
+    return this.selectedDeviceIds?.length === this.devices?.length;
   }
 
   selectAllPois() {
@@ -258,7 +260,7 @@ export class ReportsComponent {
   }
   
   isAllSelectedPois(): boolean {
-    return this.selectedPoiIds.length === this.poisList.length;
+    return this.selectedPoiIds?.length === this.poisList?.length;
   }
 }
 
