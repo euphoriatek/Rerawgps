@@ -21,7 +21,7 @@ export class ReportsComponent {
   visible: boolean = false;
   reportForm: FormGroup;
   devices: any;
-  formattedPoisList :any;
+  formattedPoisList: any;
   times: string[] = [];
   selectedDeviceIds: number[] = [];
   selectedPoiIds: number[] = [];
@@ -33,17 +33,20 @@ export class ReportsComponent {
   constructor(private translate: TranslateService, public toaster: ToasterService, public cookie: UserCookiesService, public route: Router, private fb: FormBuilder,
     public spinner: NgxSpinnerService,
     public api: ApiService,
-   private renderer: Renderer2
+    private renderer: Renderer2
   ) {
     this.defaultLanguage = localStorage.getItem('user_language') ?? 'en';
     this.Username = this.cookie.getCookie('CurrentUser')?.username;
   }
+
   ngOnInit() {
     this.today = new Date();
     this.getDevice();
     this.getPois();
     this.generateTimeSlots();
-    const currentDate = new Date().toISOString().split('T')[0];
+
+    const currentDate = this.formatDateWithoutTime(new Date());
+
     this.reportForm = this.fb.group({
       title: [''],
       period: [''],
@@ -52,10 +55,11 @@ export class ReportsComponent {
       dateFrom: [currentDate],
       fromTime: ['00:00'],
       dateTo: [currentDate],
-      toTime: ['00:00']
+      toTime: ['23:59']
     });
     this.setDatesByPeriod();
   }
+
   periodChanged() {
     this.setDatesByPeriod();
   }
@@ -66,7 +70,7 @@ export class ReportsComponent {
       next: (response: any) => {
         if (response && response.status && response.data && Array.isArray(response.data) && response.data.length > 0) {
           this.devices = response.data[0]?.items || [];
-        } 
+        }
         this.spinner.hide();
       },
       error: (err) => {
@@ -75,16 +79,22 @@ export class ReportsComponent {
       }
     });
   }
-  
 
   generateTimeSlots(): void {
     const timesArray: string[] = [];
+
+    // Loop through each hour and minute
     for (let hour = 0; hour < 24; hour++) {
       for (let minute = 0; minute < 60; minute += 15) {
         const time = this.formatTime(hour, minute);
         timesArray.push(time);
       }
     }
+    const lastTime = this.formatTime(23, 59);
+    if (!timesArray.includes(lastTime)) {
+      timesArray.push(lastTime);
+    }
+
     this.times = timesArray;
   }
 
@@ -94,68 +104,73 @@ export class ReportsComponent {
     const mm = minute < 10 ? `0${minute}` : `${minute}`;
     return `${hh}:${mm}`;
   }
+
   setDatesByPeriod() {
     const period = this.reportForm.get('period')?.value;
+    console.log(period);
+
     const today = new Date();
-    let dateFrom = new Date(today);
-    let dateTo = new Date(today);
+    let dateFrom: string = this.formatDateWithoutTime(new Date(today));
+    let dateTo: string = this.formatDateWithoutTime(new Date(today));
 
     switch (period) {
       case 'Today':
-        dateFrom = dateTo = new Date(today);
+        dateFrom = this.formatDateWithoutTime(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
+        dateTo = this.formatDateWithoutTime(new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59));
         break;
       case 'Yesterday':
-        dateFrom = dateTo = new Date(today.setDate(today.getDate() - 1));
+        let yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        dateFrom = dateTo = this.formatDateWithoutTime(yesterday);
+        console.log(dateFrom);
+
         break;
       case 'Before 2 days':
-        dateFrom = new Date(today);
-        dateFrom.setDate(today.getDate() - 2);
-        dateTo = new Date(today);
+        let before2Days = new Date(today);
+        before2Days.setDate(today.getDate() - 2);
+        dateFrom = this.formatDateWithoutTime(before2Days);
+        dateTo = this.formatDateWithoutTime(today);
         break;
       case 'Before 3 days':
-        dateFrom = new Date(today);
-        dateFrom.setDate(today.getDate() - 3);
-        dateTo = new Date(today);
+        let before3Days = new Date(today);
+        before3Days.setDate(today.getDate() - 3);
+        dateFrom = this.formatDateWithoutTime(before3Days);
+        dateTo = this.formatDateWithoutTime(today);
         break;
       case 'This week':
-        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-        const endOfWeek = new Date(startOfWeek);
+        let startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay());
+        let endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
-        dateFrom = startOfWeek;
-        dateTo = endOfWeek;
+        dateFrom = this.formatDateWithoutTime(startOfWeek);
+        dateTo = this.formatDateWithoutTime(endOfWeek);
         break;
       case 'Last week':
-        const startOfLastWeek = new Date(today.setDate(today.getDate() - today.getDay() - 7));
-        const endOfLastWeek = new Date(startOfLastWeek);
+        let startOfLastWeek = new Date(today);
+        startOfLastWeek.setDate(today.getDate() - today.getDay() - 7);
+        let endOfLastWeek = new Date(startOfLastWeek);
         endOfLastWeek.setDate(startOfLastWeek.getDate() + 6);
-        dateFrom = startOfLastWeek;
-        dateTo = endOfLastWeek;
+        dateFrom = this.formatDateWithoutTime(startOfLastWeek);
+        dateTo = this.formatDateWithoutTime(endOfLastWeek);
         break;
       case 'This month':
-        dateFrom = new Date(today.getFullYear(), today.getMonth(), 1);
-        dateTo = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        dateFrom = this.formatDateWithoutTime(new Date(today.getFullYear(), today.getMonth(), 1));
+        dateTo = this.formatDateWithoutTime(new Date(today.getFullYear(), today.getMonth() + 1, 0));
         break;
       case 'Last month':
-        dateFrom = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        dateTo = new Date(today.getFullYear(), today.getMonth(), 0);
+        dateFrom = this.formatDateWithoutTime(new Date(today.getFullYear(), today.getMonth() - 1, 1));
+        dateTo = this.formatDateWithoutTime(new Date(today.getFullYear(), today.getMonth(), 0));
         break;
       default:
-        dateFrom = dateTo = new Date(today);
+        dateFrom = dateTo = this.formatDateWithoutTime(new Date(today));
         break;
     }
 
-    // Update the form with the calculated date values
+    // Update the form with the calculated date values (already formatted)
     this.reportForm.patchValue({
-      dateFrom: this.formatDate(dateFrom),
-      dateTo: this.formatDate(dateTo)
+      dateFrom: dateFrom,
+      dateTo: dateTo
     });
-  }
-
-  private formatDate(date: Date): string {
-    const yyyy = date.getFullYear();
-    const mm = (date.getMonth() + 1).toString().padStart(2, '0');
-    const dd = date.getDate().toString().padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
   }
 
   getPois(): void {
@@ -173,7 +188,7 @@ export class ReportsComponent {
       }
     });
   }
-  
+
   submitForm() {
     if (this.reportForm.valid) {
       const selectedDeviceId = this.reportForm.value.device;
@@ -188,7 +203,7 @@ export class ReportsComponent {
       const requestData = {
         title: title,
         period: period,
-        devices: selectedDeviceId, 
+        devices: selectedDeviceId,
         pois: selectedPois,
         date_from: dateFrom,
         from_time: fromTime,
@@ -201,11 +216,11 @@ export class ReportsComponent {
           if (response && response.status) {
             const date = new Date();
             let time = date.getTime();
-            var blob = new Blob([response.data], {type: "text/plain"});
+            var blob = new Blob([response.data], { type: "text/plain" });
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement("a");
             a.href = url;
-            a.download = 'report_'+time+'.html';
+            a.download = 'report_' + time + '.html';
             a.click();
           }
           this.spinner.hide();
@@ -215,7 +230,7 @@ export class ReportsComponent {
           this.spinner.hide();
         }
       });
-    }else if(this.reportForm.invalid){
+    } else if (this.reportForm.invalid) {
       this.reportForm.markAllAsTouched();
     }
   }
@@ -223,12 +238,12 @@ export class ReportsComponent {
     this.selectedDeviceIds = this.devices.map(device => device.id);
     this.reportForm.get('device').setValue(this.selectedDeviceIds);
   }
-  
+
   deselectAllDevices() {
     this.selectedDeviceIds = [];
     this.reportForm.get('device').setValue(this.selectedDeviceIds);
   }
-  
+
   toggleSelectAll() {
     if (this.isAllSelected()) {
       this.deselectAllDevices();
@@ -236,7 +251,7 @@ export class ReportsComponent {
       this.selectAllDevices();
     }
   }
-  
+
   isAllSelected(): boolean {
     return this.selectedDeviceIds?.length === this.devices?.length;
   }
@@ -245,12 +260,12 @@ export class ReportsComponent {
     this.selectedPoiIds = this.poisList.map(poi => poi.poi_id);
     this.reportForm.get('pois').setValue(this.selectedPoiIds);
   }
-  
+
   deselectAllPois() {
     this.selectedPoiIds = [];
     this.reportForm.get('pois').setValue([]);
   }
-  
+
   toggleSelectAllPois() {
     if (this.isAllSelectedPois()) {
       this.deselectAllPois();
@@ -258,9 +273,19 @@ export class ReportsComponent {
       this.selectAllPois();
     }
   }
-  
+
   isAllSelectedPois(): boolean {
     return this.selectedPoiIds?.length === this.poisList?.length;
   }
+
+  private formatDateWithoutTime(date: Date): string {
+    const localDate = new Date(date);
+    localDate.setHours(0, 0, 0, 0);
+    const yyyy = localDate.getFullYear();
+    const mm = (localDate.getMonth() + 1).toString().padStart(2, '0');
+    const dd = localDate.getDate().toString().padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  
 }
 
