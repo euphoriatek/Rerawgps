@@ -1863,7 +1863,7 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-            <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format('d-m-Y') ?? 'N/A' }} 00:00:00 - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }} 11:59:00</span> </div>
+            <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format(format: 'd-m-Y') ?? 'N/A' }} {{ $from_time}} - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }} {{ $to_time}}</span> </div>
                 <div class="report-bars"></div>
                 Report type: POI - Stop duration
             </div>

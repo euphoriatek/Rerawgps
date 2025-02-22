@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/admin/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -59,6 +59,8 @@ export class UsersComponent implements OnInit {
         ],
       ],
       address: ['', Validators.required],
+      history_duration: [90, Validators.required],
+      // history_duration: new FormControl(90, Validators.required),
     });
     this.UserEditForm = this.fb.group({
       id: ['', [Validators.required]],
@@ -79,12 +81,21 @@ export class UsersComponent implements OnInit {
         ],
       ],
       address: ['', Validators.required],
-      api_key: ['', Validators.required]
+      api_key: ['', Validators.required],
+      history_duration: ['', Validators.required],
     });
     this.getServers();
     this.getUsers();
   }
 
+  getHistoryDurationOptions(): number[] {
+    const options = [];
+    for (let i = 90; i <= 390; i += 30) {
+      options.push(i);
+    }
+    options.push(400);
+    return options;
+  }
   addUser(): void {
     if (this.UserForm.invalid) {
       this.UserForm.markAllAsTouched();
@@ -133,10 +144,7 @@ export class UsersComponent implements OnInit {
       next: (response: any) => {
         if (response && response.status) {
           this.server_options = response.data;
-          console.log(this.server_options);
-
           this.servers = response.data.map(item => item.server_url);
-          console.log(this.servers);
         } else {
         }
       },
@@ -154,7 +162,6 @@ export class UsersComponent implements OnInit {
         if (response && response.status) {
           this.usersData = response.data;
           this.usersData.forEach(user => {
-            console.log(user);
             user.server_url = user.server.server_url || 'No server URL available';
           });
         }
@@ -166,6 +173,8 @@ export class UsersComponent implements OnInit {
     });
   }
   openEditDialog(data: any): void {
+    console.log(data);
+    
     if (this.server_options && this.server_options.length > 0) {
       this.UserEditForm.patchValue({
         id: data.id,
@@ -173,7 +182,8 @@ export class UsersComponent implements OnInit {
         username: data.username,
         mobile_number: data.mobile_number,
         address: data.address,
-        api_key: data.api_key
+        api_key: data.api_key,
+        history_duration:data.history_duration
       });
       this.visible = true;
     } else {

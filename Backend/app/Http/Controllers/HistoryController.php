@@ -110,8 +110,8 @@ class HistoryController extends Controller
                 "to_time" => "23:59",
                 'format' => 'json',
                 'devices' => $input['devices'],
-                'stop_duration' => 2,
-                'distance_tolerance' => 50,
+                'stop_duration' => 4,
+                'distance_tolerance' => 20,
                 'pois' => [$poi['poi_id']]
             ];
 
@@ -142,7 +142,7 @@ class HistoryController extends Controller
                 array_push($unvisited_poi, $poi);
             }
         }
-        $htmlContent = view('report', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'],'date_from' => $input['date_from'], 'date_to' => $input['date_to']])->render();
+        $htmlContent = view('report', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'],'date_from' => $input['date_from'],'date_to' => $input['date_to'],'from_time' => $input['from_time'] ?? '00:00','to_time' => $input['to_time'] ?? '23:59'])->render();
         return response()->json([
             'status' => true,
             'data' => $htmlContent,
@@ -181,8 +181,8 @@ class HistoryController extends Controller
             'to_time' => $input['to_time'] ?? '23:59',
             'format' => 'json',
             'devices' => $input['devices'],
-            'stop_duration' => 2,
-            'distance_tolerance' => 50,
+            'stop_duration' => 4,
+            'distance_tolerance' => 20,
             'pois' => $input['pois']
         ];
         $apiEndPoint = $user->server->server_url . '/api/generate_report?lang=en&user_api_hash=' . $user->api_key . '&generate=1';

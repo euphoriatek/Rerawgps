@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class History extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $table = 'history';
 
@@ -32,4 +33,5 @@ class History extends Model
     {
         return $this->belongsTo(SalesModel::class, 'sale_agent_id', 'id');
     }
+    
 }

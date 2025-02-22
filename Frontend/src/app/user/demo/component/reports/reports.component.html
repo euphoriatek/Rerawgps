@@ -1,20 +1,21 @@
-
-<div class="container-fluid">
+<div class="container p-0">
   <form [formGroup]="reportForm" (ngSubmit)="submitForm()">
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="title">{{ "title" | translate }}</label>
-          <input type="text" formControlName="title" class="form-control" autocomplete="false" />
-        </div>
-      </div>
-      <div class="col-md-12">
+      <div class="col-lg-6">
         <div class="row">
-          <div class="col-md-6">
-            <div class="form-group d-flex align-items-center">
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="title">{{ "title" | translate }}</label>
+              <input type="text" formControlName="title" class="form-control" autocomplete="false" />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
               <label for="period" class="mr-2">{{ "period" | translate }}</label>
               <mat-form-field appearance="outline" class="flex-grow-1">
-                <mat-select formControlName="period" class="form-control" placeholder="{{ 'nothing_selected' | translate }}" (selectionChange)="periodChanged()">
+                <mat-select formControlName="period" class="form-control"
+                  placeholder="{{ 'nothing_selected' | translate }}" (selectionChange)="periodChanged()">
                   <mat-option></mat-option>
                   <mat-option *ngFor="let data of period" [value]="data">
                     {{ data }}
@@ -23,82 +24,97 @@
               </mat-form-field>
             </div>
           </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="dateFrom" class="control-label">{{ "date_from" | translate }}</label>
+              <div class="row">
+                <div class="col-lg-8">
+                  <mat-form-field appearance="fill" class="form-calendar form-control">
+                    <input matInput [matDatepicker]="startDatePicker" formControlName="dateFrom" />
+                    <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-4">
+                  <select formControlName="fromTime" class="form-control">
+                    <option *ngFor="let time of times" [value]="time">{{ time }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="dateTo" class="control-label">{{ "date_to" | translate }}</label>
+                <div class="row">
+                  <div class="col-lg-8">
+                    <mat-form-field appearance="fill" class="form-calendar form-control">
+                      <input matInput [matDatepicker]="startDatePicker2" formControlName="dateTo" />
+                      <mat-datepicker-toggle matIconSuffix [for]="startDatePicker2"></mat-datepicker-toggle>
+                      <mat-datepicker #startDatePicker2></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-lg-4">
+                    <select formControlName="toTime" class="form-control">
+                      <option *ngFor="let time of times" [value]="time">{{ time }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="device" class="mr-2">{{ "devices" | translate }}</label>
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                  <mat-select multiple formControlName="device" placeholder="{{ 'choose_devices' | translate }}"
+                    class="form-control">
+                    <mat-option (click)="toggleSelectAll()" [value]="null">
+                      {{ isAllSelected() ? ('deselect_all' | translate) : ('select_all' | translate) }}
+                    </mat-option>
+                    <mat-option *ngFor="let device of devices" [value]="device.id">
+                      {{ device.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div *ngIf="reportForm?.get('device')?.hasError('required') && reportForm?.get('device')?.touched">
+                <span class="error-message">{{"please_select_a_device" | translate}}</span>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="pois" class="mr-2">{{ "pois" | translate }}</label>
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                  <mat-select multiple formControlName="pois" placeholder="{{ 'choose_pois' | translate }}"
+                    class="form-control">
+                    <mat-option (click)="toggleSelectAllPois()" [value]="null">
+                      {{ isAllSelectedPois() ? ('deselect_all' | translate) : ('select_all' | translate) }}
+                    </mat-option>
+
+                    <mat-option *ngFor="let poi of poisList" [value]="poi.poi_id">
+                      {{ poi.name }}
+                    </mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div *ngIf="reportForm?.get('pois')?.hasError('required') && reportForm?.get('pois')?.touched">
+                <span class="error-message">{{"please_select_a_pois" | translate}}</span>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <button class="btn btn-primary" type="submit">{{ "generate" | translate }}</button>
+            </div>
+          </div>
+
         </div>
       </div>
-      <div class="col-md-12">
-        <div class="form-group d-flex align-items-center">
-          <label for="dateFrom" class="control-label">{{ "date_from" | translate }}</label>
-          <div class="col-sm-5 d-flex">
-            <mat-form-field appearance="fill" class="form-calendar form-control">
-                <input matInput [matDatepicker]="startDatePicker" formControlName="dateFrom" />
-                <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #startDatePicker></mat-datepicker>
-             </mat-form-field>
-            <select formControlName="fromTime" class="form-control">
-              <option *ngFor="let time of times" [value]="time">{{ time }}</option>
-            </select>
-          </div>
-        </div>
-      <!-- </div>
-      <div class="col-md-12"> -->
-        <div class="form-group">
-          <label for="dateTo" class="control-label">{{ "date_to" | translate }}</label>
-          <div class="col-sm-5 d-flex">
-            <mat-form-field appearance="fill" class="form-calendar form-control">
-                <input matInput [matDatepicker]="startDatePicker2" formControlName="dateTo" />
-                <mat-datepicker-toggle matIconSuffix [for]="startDatePicker2"></mat-datepicker-toggle>
-                <mat-datepicker #startDatePicker2></mat-datepicker>
-            </mat-form-field>
-            <select formControlName="toTime" class="form-control">
-              <option *ngFor="let time of times" [value]="time">{{ time }}</option>
-            </select>
-          </div>
-        </div>
-      </div>
+
     </div>
-    <div class="col-md-6">
-        <div class="form-group d-flex align-items-center">
-          <label for="device" class="mr-2">{{ "devices" | translate }}</label>
-          <mat-form-field appearance="outline" class="flex-grow-1">
-            <mat-select multiple formControlName="device" placeholder="{{ 'choose_devices' | translate }}" class="form-control">
-                <mat-option (click)="toggleSelectAll()" [value]="null">
-                    {{ isAllSelected() ? ('deselect_all' | translate) : ('select_all' | translate) }}
-                  </mat-option>
-              <mat-option *ngFor="let device of devices" [value]="device.id">
-                {{ device.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div *ngIf="reportForm?.get('device')?.hasError('required') && reportForm?.get('device')?.touched">
-          <span class="error-message">{{"please_select_a_device" | translate}}</span>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group d-flex align-items-center">
-          <label for="pois" class="mr-2">{{ "pois" | translate }}</label>
-          <mat-form-field appearance="outline" class="flex-grow-1">
-            <mat-select multiple formControlName="pois" placeholder="{{ 'choose_pois' | translate }}" class="form-control">
-              <mat-option (click)="toggleSelectAllPois()" [value]="null">
-                {{ isAllSelectedPois() ? ('deselect_all' | translate) : ('select_all' | translate) }}
-              </mat-option>
-              
-              <mat-option *ngFor="let poi of poisList" [value]="poi.poi_id">
-                {{ poi.name }}
-              </mat-option>
-              
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div *ngIf="reportForm?.get('pois')?.hasError('required') && reportForm?.get('pois')?.touched">
-          <span class="error-message">{{"please_select_a_pois" | translate}}</span>
-        </div>
-      </div>
-      
-      <div class="row">
-        <div class="col-md-12">
-          <button class="btn btn-primary btn-lg" type="submit">{{ "generate" | translate }}</button>
-        </div>
-      </div>
+
   </form>
 </div>

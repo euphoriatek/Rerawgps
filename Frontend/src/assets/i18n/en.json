@@ -197,5 +197,7 @@
     "choose_pois":"Choose POI's",
     "device_name":"Device Name",
     "deselect_all":"Deselect All",
-    "select_all":"Select All"
+    "select_all":"Select All",
+    "history_duration":"History Duration",
+    "history_duration_required":"History Duration is required"
 }

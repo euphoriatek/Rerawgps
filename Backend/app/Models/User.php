@@ -29,7 +29,8 @@ class User extends Authenticatable
         'role',
         'name',
         'created_by',
-        'is_active'
+        'is_active',
+        'history_duration'
     ];
 
     /**

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\Rule;
+
 class ApiController extends Controller
 {
     /**
@@ -35,7 +37,11 @@ class ApiController extends Controller
     public function register(Request $request)
     {
         $input = $request->all();
-
+        $historyDurationOptions = [];
+        for ($i = 90; $i <= 390; $i += 30) {
+            $historyDurationOptions[] = $i;
+        }
+        $historyDurationOptions[] = 400;
         $validator = Validator::make($input, [
             'server_id' => 'required|numeric',
             'username' => 'required|string|max:255',
@@ -43,6 +49,8 @@ class ApiController extends Controller
             'mobile_number' => 'required|numeric|min:10',
             'password' => 'required|string|min:8',
             'address' => 'required|string|max:255',
+            // 'history_duration' => 'required|in:30,45,60,90',  
+            'history_duration' => 'required|in:' . implode(',', $historyDurationOptions),  
         ]);
 
         if ($validator->fails()) {
@@ -116,7 +124,8 @@ class ApiController extends Controller
             'mobile_number' => $data['mobile_number'],
             'address' => $data['address'],
             'api_key' => $data['api_key'],
-            'created_by' => $data['created_by'] ?? null
+            'created_by' => $data['created_by'] ?? null,
+            'history_duration' => $data['history_duration'],
 
         ]);
 
@@ -415,6 +424,11 @@ class ApiController extends Controller
         $input = $request->all();
         try {
             $user = User::find($input['id']);
+            $historyDurationOptions = [];
+            for ($i = 90; $i <= 390; $i += 30) {
+                $historyDurationOptions[] = $i;
+            }
+            $historyDurationOptions[] = 400;
             $validator = Validator::make($input, [
                 'id' => 'required|numeric',
                 'username' => 'required|string|max:255',
@@ -423,6 +437,8 @@ class ApiController extends Controller
                 'password' => 'nullable|string|min:8',
                 'address' => 'required|string|max:255',
                 'server_id' => 'required|numeric|max:255',
+                // 'history_duration' => 'required|in:30,45,60,90',  
+                'history_duration' => 'required|in:' . implode(',', $historyDurationOptions), 
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -440,7 +456,8 @@ class ApiController extends Controller
                 'mobile_number' => $input['mobile_number'],
                 'address' => $input['address'],
                 'server_id' => $input['server_id'],
-                'password' => $input['password'] ?? $user->password
+                'password' => $input['password'] ?? $user->password,
+                'history_duration' =>$input['history_duration']
             ]);
             return response()->json([
                 'status' => true,
