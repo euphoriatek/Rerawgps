@@ -445,4 +445,15 @@ app-breadcrumb{
   .mdc-line-ripple {
     display: none;
   }
+  .toast-container .ngx-toastr{
+    width: 320px!important;
+  }
+  .toast-error {
+    background-color: #BD362F;
+    border-bottom: 3px solid #D7736F;
+  }
+  .toast-success {
+    background-color: #51A351;
+    border-bottom: 3px solid #558D55;
+  }
 } 
