@@ -132,8 +132,8 @@
          <td>{{data?.sales.name}}</td>
          <td>{{data?.device_name}}</td>
          <td>
-            <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn deletebtn" (click)="deleteRecords(data)"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn deletebtn" (click)="deleteRecords(data)" title="Delete"><i class="fa-solid fa-trash"></i></button>
          </td>
       </tr>
    </ng-template>

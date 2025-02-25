@@ -27,7 +27,7 @@ class ClearHistoryRecords extends Command
                 $this->info("History records deleted for user: {$user->username}");
             }
         }
-
+        
         $this->info('History records cleanup completed.');
     }
 }

@@ -53,8 +53,11 @@
           </td>
           <td>{{data.device_name}}</td>
          <td>{{data.activation_date | date}}</td>
-         <td><button class="btn editbtn" (click)="ReActivePlan(data)"><i class="fas fa-undo"></i></button>
-            <button class="btn editbtn" (click)="generateReport(data)"><i class="fa-solid fa-clipboard"></i></button>
+         <td>
+            <button class="btn editbtn" (click)="ReActivePlan(data)" title="Re-activate plan">
+               <i class="fas fa-undo"></i>
+             </button>
+            <button class="btn editbtn" (click)="generateReport(data)" title="Generate Report"><i class="fa-solid fa-clipboard"></i></button>
          </td>
       </tr>
    </ng-template>

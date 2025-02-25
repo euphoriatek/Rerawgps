@@ -206,11 +206,11 @@
       <td><mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle></td>
       <td>
         <div class="d-flex">
-          <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
-          <button class="btn viewbtn" [routerLink]="['/admin/user-view', data.id]"><i
+          <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn viewbtn" [routerLink]="['/admin/user-view', data.id]" title="View"><i
               class="fa-solid fa-eye"></i></button>
-          <button class="btn deletebtn" (click)="deleteRow(data)"><i class="fa-solid fa-trash"></i></button>
-          <button title="Login with User" class="btn deletebtn" (click)="loginAsUser(data)"><i
+          <button class="btn deletebtn" (click)="deleteRow(data)" title="Delete"><i class="fa-solid fa-trash"></i></button>
+          <button title="Login with User" class="btn deletebtn" (click)="loginAsUser(data)" title="Login With User"><i
               class="fa-solid fa-mask"></i></button>
         </div>
       </td>
