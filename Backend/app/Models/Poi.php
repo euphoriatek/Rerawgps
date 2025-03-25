@@ -16,7 +16,8 @@ class Poi extends Model
         'group_name',
         'active',
         'status',
-        'coordinates'
+        'coordinates',
+        'sales_agent_id'
     ];
     public $timestamps = true;
     public function groups()

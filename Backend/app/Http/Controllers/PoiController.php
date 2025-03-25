@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Poi;
 use App\Models\User;
 use App\Models\Servers;
+use App\Models\SalesModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
@@ -14,14 +15,17 @@ class PoiController extends Controller
 {
     public function store(Request $request)
     {
+        $salesUser = Auth::guard('sales')->user();
+        $salesId = $salesUser->id;
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
-                'description' => 'required|string',
+                'description' => 'nullable|string',
                 'coordinates.lat' => 'required|numeric|min:-90|max:90',
                 'coordinates.lng' => 'required|numeric|min:-180|max:180',
-                'map_icon_id' => 'nullable|integer',
-                'regaykar_user_id' => 'required|numeric'
+                'map_icon_id' => 'required|integer',
+                'regaykar_user_id' => 'required|numeric',
+                'group_id' => 'nullable|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -32,6 +36,8 @@ class PoiController extends Controller
             }
             $input = $request->all();
             $input['coordinates'] = json_encode($input['coordinates']);
+            $input['sales_agent_id'] = $salesId;
+            
             $poi = Poi::create($input);
 
             return response()->json([
@@ -74,39 +80,88 @@ class PoiController extends Controller
             ], 500);
         }
     }
+    // public function getPendingPois()
+    // {
+    //     try {
+    //         $user = auth()->user();
+    //         if (!$user) {
+    //             return response()->json([
+    //                 'status' => false,
+    //                 'message' => 'Unauthorized. Please log in.',
+    //             ], 401);
+    //         }
+
+    //         $pendingPois = Poi::where('regaykar_user_id', $user->id)->where('status', 'pending')->orderBy('created_at', 'desc')->get()
+    //                           ->map(function ($poi) {
+    //                               $sales = SalesModel::find($poi->sales_agent_id);
+    //                               $poi->sales_agent_name = $sales ? $sales->username : null;
+    //                               return $poi;
+    //                           });
+    
+    //         return response()->json([
+    //             'status' => true,
+    //             'data' => $pendingPois
+    //         ], 200);
+    
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'Error: ' . $e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+    
     public function getPendingPois()
     {
         try {
-            $user = Auth::user();
+            $user = auth()->user();
             if (!$user) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Unauthorized. Please log in.',
                 ], 401);
             }
-            $pendingPois = Poi::where('regaykar_user_id', $user->id)->where('status', 'pending')->get();
+    
+            // Fetch pending POIs and count them
+            $pendingPoisQuery = Poi::where('regaykar_user_id', $user->id)
+                ->where('status', 'pending');
+    
+            $totalPendingPois = $pendingPoisQuery->count();
+    
+            $pendingPois = $pendingPoisQuery
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($poi) {
+                    $sales = SalesModel::find($poi->sales_agent_id);
+                    $poi->sales_agent_name = $sales ? $sales->username : null;
+                    return $poi;
+                });
+    
             return response()->json([
                 'status' => true,
+                'pending_pois_count' => $totalPendingPois,
                 'data' => $pendingPois
             ], 200);
-
+    
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'An error occurred: ' . $e->getMessage(),
+                'status' => false,
+                'message' => 'Error: ' . $e->getMessage(),
             ], 500);
         }
     }
+    
     public function getPois()
     {
         try {
-            $user = Auth::user();
+            $user = auth()->user();
             if (!$user) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Unauthorized. Please log in.',
                 ], 401);
             }
-            $pois = Poi::where('regaykar_user_id', $user->id)->where('status', 'approved')->with('groups.group')->get();
+            $pois = Poi::where('regaykar_user_id', $user->id)->where('status', 'approved')->with('groups.group')->orderBy('created_at', 'desc')->get();
             return response()->json([
                 'status' => true,
                 'data' => $pois
@@ -122,7 +177,7 @@ class PoiController extends Controller
     public function syncData()
     {
         try {
-            $user = Auth::user();
+            $user = auth()->user();
             if (!$user || $user->role != "user") {
                 return response()->json([
                     'status' => false,
@@ -135,7 +190,7 @@ class PoiController extends Controller
                 'user_api_hash' => $user->api_key,
             ]);
             $mapIcons = $masterPortsResponse->json()['items']['mapIcons'] ?? [];
-            // Fetch the group data from the provided external API
+          
             $groupResponse = Http::get($user->server->server_url . '/api/pois_groups', [
                 'lang' => 'en',
                 'user_api_hash' => $user->api_key,
@@ -147,7 +202,7 @@ class PoiController extends Controller
                 $groupTitle = null;
 
                 foreach ($groups as $group) {
-                    // Check if 'id' exists in $group
+
                     if (isset($group['id']) && $group['id'] == $group_id) {
                         $groupTitle = $group['title'];
                         break;
@@ -193,7 +248,6 @@ class PoiController extends Controller
                     ]);
                 }
             }
-
             return response()->json([
                 'status' => true,
                 'message' => 'Data sync Successfully',
@@ -207,7 +261,7 @@ class PoiController extends Controller
     public function updatePoiStatus(Request $request)
     {
         try {
-            $user = Auth::user();
+            $user = auth()->user();
             if (!$user) {
                 return response()->json([
                     'status' => false,
@@ -215,6 +269,7 @@ class PoiController extends Controller
                 ], 401);
             }
             $Server = Servers::find($user->server_id);
+         
             $validator = Validator::make($request->all(), [
                 'status' => 'required|string',
                 'poi_id' => 'required|numeric'
@@ -239,13 +294,14 @@ class PoiController extends Controller
                 $mapIconId = 9;
                 $poi->update(['status' => "approved", "active" => 1]);
                 $url = $Server->server_url . '/api/add_map_icon?lang=en&user_api_hash=' . $user->api_key;
+           
                 $response = Http::accept('application/json')
-
                     ->withHeaders([
                         'Content-Type' => 'application/json',
                     ])
                     ->post($url, array_merge($poi->toArray(), ['map_icon_id' => $mapIconId]));
                 $CreatemapIcons = $response->json() ?? [];
+    
                 if ($CreatemapIcons['status'] && $CreatemapIcons['status'] == 1) {
 
                     $mapIconsResponse = Http::get($Server->server_url . '/api/get_user_map_icons', [

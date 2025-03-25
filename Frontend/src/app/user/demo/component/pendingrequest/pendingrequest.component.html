@@ -1,5 +1,5 @@
 <p-table #dt [value]="pendingPois" dataKey="id" styleClass="p-datatable-customers"
-  [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+  [rowHover]="true" [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
   [globalFilterFields]="['name','description','lat','lng','status']">
   <ng-template pTemplate="caption">
@@ -16,22 +16,22 @@
   <ng-template pTemplate="header">
       <tr>
           <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
-          <th pSortableColumn="description">{{ "description" | translate }} <p-sortIcon field="description"></p-sortIcon></th>
           <th pSortableColumn="lat">{{ "lat" | translate }} <p-sortIcon field="lat"></p-sortIcon></th>
           <th pSortableColumn="lng">{{ "lng" | translate }} <p-sortIcon field="lng"></p-sortIcon></th>
+          <th>{{ "submitted_by" | translate }}</th>
+          <th>{{ "submitted_on" | translate }}</th>
           <th>{{ "actions" | translate }}</th>
       </tr>
   </ng-template>
   <ng-template pTemplate="body" let-data>
       <tr class="p-selectable-row">
           <td>{{data.name}}</td>
-          <td>{{data.description}}</td>
           <td>{{getLat(data.coordinates)}}</td>
           <td>{{getLng(data.coordinates)}}</td>
+          <td>{{data.sales_agent_name}}</td>
+          <td>{{ data.created_at | date:'dd-MM-yyyy' }}</td>
           <td>
-            <!-- <i (click)="confirmPoiAction(data.id,'approved')" class="fa-solid fa-check fa-2x"></i>
-            &nbsp;&nbsp;&nbsp;&nbsp;<i (click)="confirmPoiAction(data.id,'reject')" class="fa-solid fa-xmark fa-2x"></i> -->
-            <button class="btn editbtn" (click)="confirmPoiAction(data.id,'approved')" title="Approved"><i class="fa-solid fa-check"></i></button>
+            <button class="btn editbtn" (click)="confirmPoiAction(data.id,'approved')" title="Approve"><i class="fa-solid fa-check"></i></button>
             <button class="btn editbtn" (click)="confirmPoiAction(data.id,'reject')" title="Reject"><i class="fa-solid fa-xmark"></i></button>
             <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i class="fa-solid fa-pen"></i></button>
           </td>

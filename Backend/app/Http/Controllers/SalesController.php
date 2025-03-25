@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\SalesModel;
 use App\Models\AssigendServer;
 use App\Models\User;
+use App\Models\Servers;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -42,16 +44,17 @@ class SalesController extends Controller
             ], 500);
         }
     }
-    public function getObjects(Request $request){
+    public function getObjects(Request $request)
+    {
 
         $userId = $request->input('user_id');
-        if(!$userId){
+        if (!$userId) {
             return response()->json([
                 'status' => false,
                 'message' => 'Regaykar user id is required',
             ], 401);
         }
-        $saleData = SalesModel::where('user_id', $userId)->get();
+        $saleData = SalesModel::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
         return response()->json([
             'status' => true,
             'message' => 'Sales records fetched successfully!',
@@ -75,7 +78,7 @@ class SalesController extends Controller
         }
         try {
             $object = SalesModel::find($input['id']);
-            if(!$object){
+            if (!$object) {
                 return response()->json([
                     'status' => false,
                     'message' => 'User not found',
@@ -102,7 +105,8 @@ class SalesController extends Controller
             ], 500);
         }
     }
-    public function deleteObject(Request $request, $id){
+    public function deleteObject(Request $request, $id)
+    {
         try {
             $sales = SalesModel::find($id);
             if (!$sales) {
@@ -128,6 +132,7 @@ class SalesController extends Controller
     public function login(Request $request)
     {
         $input = $request->all();
+
         // Validate input
         $validator = Validator::make($input, [
             'username' => 'required|string',
@@ -142,7 +147,7 @@ class SalesController extends Controller
         if (!$sales || !Hash::check($request->password, $sales->password)) {
             return response()->json(['status' => false, 'message' => 'Invalid credentials'], 401);
         }
-        // $token = $sales->createSalesToken('sales_token');
+
         $token = $sales->createToken('sales_token')->plainTextToken;
         $sales->remember_token = $token;
         $sales->save();
@@ -150,6 +155,7 @@ class SalesController extends Controller
             'status' => true,
             'message' => 'Login successful!',
             'token' => $token,
+
         ], 200);
     }
 
@@ -163,7 +169,7 @@ class SalesController extends Controller
             ], 401);
         }
         $userId = $user->id;
-        $saleData = SalesModel::where('user_id', $userId)->get();
+        $saleData = SalesModel::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
         return response()->json([
             'status' => true,
             'message' => 'Sales records fetched successfully!',
@@ -173,9 +179,11 @@ class SalesController extends Controller
 
     public function getObjectsList()
     {
-        $saleData = SalesModel::with(['user' => function($query) {
-            $query->select('id', 'username');
-        }])->get();
+        $saleData = SalesModel::with([
+            'user' => function ($query) {
+                $query->select('id', 'username');
+            }
+        ])->orderBy('created_at', 'desc')->get();
         return response()->json([
             'status' => true,
             'message' => 'Sales records fetched successfully!',
@@ -185,7 +193,7 @@ class SalesController extends Controller
 
     public function getAdminObjectsList()
     {
-        $user = Auth::user();
+         $user = auth()->user();
         if (!$user) {
             return response()->json([
                 'status' => false,
@@ -194,9 +202,11 @@ class SalesController extends Controller
         }
         $serverIds = AssigendServer::where('user_id', $user->id)->pluck('server_id')->toArray();
         $users = User::where('server_id', $serverIds)->where('role', 'user')->pluck('id')->toArray();
-        $saleData = SalesModel::with(['user' => function($query) {
-            $query->select('id', 'username');
-        }])->WhereIn('user_id', $users)->get();
+        $saleData = SalesModel::with([
+            'user' => function ($query) {
+                $query->select('id', 'username');
+            }
+        ])->WhereIn('user_id', $users)->get();
         return response()->json([
             'status' => true,
             'message' => 'Sales records fetched successfully!',
@@ -214,7 +224,7 @@ class SalesController extends Controller
             ], 401);
         }
         $userId = $user->id;
-        $saleData = SalesModel::select('id','name')->where('user_id', $userId)->get();
+        $saleData = SalesModel::select('id', 'name')->where('user_id', $userId)->get();
         return response()->json([
             'status' => true,
             'message' => 'Sales records fetched successfully!',
@@ -222,10 +232,11 @@ class SalesController extends Controller
         ], 200);
     }
 
-    public function  updateSalesAgentStatus(Request $request){
+    public function updateSalesAgentStatus(Request $request)
+    {
         try {
             $input = $request->input('user_id');
-            if($input){
+            if ($input) {
                 $salesAgent = SalesModel::find($input);
                 if (!$salesAgent) {
                     return response()->json([
@@ -234,24 +245,114 @@ class SalesController extends Controller
                     ], 404);
                 }
                 $salesAgent->update(['is_active' => $salesAgent->is_active == 1 ? 0 : 1]);
-    
+
                 return response()->json([
                     'status' => true,
                     'message' => 'SalesAgent status updated successfully.'
                 ], 200);
-    
-            }else{
-                return response()->json([
-                        'status' => false,
-                        'message' => 'SalesAgent id is required.',
-                    ], 404);
-            }
-            } catch (\Exception $e) {
+
+            } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'An error occurred while updating data.',
-                    'error' => $e->getMessage(),
-                ], 500);
+                    'message' => 'SalesAgent id is required.',
+                ], 404);
             }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while updating data.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
+    public function getMapiIcon(Request $request)
+    {
+
+        $salesUser = Auth::guard('sales')->user();
+        if (!$salesUser) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sales user is not authenticated.',
+            ], 401);
+        }
+
+        // $sales = SalesModel::where('id', $salesUser->id)->first();
+        $user = User::with('server')->find($salesUser->user_id);
+     
+        $masterPortsResponse = Http::get($user->server->server_url . '/api/get_map_icons', [
+            'lang' => 'en',
+            'user_api_hash' => $user->api_key,
+        ]);
+
+        $mapIcons = $masterPortsResponse->json()['items']?? [];
+
+        return response()->json([
+            'status' => true,
+            'data' => $mapIcons,
+        ], 200);
+    }
+    // public function getServerGroups(Request $request)
+    // {
+
+    //     $salesUser = Auth::guard('sales')->user();
+       
+    //     if (!$salesUser) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'Sales user is not authenticated.',
+    //         ], 401);
+    //     }
+
+    //     // $sales = SalesModel::where('id', $salesUser->id)->first();
+    //     $user = User::with('server')->find($salesUser->user_id);
+ 
+    //     $masterPortsResponse = Http::get($user->server->server_url . '/api/pois_groups', [
+    //         'lang' => 'en',
+    //         'user_api_hash' => $user->api_key,
+    //     ]);
+
+    //     $mapIcons = $masterPortsResponse->json()?? [];
+    
+    //     return response()->json([
+    //         'status' => true,
+    //         'data' => $mapIcons,
+    //     ], 200);
+    // }
+    public function getServerGroups(Request $request)
+    {
+        $salesUser = Auth::guard('sales')->user();
+
+        if (!$salesUser) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sales user is not authenticated.',
+            ], 401);
+        }
+
+        $user = User::with('server')->find($salesUser->user_id);
+
+        $masterPortsResponse = Http::get($user->server->server_url . '/api/pois_groups', [
+            'lang' => 'en',
+            'user_api_hash' => $user->api_key,
+        ]);
+
+        $getPoisGroups = $masterPortsResponse->json() ?? [];
+
+        if (isset($getPoisGroups['pagination'])) {
+            unset($getPoisGroups['pagination']);
+        }
+        $data = array_map(function ($item) {
+            return [
+                'id' => $item['id'],
+                'user_id' => $item['user_id'],
+                'title' => $item['title'],
+                'open' => (bool) $item['open'],
+            ];
+        }, array_values($getPoisGroups));
+        return response()->json([
+            'status' => true,
+            'data' => $data,
+        ], 200);
+    }
+
 }

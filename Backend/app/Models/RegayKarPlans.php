@@ -30,4 +30,8 @@ class RegayKarPlans extends Model
     {
         return $this->belongsTo(SalesModel::class, 'sale_agent_id', 'id');
     }
+    public function assignedPois()
+    {
+        return $this->hasMany(AssignedPoi::class, 'group_id', 'group_id');
+    }
 }

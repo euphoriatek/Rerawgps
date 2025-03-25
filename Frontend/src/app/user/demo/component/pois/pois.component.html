@@ -1,7 +1,7 @@
 <p-table #dt [value]="poisList" dataKey="id" styleClass="p-datatable-customers"
-  [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+  [rowHover]="true" [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
-  [globalFilterFields]="['name','description','lat','lng','groups']">
+  [globalFilterFields]="['name','group_name','lat','lng','groups']">
   <ng-template pTemplate="caption">
       <div class="table-header mb-4">
           <h3>{{ 'pois_list' | translate}}</h3>
@@ -16,19 +16,19 @@
   <ng-template pTemplate="header">
       <tr>
           <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
-          <!-- <th pSortableColumn="description">{{ "description" | translate }} <p-sortIcon field="description"></p-sortIcon></th> -->
-          <th pSortableColumn="lat">{{ "lat" | translate }} <p-sortIcon field="lat"></p-sortIcon></th>
-          <th pSortableColumn="lng">{{ "lng" | translate }} <p-sortIcon field="lng"></p-sortIcon></th>
+          <th>{{ "lat" | translate }}</th>
+          <th>{{ "lng" | translate }}</th>
           <th pSortableColumn="groups">{{ "groups" | translate }} <p-sortIcon field="groups"></p-sortIcon></th>
+          <th pSortableColumn="group_name">{{ "server_group_name" | translate }} <p-sortIcon field="group_name"></p-sortIcon></th>
       </tr>
   </ng-template>
   <ng-template pTemplate="body" let-data>
       <tr class="p-selectable-row">
           <td>{{data.name}}</td>
-          <!-- <td>{{data.description}}</td> -->
           <td>{{getLat(data.coordinates)}}</td>
           <td>{{getLng(data.coordinates)}}</td>
           <td>{{ data.groupNames || ("unassigned" | translate) }}</td>
+          <td>{{ data.group_name  || ("ungrouped" | translate)}}</td>
       </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage">

@@ -34,7 +34,12 @@ class GroupController extends Controller
             'user_id' => $userId,
             'pois_id' => json_encode($request->input('pois_id'))
         ]);
-
+        foreach ($request->input('pois_id') as $poiId) {
+            AssignedPoi::create([
+                'group_id' => $group->id,
+                'poi_id' => $poiId
+            ]);
+        }
         return response()->json([
             'status' => true,
             'message' => 'Group created successfully!',
@@ -53,7 +58,7 @@ class GroupController extends Controller
                 ], 401);
             }
             $userId = $user->id;
-            $groups = Group::where('user_id', $userId)->get();
+            $groups = Group::with('assignedPois.poi')->where('user_id', $userId)->orderBy('created_at', 'desc')->get();
             return response()->json([
                 'status' => true,
                 'message' => 'Groups records fetched successfully!',
@@ -96,9 +101,17 @@ class GroupController extends Controller
             $startdate = Carbon::parse($request->input('startdate'))->toDateString();
             $group->update([
                 'name' => $input['name'],
-                'description' => $input['description'],
-                'pois_id' => json_encode($input['pois_id'])
+                'description' => $input['description']
             ]);
+            if($group){
+                $delete = AssignedPoi::where('group_id', $group->id)->delete();
+                foreach ($request->input('pois_id') as $poiId) {
+                    AssignedPoi::create([
+                        'group_id' => $group->id,
+                        'poi_id' => $poiId
+                    ]);
+                }
+            }
             return response()->json([
                 'status' => true,
                 'message' => 'Group updated successfully!',

@@ -56,7 +56,6 @@ export class GroupComponent implements OnInit {
     });
 
     this.getPois();
-    this.getGroups();
   }
 
   addGroup(): void {
@@ -126,13 +125,23 @@ export class GroupComponent implements OnInit {
         if (response && response.status) {
           this.groupsData = response.data;
           // Ensure pois_options is loaded before mapping
+          // if (this.pois_options && this.pois_options.length > 0) {
+          //   this.groupsData = this.groupsData.map(group => {
+          //     const poisIds = JSON.parse(group.pois_id);
+          //     group.poisNames = poisIds.map(poiId => {
+          //       const poi = this.pois_options.find(p => p.id === poiId);
+          //       return poi ? poi.name : 'Unknown POI';
+          //     }).join(', ');
+          //     return group;
+          //   });
+          // }
           if (this.pois_options && this.pois_options.length > 0) {
             this.groupsData = this.groupsData.map(group => {
-              const poisIds = JSON.parse(group.pois_id);
-              group.poisNames = poisIds.map(poiId => {
-                const poi = this.pois_options.find(p => p.id === poiId);
+              group.poisNames = group.assigned_pois.map(assignedPoi => {
+                const poi = assignedPoi.poi;
                 return poi ? poi.name : 'Unknown POI';
               }).join(', ');
+          
               return group;
             });
           }
@@ -152,7 +161,7 @@ export class GroupComponent implements OnInit {
   }
 
   openEditDialog(data: any): void {
-    const poisIds = JSON.parse(data.pois_id);
+    const poisIds = data.assigned_pois.map(item => item.poi_id);
     this.groupEditForm.patchValue({
       name: data.name,
       description: data.description,
@@ -223,10 +232,12 @@ export class GroupComponent implements OnInit {
     });
   }
   getPois(): void {
+    this.spinner.show();
     this.api.getAllPoisOptionsList().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.pois_options = response.data;
+          this.getGroups();
         }
       },
       error: (err) => {

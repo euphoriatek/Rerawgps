@@ -199,5 +199,9 @@
     "deselect_all":"Deselect All",
     "select_all":"Select All",
     "history_duration":"History Duration",
-    "history_duration_required":"History Duration is required"
+    "history_duration_required":"History Duration is required",
+    "ungrouped":"Ungrouped",
+    "server_group_name":"Server Group",
+    "submitted_on":"Submitted  On",
+    "submitted_by":"Submitted By"
 }

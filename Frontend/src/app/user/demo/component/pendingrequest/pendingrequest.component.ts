@@ -45,6 +45,12 @@ export class PendingRequestComponent {
               lat: this.getLat(poi.coordinates),
               lng: this.getLng(poi.coordinates),
             }));
+            if(pendingPois.length > 0){
+              document.getElementById("pending_request").classList.add("pending_request");
+              document.getElementById("pending_request").innerHTML = pendingPois.length;
+            }else{
+              document.getElementById("pending_request").classList.remove("pending_request");
+            }
           }
         }
       },
@@ -87,10 +93,15 @@ export class PendingRequestComponent {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         const data = { poi_id: id, status: action };
-        this.spinner.show(); // Add this to indicate the process started
+        console.log(data);
+        
+        this.spinner.show();
         this.api.updatePoiStatus(data).subscribe({
           next: (response: any) => {
+            console.log(response);
+              
             if (response.status) {
+              
               this.loadPendingPois();
               this.toaster.success(this.translate.instant(actionText), this.translate.instant('poi'));
             } else {

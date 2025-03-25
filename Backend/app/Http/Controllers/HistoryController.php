@@ -24,6 +24,7 @@ class HistoryController extends Controller
                 ], 401);
             }
             $history = History::with(['group', 'salesAgent'])
+                ->orderBy('created_at', 'desc')
                 ->get()
                 ->map(function ($item) {
                     $poisIds = json_decode($item->pois_id, true);

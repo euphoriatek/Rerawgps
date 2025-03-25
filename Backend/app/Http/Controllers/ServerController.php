@@ -168,5 +168,19 @@ class ServerController extends Controller
             ], 500);
         }
     }
-    
+    public function serverList(){
+
+        $salesUser = Auth::guard('sales')->user();
+        if (!$salesUser) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sales user is not authenticated.',
+            ], 401);
+        }
+        $server = Servers::select('id','name','server_url')->get();
+        return response()->json([
+            'status' => true,
+            'data' => $server,
+        ], 200);
+    }
 }

@@ -122,7 +122,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // --------------
     // Sales Agent
     Route::post('/pois', [PoiController::class, 'store'])->middleware('auth:sales');
+    Route::get('/get-icon', [SalesController::class, 'getMapiIcon'])->middleware('auth:sales');
+    Route::get('/get-server-group', [SalesController::class, 'getServerGroups'])->middleware('auth:sales');
+    Route::get('/active-plan', [RegayKarPlansController::class, 'activePlan'])->middleware('auth:sales');
     Route::get('/sync-device', [HistoryController::class, 'syncDevice'])->middleware('auth:users');
     Route::post('/sync-reports', [HistoryController::class, 'getGenerateReports'])->middleware('auth:users');
     Route::post('/generate-reports', [HistoryController::class, 'generateReports'])->middleware('auth:users');
+    Route::get('/server-list', [ServerController::class, 'serverList'])->middleware('auth:sales');
+    Route::post('/regaykar-users', [ApiController::class, 'regayKarUsers'])->middleware('auth:sales');
 });

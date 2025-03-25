@@ -258,7 +258,7 @@ class ApiController extends Controller
     public function UsersList(Request $request)
     {
         try {
-            $users = User::with(['server','createdby:id,username,name,email'])->where('role', 'user')->get();
+            $users = User::with(['server','createdby:id,username,name,email'])->where('role', 'user')->orderBy('created_at', 'desc')->get();
             return response()->json([
                 'status' => true,
                 'data' => $users,
@@ -635,6 +635,34 @@ class ApiController extends Controller
             'status' => true,
             'data' => $user,
             'message' => 'Masquerading as user'
+        ], 200);
+    }
+
+    public function regayKarUsers(Request $request){
+
+        $salesUser = Auth::guard('sales')->user();
+        if (!$salesUser) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sales user is not authenticated.',
+            ], 401);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'server_id' => 'required|numeric|exists:servers,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+        
+        $regaykarUser = User::select("username")->where("server_id", $request->input('server_id'))->get();
+        return response()->json([
+            'status' => true,
+            'data' => $regaykarUser,
         ], 200);
     }
 }

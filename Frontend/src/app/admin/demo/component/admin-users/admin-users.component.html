@@ -88,7 +88,7 @@
     </div>
   </form>
   <p-table #dt [value]="adminData" [(selection)]="selectedCustomers" dataKey="id" styleClass="p-datatable-customers"
-    [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+    [rowHover]="true" [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
     [globalFilterFields]="['name','server_url','created_at']">
     <ng-template pTemplate="caption">
