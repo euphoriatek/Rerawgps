@@ -202,6 +202,7 @@
   "history_duration_required": "مدة التاريخ مطلوبة",
   "ungrouped": "غير مُجَمَّع",
   "server_group_name": "اسم مجموعة الخادم",
-  "created_on": "تم الإنشاء في"
+  "created_on": "تم الإنشاء في",
+  "please_add_description":"يرجى إضافة الوصف"
   }
   

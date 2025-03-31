@@ -74,7 +74,12 @@ export class PendingRequestComponent {
     return data.lng;
   }
 
-  confirmPoiAction(id: number, action:string): void {
+  confirmPoiAction(id: number, action:string, data:any): void {
+    if(action === "approved"){
+      if(data.description == "" || data.description == null){
+        return  this.toaster.error(this.translate.instant('please_add_description'), this.translate.instant('poi'));
+      }
+    }
     const actionText = action === 'approved' ? 'poi_approved_success' : 'poi_reject_success';
     const confirmationMessage =
       action === 'approved'

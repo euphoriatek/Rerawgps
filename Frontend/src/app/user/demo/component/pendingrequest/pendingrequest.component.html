@@ -31,8 +31,8 @@
           <td>{{data.sales_agent_name}}</td>
           <td>{{ data.created_at | date:'dd-MM-yyyy' }}</td>
           <td>
-            <button class="btn editbtn" (click)="confirmPoiAction(data.id,'approved')" title="Approve"><i class="fa-solid fa-check"></i></button>
-            <button class="btn editbtn" (click)="confirmPoiAction(data.id,'reject')" title="Reject"><i class="fa-solid fa-xmark"></i></button>
+            <button class="btn editbtn" (click)="confirmPoiAction(data.id,'approved',data)" title="Approve"><i class="fa-solid fa-check"></i></button>
+            <button class="btn editbtn" (click)="confirmPoiAction(data.id,'reject',data)" title="Reject"><i class="fa-solid fa-xmark"></i></button>
             <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i class="fa-solid fa-pen"></i></button>
           </td>
       </tr>

@@ -203,5 +203,6 @@
     "ungrouped":"Ungrouped",
     "server_group_name":"Server Group",
     "submitted_on":"Submitted  On",
-    "submitted_by":"Submitted By"
+    "submitted_by":"Submitted By",
+    "please_add_description":"Please Add Description"
 }
