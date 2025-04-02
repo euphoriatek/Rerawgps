@@ -301,43 +301,6 @@ class SalesController extends Controller
         ], 200);
     }
    
-    // public function getServerGroups(Request $request)
-    // {
-    //     $salesUser = Auth::guard('sales')->user();
-
-    //     if (!$salesUser) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Sales user is not authenticated.',
-    //         ], 401);
-    //     }
-
-    //     $user = User::with('server')->find($salesUser->user_id);
-
-    //     $masterPortsResponse = Http::get($user->server->server_url . '/api/pois_groups', [
-    //         'lang' => 'en',
-    //         'user_api_hash' => $user->api_key,
-    //     ]);
-
-    //     $getPoisGroups = $masterPortsResponse->json() ?? [];
-
-    //     if (isset($getPoisGroups['pagination'])) {
-    //         unset($getPoisGroups['pagination']);
-    //     }
-    //     $data = array_map(function ($item) {
-    //         return [
-    //             'id' => $item['id'],
-    //             'user_id' => $item['user_id'],
-    //             'title' => $item['title'],
-    //             'open' => (bool) $item['open'],
-    //         ];
-    //     }, array_values($getPoisGroups));
-    //     return response()->json([
-    //         'status' => true,
-    //         'data' => $data,
-    //     ], 200);
-    // }
-
     public function serverGroups(Request $request)
     {
 

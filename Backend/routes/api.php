@@ -115,8 +115,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/delete-plan/{id}', [RegayKarPlansController::class, 'deletePlan'])->middleware('role:user');
     // history
     Route::get('/get-history', [HistoryController::class, 'getHistory'])->middleware('role:user');
-    // Report
-    Route::get('/get-server-group', [GroupController::class, 'getServerGroups'])->middleware('auth:users');
 
     // saleagent
     Route::post('/get-sales-objects', [SalesController::class, 'getsalesObjects'])->middleware('auth:users');

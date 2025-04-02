@@ -60,8 +60,8 @@ class PoiController extends Controller
                 'id' => 'required|exists:pois,id',
                 'name' => 'required|string',
                 'description' => 'required|string',
-                'group_id' =>'required|numeric',
-                'group_name' => 'required|string',
+                // 'group_id' =>'required|numeric',
+                // 'group_name' => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -72,12 +72,14 @@ class PoiController extends Controller
             }
             $input = $request->all();
             $poi = Poi::find($input['id']);
-            $poi->update(['name' => $input['name'], 'description' => $input['description'], 'group_id' => $input['group_id'],'group_name' => $input['group_name'],]);
-            
-            $assignedPoi = AssignedPoi::updateOrCreate(
-                ['poi_id' => $poi->id],
-                ['group_id' => $input['groupId']]
-            );
+            $poi->update($input);
+            // $poi->update(['name' => $input['name'], 'description' => $input['description'], 'group_id' => $input['group_id'],'group_name' => $input['group_name'],]);
+            if(isset($input['groupId'])){
+                $assignedPoi = AssignedPoi::updateOrCreate(
+                    ['poi_id' => $poi->id],
+                    ['group_id' => $input['groupId']]
+                );
+            }
             return response()->json([
                 'status' => true,
                 'message' => 'Poi updated successfully!',

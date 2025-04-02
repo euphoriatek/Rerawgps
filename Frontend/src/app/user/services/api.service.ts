@@ -89,7 +89,4 @@ export class ApiService {
     return this.http.get(this.BaseUrl + 'get-types');
     
   }
-  getServerGroupList(){
-    return this.http.get(this.BaseUrl + 'get-server-group');
-  }
 }

@@ -33,8 +33,8 @@ export class PendingRequestComponent {
       id: ['', [Validators.required]],
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      group_id: ['', [Validators.required]],
-      groupId: ['', [Validators.required]]
+      group_id: [''],
+      groupId: ['']
     });
     this.getServerGroup();
     this.getGroups();

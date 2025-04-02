@@ -85,10 +85,6 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <div
-                        *ngIf="poiEditForm?.get('group_id')?.hasError('required') && poiEditForm?.get('group_id')?.touched">
-                        <span class="error-message">{{ "server_group_required" | translate }}</span>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-12">
@@ -101,10 +97,6 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <div
-                        *ngIf="poiEditForm?.get('groupId')?.hasError('required') && poiEditForm?.get('groupId')?.touched">
-                        <span class="error-message">{{ "group_required" | translate }}</span>
-                    </div>
                 </div>
             </div>
         </div>

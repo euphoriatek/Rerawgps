@@ -86,7 +86,7 @@ export class ReportsComponent {
   }
   serverGroups(){
     this.spinner.show();
-    this.api.getServerGroupList().subscribe({
+    this.api.getServerGroup().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.serverGroupsData = response.data;
@@ -245,7 +245,7 @@ export class ReportsComponent {
       const requestData = {
         title: title,
         period: period,
-        devices: selectedDeviceId,
+        devices: [selectedDeviceId],
         pois: selectedPois,
         date_from: dateFrom,
         from_time: fromTime,
@@ -254,7 +254,6 @@ export class ReportsComponent {
         distance_tolerance:distanceTolerance,
         // type:type
       };
-      console.log(requestData);
       this.spinner.show();
       this.api.generateRepots(requestData).subscribe({
         next: (response: any) => {
