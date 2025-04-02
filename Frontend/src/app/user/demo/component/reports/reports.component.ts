@@ -25,6 +25,10 @@ export class ReportsComponent {
   times: string[] = [];
   selectedDeviceIds: number[] = [];
   selectedPoiIds: number[] = [];
+  types_options:any[]=[];
+  groupsData:any;
+  serverGroupsData:any;
+  
   period: any = ["Today", "Yesterday", "Before 2 days", "Before 3 days", "This week", "Last week", "This month", "Last month"];
   today: Date;
   deviceForm = new FormGroup({
@@ -44,7 +48,9 @@ export class ReportsComponent {
     this.getDevice();
     this.getPois();
     this.generateTimeSlots();
-
+    this.getGroups();
+    this.serverGroups();
+    // this.getTypes();
     const currentDate = this.formatDateWithoutTime(new Date());
 
     this.reportForm = this.fb.group({
@@ -55,9 +61,43 @@ export class ReportsComponent {
       dateFrom: [currentDate],
       fromTime: ['00:00'],
       dateTo: [currentDate],
-      toTime: ['23:59']
+      toTime: ['23:59'],
+      distanceTolerance:['20', Validators.required],
+      filter_by_group:[''],
+      filter_by_server_group:[''],
+      // type:['', Validators.required]
     });
     this.setDatesByPeriod();
+  }
+  getGroups(): void {
+    this.spinner.show();
+    this.api.getGroupList().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.groupsData = response.data;
+        }
+        this.spinner.hide();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
+  }
+  serverGroups(){
+    this.spinner.show();
+    this.api.getServerGroupList().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.serverGroupsData = response.data;
+        }
+        this.spinner.hide();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
   }
 
   periodChanged() {
@@ -200,6 +240,8 @@ export class ReportsComponent {
       const fromTime = this.reportForm.value.fromTime;
       const dateTo = this.reportForm.value.dateTo;
       const toTime = this.reportForm.value.toTime;
+      const distanceTolerance = this.reportForm.value.distanceTolerance;
+      // const type = this.reportForm.value.type;
       const requestData = {
         title: title,
         period: period,
@@ -208,8 +250,11 @@ export class ReportsComponent {
         date_from: dateFrom,
         from_time: fromTime,
         date_to: dateTo,
-        to_time: toTime
+        to_time: toTime,
+        distance_tolerance:distanceTolerance,
+        // type:type
       };
+      console.log(requestData);
       this.spinner.show();
       this.api.generateRepots(requestData).subscribe({
         next: (response: any) => {
@@ -286,6 +331,36 @@ export class ReportsComponent {
     const dd = localDate.getDate().toString().padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   }
-  
+
+   getTypes(){
+    this.spinner.show();
+    this.api.getTypes().subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        if (response && response.status) {
+          this.types_options = response.data;
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
+   }
+   selectPoi(event){
+    this.reportForm.get('filter_by_server_group').reset();
+    var poi_id = event.value?.assigned_pois.map(data=> data.poi_id);
+    if(poi_id && poi_id.length > 0){
+      const filteredPois = this.poisList.filter(poi => poi_id.includes(poi.id));
+      const poiIds = filteredPois.map(poi => poi.poi_id);
+      this.reportForm.get('pois').setValue(poiIds);
+    }
+  }
+  selectPoiServer(event){
+    this.reportForm.get('filter_by_group').reset();
+    const filteredPois = this.poisList.filter(poi => poi.group_id == event.value);
+    const poiIds = filteredPois.map(poi => poi.poi_id);
+    this.reportForm.get('pois').setValue(poiIds);
+  }
 }
 

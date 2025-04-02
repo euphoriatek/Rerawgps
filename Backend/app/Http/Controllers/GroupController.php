@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 class GroupController extends Controller
 {
@@ -148,6 +150,36 @@ class GroupController extends Controller
             ], 500);
         }
     }
-
+    public function getServerGroups(Request $request)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+        $user = User::with('server')->find($user->id);
+        $masterPortsResponse = Http::get($user->server->server_url . '/api/pois_groups', [
+            'lang' => 'en',
+            'user_api_hash' => $user->api_key,
+        ]);
+        $getPoisGroups = $masterPortsResponse->json() ?? [];
+        if (isset($getPoisGroups['pagination'])) {
+            unset($getPoisGroups['pagination']);
+        }
+        $data = array_map(function ($item) {
+            return [
+                'id' => $item['id'],
+                'user_id' => $item['user_id'],
+                'title' => $item['title'],
+                'open' => (bool) $item['open'],
+            ];
+        }, array_values($getPoisGroups));
+        return response()->json([
+            'status' => true,
+            'data' => $data,
+        ], 200);
+    }
 
 }

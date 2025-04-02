@@ -263,7 +263,7 @@ addUser(): void {
     this.api.updateStatus(user_id).subscribe({
       next: (response: any) => {
         if (response && response.status) {
-          this.toaster.success(this.translate.instant('user_updated_success'), this.translate.instant('user'));
+          this.toaster.success(this.translate.instant('user_active_success'), this.translate.instant('user'));
         } else {
           this.toaster.error(this.translate.instant('try_again'), this.translate.instant('user'));
         }

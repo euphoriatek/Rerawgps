@@ -1,75 +1,116 @@
-<p-table #dt [value]="pendingPois" dataKey="id" styleClass="p-datatable-customers"
-  [rowHover]="true" [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
-  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
-  [globalFilterFields]="['name','description','lat','lng','status']">
-  <ng-template pTemplate="caption">
-      <div class="table-header mb-4">
-          <h3>{{ 'pois_pending_list' | translate}}</h3>
-          <div>
-            <span class="p-input-icon-left">
-              <i class="ti ti-search"></i>
-              <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="{{'global_search'|translate}}" />
-          </span>
-          </div>
-      </div>
-  </ng-template>
-  <ng-template pTemplate="header">
-      <tr>
-          <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
-          <th pSortableColumn="lat">{{ "lat" | translate }} <p-sortIcon field="lat"></p-sortIcon></th>
-          <th pSortableColumn="lng">{{ "lng" | translate }} <p-sortIcon field="lng"></p-sortIcon></th>
-          <th>{{ "submitted_by" | translate }}</th>
-          <th>{{ "submitted_on" | translate }}</th>
-          <th>{{ "actions" | translate }}</th>
-      </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-data>
-      <tr class="p-selectable-row">
-          <td>{{data.name}}</td>
-          <td>{{getLat(data.coordinates)}}</td>
-          <td>{{getLng(data.coordinates)}}</td>
-          <td>{{data.sales_agent_name}}</td>
-          <td>{{ data.created_at | date:'dd-MM-yyyy' }}</td>
-          <td>
-            <button class="btn editbtn" (click)="confirmPoiAction(data.id,'approved',data)" title="Approve"><i class="fa-solid fa-check"></i></button>
-            <button class="btn editbtn" (click)="confirmPoiAction(data.id,'reject',data)" title="Reject"><i class="fa-solid fa-xmark"></i></button>
-            <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i class="fa-solid fa-pen"></i></button>
-          </td>
-      </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
-      <tr>
-          <td colspan="5">{{"no_data_record" | translate }}.</td>
-      </tr>
-  </ng-template>
+<p-table #dt [value]="pendingPois" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="25"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+    [globalFilterFields]="['name','description','group_name','lat','lng','status']">
+    <ng-template pTemplate="caption">
+        <div class="table-header mb-4">
+            <h3>{{ 'pois_pending_list' | translate}}</h3>
+            <div>
+                <span class="p-input-icon-left">
+                    <i class="ti ti-search"></i>
+                    <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                        placeholder="{{'global_search'|translate}}" />
+                </span>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="description">{{ "description" | translate }} <p-sortIcon
+                    field="description"></p-sortIcon></th>
+                    <th pSortableColumn="group_name">{{ "server_group" | translate }} <p-sortIcon field="group_name"></p-sortIcon></th>
+            <th pSortableColumn="lat">{{ "lat" | translate }} <p-sortIcon field="lat"></p-sortIcon></th>
+            <th pSortableColumn="lng">{{ "lng" | translate }} <p-sortIcon field="lng"></p-sortIcon></th>
+            <th>{{ "submitted_by" | translate }}</th>
+            <th>{{ "submitted_on" | translate }}</th>
+            <th>{{ "actions" | translate }}</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+        <tr class="p-selectable-row">
+            <td>{{data.name}}</td>
+            <td>{{data.description}}</td>
+            <td>{{data.group_name}}</td>
+            <td>{{getLat(data.coordinates)}}</td>
+            <td>{{getLng(data.coordinates)}}</td>
+            <td>{{data.sales_agent_name}}</td>
+            <td>{{ data.created_at | date:'dd-MM-yyyy' }}</td>
+            <td>
+                <button class="btn editbtn" (click)="confirmPoiAction(data.id,'approved',data)" title="Approve"><i
+                        class="fa-solid fa-check"></i></button>
+                <button class="btn editbtn" (click)="confirmPoiAction(data.id,'reject',data)" title="Reject"><i
+                        class="fa-solid fa-xmark"></i></button>
+                <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i
+                        class="fa-solid fa-pen"></i></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="5">{{"no_data_record" | translate }}.</td>
+        </tr>
+    </ng-template>
 </p-table>
 <p-dialog id="dialog" header="{{ 'edit' | translate }}" [(visible)]="visible" [style]="{ width: '32vw' }"
-[modal]="true">
-<form action="" [formGroup]="poiEditForm" (ngSubmit)="EditPoi()">
-<div class="row">
-   <div class="col-lg-12">
-      <div class="form-group">
-         <label for="name">{{ "name" | translate }}</label>
-         <input type="text" formControlName="name" class="form-control" autocomplete="false" />
-         <div *ngIf="poiEditForm?.get('name')?.hasError('required') && poiEditForm?.get('name')?.touched">
-            <span class="error-message">{{ "username_required" | translate }}</span>
-         </div>
-      </div>
-   </div>
-   <div class="col-lg-12">
-      <div class="form-group">
-         <label for="description">{{ "description" | translate }}</label>
-         <input type="text" formControlName="description" class="form-control" autocomplete="false" />
-         <div
-            *ngIf="poiEditForm?.get('description')?.hasError('required') && poiEditForm?.get('description')?.touched">
-            <span class="error-message">{{ "description_required" | translate }}</span>
-         </div>
-      </div>
-   </div>
-</div>
-<!-- Submit and Cancel buttons (optional) -->
-<div class="d-flex gap-2 from-button mt-4">
-   <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
-</div>
-</form>
+    [modal]="true">
+    <form action="" [formGroup]="poiEditForm" (ngSubmit)="EditPoi()">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label for="name">{{ "name" | translate }}</label>
+                    <input type="text" formControlName="name" class="form-control" autocomplete="false" />
+                    <div *ngIf="poiEditForm?.get('name')?.hasError('required') && poiEditForm?.get('name')?.touched">
+                        <span class="error-message">{{ "username_required" | translate }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label for="description">{{ "description" | translate }}</label>
+                    <input type="text" formControlName="description" class="form-control" autocomplete="false" />
+                    <div
+                        *ngIf="poiEditForm?.get('description')?.hasError('required') && poiEditForm?.get('description')?.touched">
+                        <span class="error-message">{{ "description_required" | translate }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label for="">{{ "server_group" | translate }}</label>
+                    <mat-form-field appearance="outline" class="multi-select">
+                        <mat-select formControlName="group_id" class="form-control">
+                            <mat-option *ngFor="let option of group_options" [value]="option.id">
+                                {{ option.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div
+                        *ngIf="poiEditForm?.get('group_id')?.hasError('required') && poiEditForm?.get('group_id')?.touched">
+                        <span class="error-message">{{ "server_group_required" | translate }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label for="">{{ "group" | translate }}</label>
+                    <mat-form-field appearance="outline" class="multi-select">
+                        <mat-select formControlName="groupId" class="form-control">
+                            <mat-option *ngFor="let option of groups" [value]="option.id">
+                                {{ option.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div
+                        *ngIf="poiEditForm?.get('groupId')?.hasError('required') && poiEditForm?.get('groupId')?.touched">
+                        <span class="error-message">{{ "group_required" | translate }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Submit and Cancel buttons (optional) -->
+        <div class="d-flex gap-2 from-button mt-4">
+            <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
+        </div>
+    </form>
 </p-dialog>

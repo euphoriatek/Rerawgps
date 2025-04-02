@@ -204,5 +204,16 @@
     "server_group_name":"Server Group",
     "submitted_on":"Submitted  On",
     "submitted_by":"Submitted By",
-    "please_add_description":"Please Add Description"
+    "please_add_description":"Please Add Description",
+    "sales_agents_list":"Sales Agent List",
+    "user_active_success":"User Active Successfully",
+    "server_group":"Server Group",
+    "server_group_required":"Server Group Required",
+    "please_select_a_distance_tolerance":"Please Select Distance Tolerance",
+    "type_required":"Type is Required",
+    "type":"Type",
+    "filter_by_server_group":"Filter by Server Group",
+    "filter_by_group":"Filter by Group"
+
+
 }

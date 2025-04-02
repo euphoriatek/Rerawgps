@@ -147,7 +147,12 @@ class SalesController extends Controller
         if (!$sales || !Hash::check($request->password, $sales->password)) {
             return response()->json(['status' => false, 'message' => 'Invalid credentials'], 401);
         }
-
+        if ($sales->is_active == 0) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Your account is inactive. Please contact support.',
+            ], 200);
+        }
         $token = $sales->createToken('sales_token')->plainTextToken;
         $sales->remember_token = $token;
         $sales->save();
@@ -193,7 +198,7 @@ class SalesController extends Controller
 
     public function getAdminObjectsList()
     {
-         $user = auth()->user();
+        $user = auth()->user();
         if (!$user) {
             return response()->json([
                 'status' => false,
@@ -245,7 +250,11 @@ class SalesController extends Controller
                     ], 404);
                 }
                 $salesAgent->update(['is_active' => $salesAgent->is_active == 1 ? 0 : 1]);
-
+                if ($salesAgent->is_active == 0) {
+                    $salesAgent->tokens->each(function ($token) {
+                        $token->update(['expires_at' => now()]);
+                    });
+                }
                 return response()->json([
                     'status' => true,
                     'message' => 'SalesAgent status updated successfully.'
@@ -278,24 +287,24 @@ class SalesController extends Controller
 
         // $sales = SalesModel::where('id', $salesUser->id)->first();
         $user = User::with('server')->find($salesUser->user_id);
-     
+
         $masterPortsResponse = Http::get($user->server->server_url . '/api/get_map_icons', [
             'lang' => 'en',
             'user_api_hash' => $user->api_key,
         ]);
 
-        $mapIcons = $masterPortsResponse->json()['items']?? [];
+        $mapIcons = $masterPortsResponse->json()['items'] ?? [];
 
         return response()->json([
             'status' => true,
             'data' => $mapIcons,
         ], 200);
     }
+   
     // public function getServerGroups(Request $request)
     // {
-
     //     $salesUser = Auth::guard('sales')->user();
-       
+
     //     if (!$salesUser) {
     //         return response()->json([
     //             'status' => false,
@@ -303,33 +312,43 @@ class SalesController extends Controller
     //         ], 401);
     //     }
 
-    //     // $sales = SalesModel::where('id', $salesUser->id)->first();
     //     $user = User::with('server')->find($salesUser->user_id);
- 
+
     //     $masterPortsResponse = Http::get($user->server->server_url . '/api/pois_groups', [
     //         'lang' => 'en',
     //         'user_api_hash' => $user->api_key,
     //     ]);
 
-    //     $mapIcons = $masterPortsResponse->json()?? [];
-    
+    //     $getPoisGroups = $masterPortsResponse->json() ?? [];
+
+    //     if (isset($getPoisGroups['pagination'])) {
+    //         unset($getPoisGroups['pagination']);
+    //     }
+    //     $data = array_map(function ($item) {
+    //         return [
+    //             'id' => $item['id'],
+    //             'user_id' => $item['user_id'],
+    //             'title' => $item['title'],
+    //             'open' => (bool) $item['open'],
+    //         ];
+    //     }, array_values($getPoisGroups));
     //     return response()->json([
     //         'status' => true,
-    //         'data' => $mapIcons,
+    //         'data' => $data,
     //     ], 200);
     // }
-    public function getServerGroups(Request $request)
-    {
-        $salesUser = Auth::guard('sales')->user();
 
-        if (!$salesUser) {
+    public function serverGroups(Request $request)
+    {
+
+        $user = auth()->user();
+        if (!$user) {
             return response()->json([
                 'status' => false,
-                'message' => 'Sales user is not authenticated.',
+                'message' => 'User is not authenticated.',
             ], 401);
         }
-
-        $user = User::with('server')->find($salesUser->user_id);
+        $user = User::with('server')->find($user->id);
 
         $masterPortsResponse = Http::get($user->server->server_url . '/api/pois_groups', [
             'lang' => 'en',
@@ -349,10 +368,10 @@ class SalesController extends Controller
                 'open' => (bool) $item['open'],
             ];
         }, array_values($getPoisGroups));
+
         return response()->json([
             'status' => true,
             'data' => $data,
         ], 200);
     }
-
 }

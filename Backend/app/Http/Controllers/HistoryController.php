@@ -89,7 +89,9 @@ class HistoryController extends Controller
             'devices' => 'required|array',
             'date_from' => 'required',
             'date_to' => 'required',
-            'pois' => 'required|array'
+            'pois' => 'required|array',
+            // 'distance_tolerance'=>'required|numeric'
+
         ]);
 
         if ($validator->fails()) {
@@ -113,6 +115,7 @@ class HistoryController extends Controller
                 'devices' => $input['devices'],
                 'stop_duration' => 4,
                 'distance_tolerance' => 20,
+                // 'distance_tolerance' => $input['distance_tolerance'],
                 'pois' => [$poi['poi_id']]
             ];
 
@@ -143,7 +146,7 @@ class HistoryController extends Controller
                 array_push($unvisited_poi, $poi);
             }
         }
-        $htmlContent = view('report', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'],'date_from' => $input['date_from'],'date_to' => $input['date_to'],'from_time' => $input['from_time'] ?? '00:00','to_time' => $input['to_time'] ?? '23:59'])->render();
+        $htmlContent = view('report', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
         return response()->json([
             'status' => true,
             'data' => $htmlContent,
@@ -160,9 +163,11 @@ class HistoryController extends Controller
             ], 401);
         }
         $input = $request->all();
+    
         $validator = Validator::make($input, [
             'devices' => 'required|array',
             'pois' => 'required|array',
+            'distance_tolerance' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -175,6 +180,7 @@ class HistoryController extends Controller
         $date_to = Carbon::parse($request->input('date_to'))->toDateString();
         $params = [
             'title' => $input['title'],
+            // 'type' => $input['type'],
             'type' => 54,
             'date_from' => $date_from,
             'date_to' => $date_to,
@@ -183,21 +189,59 @@ class HistoryController extends Controller
             'format' => 'json',
             'devices' => $input['devices'],
             'stop_duration' => 4,
-            'distance_tolerance' => 20,
+            'distance_tolerance' => $input['distance_tolerance'],
             'pois' => $input['pois']
         ];
+      
         $apiEndPoint = $user->server->server_url . '/api/generate_report?lang=en&user_api_hash=' . $user->api_key . '&generate=1';
-            $response = Http::withHeaders([
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-            ])->post($apiEndPoint, $params);
-          
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ])->post($apiEndPoint, $params);
+
         $reports = $response->json();
-        $htmlContent = view('reports', ['data' => $reports['items'], 'date_from' =>$input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00',  'to_time' => $input['to_time'] ?? '23:59'])->render();
+      
+        $htmlContent = view('reports', ['data' => $reports['items'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
         return response()->json([
             'status' => true,
             'data' => $htmlContent,
         ]);
-        
+
     }
+
+    public function getTypes()
+    {
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not authenticated.',
+                ], 401);
+            }
+            $user = User::with('server')->find($user->id);
+         
+            $masterPortsResponse = Http::get($user->server->server_url . '/api/get_reports_types', [
+                'lang' => 'en',
+                'user_api_hash' => $user->api_key,
+            ]);
+            $data = $masterPortsResponse->json();
+            $dataType = collect($data['items'])->map(function($item) {
+                return [
+                    'type' => $item['type'],
+                    'name' => $item['name'],
+                ];
+            });
+            return response()->json([
+                'status' => true,
+                'data' => $dataType,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+  
 }

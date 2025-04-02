@@ -203,6 +203,13 @@
     "ungrouped": "بێ پەیوەندیدار",
     "server_group_name": "ناوی کۆمەڵەی سێرفەر",
     "created_on": "درۆست کراوە لە",
-    "please_add_description":"تکایە وەسف زیاد بکە"
+    "please_add_description":"تکایە وەسف زیاد بکە",
+    "filter_by_server_group": "فلترین بە گروپی سرڤەر",
+    "filter_by_group": "فلترین بە گروپ",
+    "server_group": "گروپی سرڤەر",
+    "server_group_required": "پێویستە کۆمەڵەی خادمەکان",
+    "please_select_a_distance_tolerance": "تکایە توێژینەوەی فاصلە هەڵبژێرە",
+    "type_required": "پێویستە جۆر",
+    "type": "جۆر"
   }
   

@@ -5,7 +5,6 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToasterService } from 'src/app/services/toster.service';
-
 @Component({
   selector: 'app-pois',
   templateUrl: './pois.component.html',
@@ -14,14 +13,14 @@ import { ToasterService } from 'src/app/services/toster.service';
 export class POIsComponent implements OnInit {
   isSubmitted = false;
   poisList:any;
+  server_groups:any;
+  groups:any;
   @ViewChild('dt') dt: Table | undefined;
-
   constructor(
     private api: ApiService,
     public spinner: NgxSpinnerService,
     public toaster: ToasterService
   ) { }
-
   ngOnInit(): void {
     this.syncData();
   }
@@ -52,6 +51,16 @@ export class POIsComponent implements OnInit {
               groupNames: Array.from(new Set(poi.groups.map(group => group.group ? group.group.name : null).filter(name => name))).join(', ')
               // groupNames: poi.groups.map(group => group.group ? group.group.name : null).filter(name => name).join(', ')
             }));
+            this.groups = [
+              ...new Set(
+                response.data
+                  .flatMap(item => item.groups
+                    .map(group => group.group?.name)
+                    .filter(name => name?.trim() !== '')
+                  )
+              )
+            ];
+            this.server_groups = [...new Set(this.poisList.map(item => item.group_name).filter(group_name => group_name?.trim() !== '' && group_name != null))];
         }
       },
       error: (err) => {
@@ -60,7 +69,6 @@ export class POIsComponent implements OnInit {
       }
     });
   }
-
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }

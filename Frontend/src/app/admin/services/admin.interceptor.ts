@@ -31,7 +31,7 @@ export class AdminInterceptor implements HttpInterceptor {
         return next.handle(authRequest).pipe(
           catchError((error: HttpErrorResponse) => {
             if (error.status === 401 && !this.isUnauthorizedHandled) {
-              this.isUnauthorizedHandled = true;
+              // this.isUnauthorizedHandled = true;
               this.logOut();
             }
             return throwError(error);

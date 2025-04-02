@@ -24,5 +24,8 @@ class Poi extends Model
     {
         return $this->hasMany(AssignedPoi::class, 'poi_id', 'id');
     }
+    public function pendingGroups(){
+        return $this->belongsTo(AssignedPoi::class, 'id', 'poi_id');
+    }
   
 }

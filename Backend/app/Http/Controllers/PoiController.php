@@ -5,6 +5,7 @@ use App\Models\Poi;
 use App\Models\User;
 use App\Models\Servers;
 use App\Models\SalesModel;
+use App\Models\AssignedPoi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
@@ -54,10 +55,13 @@ class PoiController extends Controller
     public function updatePoi(Request $request)
     {
         try {
+    
             $validator = Validator::make($request->all(), [
                 'id' => 'required|exists:pois,id',
                 'name' => 'required|string',
-                'description' => 'required|string'
+                'description' => 'required|string',
+                'group_id' =>'required|numeric',
+                'group_name' => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -68,7 +72,12 @@ class PoiController extends Controller
             }
             $input = $request->all();
             $poi = Poi::find($input['id']);
-            $poi->update(['name' => $input['name'], 'description' => $input['description']]);
+            $poi->update(['name' => $input['name'], 'description' => $input['description'], 'group_id' => $input['group_id'],'group_name' => $input['group_name'],]);
+            
+            $assignedPoi = AssignedPoi::updateOrCreate(
+                ['poi_id' => $poi->id],
+                ['group_id' => $input['groupId']]
+            );
             return response()->json([
                 'status' => true,
                 'message' => 'Poi updated successfully!',
@@ -123,7 +132,7 @@ class PoiController extends Controller
             }
     
             // Fetch pending POIs and count them
-            $pendingPoisQuery = Poi::where('regaykar_user_id', $user->id)
+            $pendingPoisQuery = Poi::with('pendingGroups')->where('regaykar_user_id', $user->id)
                 ->where('status', 'pending');
     
             $totalPendingPois = $pendingPoisQuery->count();
@@ -161,7 +170,7 @@ class PoiController extends Controller
                     'message' => 'Unauthorized. Please log in.',
                 ], 401);
             }
-            $pois = Poi::where('regaykar_user_id', $user->id)->where('status', 'approved')->with('groups.group')->orderBy('created_at', 'desc')->get();
+            $pois = Poi::where('regaykar_user_id', $user->id)->where('status', 'approved')->whereNull('deleted_at')->with('groups.group')->orderBy('created_at', 'desc')->get();
             return response()->json([
                 'status' => true,
                 'data' => $pois
@@ -190,30 +199,27 @@ class PoiController extends Controller
                 'user_api_hash' => $user->api_key,
             ]);
             $mapIcons = $masterPortsResponse->json()['items']['mapIcons'] ?? [];
-          
             $groupResponse = Http::get($user->server->server_url . '/api/pois_groups', [
                 'lang' => 'en',
                 'user_api_hash' => $user->api_key,
             ]);
             $groups = $groupResponse->json() ?? [];
-
+            $allPois = Poi::where('regaykar_user_id', $user->id)->get();
+            $existingPoiIds = [];
             foreach ($mapIcons as $mapIcon) {
                 $group_id = isset($mapIcon['group_id']) ? $mapIcon['group_id'] : 0;
                 $groupTitle = null;
-
                 foreach ($groups as $group) {
-
                     if (isset($group['id']) && $group['id'] == $group_id) {
                         $groupTitle = $group['title'];
                         break;
                     }
                 }
-
                 if (!isset($mapIcon['id'])) {
                     continue;
                 }
-
-                $existingPoi = Poi::where('poi_id', $mapIcon['id'])->first();
+                $existingPoi = Poi::where('poi_id',$mapIcon['id'])->first();
+                $existingPoiIds[] = $mapIcon['id'];
                 if ($existingPoi) {
                     if ($existingPoi['updated_at'] != $mapIcon['updated_at']) {
                         $data = [
@@ -227,7 +233,7 @@ class PoiController extends Controller
                             'coordinates' => $mapIcon['coordinates'],
                             'active' => $mapIcon['active'],
                             'created_at' => $mapIcon['created_at'],
-                            'updated_at' => $mapIcon['updated_at']
+                            'updated_at' => $mapIcon['updated_at'],
                         ];
                         $existingPoi->update($data);
                     }
@@ -248,9 +254,15 @@ class PoiController extends Controller
                     ]);
                 }
             }
+            foreach($allPois as $poi) {
+                if (!in_array($poi->poi_id, $existingPoiIds)) {
+                    $poi->deleted_at = now();
+                    $poi->save();
+                }
+            }
             return response()->json([
                 'status' => true,
-                'message' => 'Data sync Successfully',
+                'message' => 'Data sync successfully',
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -258,6 +270,7 @@ class PoiController extends Controller
             ], 500);
         }
     }
+
     public function updatePoiStatus(Request $request)
     {
         try {

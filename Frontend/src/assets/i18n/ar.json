@@ -203,6 +203,13 @@
   "ungrouped": "غير مُجَمَّع",
   "server_group_name": "اسم مجموعة الخادم",
   "created_on": "تم الإنشاء في",
-  "please_add_description":"يرجى إضافة الوصف"
+  "please_add_description":"يرجى إضافة الوصف",
+  "filter_by_server_group": "تصفية حسب مجموعة الخادم",
+  "filter_by_group": "تصفية حسب المجموعة",
+  "server_group": "مجموعة الخادم",
+  "server_group_required": "مجموعة الخادم مطلوبة",
+  "please_select_a_distance_tolerance": "يرجى تحديد تحمل المسافة",
+  "type_required": "النوع مطلوب",
+  "type": "النوع"
   }
   

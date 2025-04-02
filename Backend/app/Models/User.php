@@ -67,5 +67,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(User::class, 'id', 'created_by')->select('id', 'username', 'name', 'email');
     }
-    
+    public function sales()
+    {
+        return $this->hasMany(SalesModel::class);
+    }
 }

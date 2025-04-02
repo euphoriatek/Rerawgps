@@ -19,7 +19,7 @@
     <div class="col-lg-12">
       <div class="form-group">
         <label for="">{{ "server_url" | translate }}</label>
-        <input type="text" formControlName="server_url" class="form-control" autocomplete="false" />
+        <input type="url" formControlName="server_url" class="form-control" autocomplete="false" />
         <div *ngIf="
                     ServerForm?.get('server_url')?.hasError('required') &&
                     ServerForm?.get('server_url')?.touched
@@ -150,7 +150,7 @@
           <div class="col-lg-12">
             <div class="form-group">
               <label for="">{{ "server_url" | translate }}</label>
-              <input type="text" formControlName="server_url" class="form-control" autocomplete="false" />
+              <input type="url" formControlName="server_url" class="form-control" autocomplete="false" />
               <div
                 *ngIf="ServerEditForm?.get('server_url')?.hasError('required') && ServerEditForm?.get('server_url')?.touched">
                 <span class="error-message">{{ "server_url_required" | translate }}</span>

@@ -13,8 +13,7 @@ class Group extends Model
     protected $fillable = [
         'name',
         'description',
-        'user_id',
-        'pois_id'
+        'user_id'
     ];
 
     public function assignedPois()

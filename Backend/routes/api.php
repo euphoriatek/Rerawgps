@@ -91,7 +91,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/admin/get-admin-regaykar-usrs', [ApiController::class, 'GetAdminRegaykar'])->middleware('role:admin');
     // Sale agent List
     Route::get('/admin/get-admin-objects-list', [SalesController::class, 'getAdminObjectsList'])->middleware('role:admin');
-    Route::post('/admin/update-sales-agent-status', [SalesController::class, 'updateSalesAgentStatus'])->middleware('role:admin');
+    Route::post('/admin/update-sales-agent-status', [SalesController::class, 'updateSalesAgentStatus']);
     
     // --------------
     // RegayKar User
@@ -115,6 +115,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/delete-plan/{id}', [RegayKarPlansController::class, 'deletePlan'])->middleware('role:user');
     // history
     Route::get('/get-history', [HistoryController::class, 'getHistory'])->middleware('role:user');
+    // Report
+    Route::get('/get-server-group', [GroupController::class, 'getServerGroups'])->middleware('auth:users');
 
     // saleagent
     Route::post('/get-sales-objects', [SalesController::class, 'getsalesObjects'])->middleware('auth:users');
@@ -123,11 +125,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Sales Agent
     Route::post('/pois', [PoiController::class, 'store'])->middleware('auth:sales');
     Route::get('/get-icon', [SalesController::class, 'getMapiIcon'])->middleware('auth:sales');
-    Route::get('/get-server-group', [SalesController::class, 'getServerGroups'])->middleware('auth:sales');
+    // Route::get('/get-server-group', [SalesController::class, 'getServerGroups'])->middleware('auth:sales');
     Route::get('/active-plan', [RegayKarPlansController::class, 'activePlan'])->middleware('auth:sales');
     Route::get('/sync-device', [HistoryController::class, 'syncDevice'])->middleware('auth:users');
     Route::post('/sync-reports', [HistoryController::class, 'getGenerateReports'])->middleware('auth:users');
     Route::post('/generate-reports', [HistoryController::class, 'generateReports'])->middleware('auth:users');
     Route::get('/server-list', [ServerController::class, 'serverList'])->middleware('auth:sales');
     Route::post('/regaykar-users', [ApiController::class, 'regayKarUsers'])->middleware('auth:sales');
+    Route::get('/server-group', [SalesController::class, 'serverGroups'])->middleware('auth:users');
+    //pois Type
+    Route::get('/get-types', [HistoryController::class, 'getTypes'])->middleware('auth:users');
+
 });

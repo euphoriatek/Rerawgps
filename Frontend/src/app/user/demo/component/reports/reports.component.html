@@ -6,8 +6,8 @@
 
           <div class="col-md-12">
             <div class="form-group">
-              <label for="title">{{ "title" | translate }}</label>
-              <input type="text" formControlName="title" class="form-control" autocomplete="false" />
+              <label for="type">{{ "type" | translate }}</label>
+              <input type="text" formControlName="title" class="form-control" autocomplete="false"  readonly=true/>
             </div>
           </div>
           <div class="col-md-12">
@@ -63,16 +63,38 @@
                 </div>
               </div>
             </div>
-
             <div class="col-md-12">
               <div class="form-group">
-                <label for="device" class="mr-2">{{ "devices" | translate }}</label>
+                <label for="distanceTolerance">Distance tolerance (m):</label>
+                <input type="text" class="form-control" formControlName="distanceTolerance" value="">
+              </div>
+              <div *ngIf="reportForm?.get('distanceTolerance')?.hasError('required') && reportForm?.get('distanceTolerance')?.touched">
+                <span class="error-message">{{"please_select_a_distance_tolerance" | translate}}</span>
+              </div>
+            </div>
+            <!-- <div class="col-md-12">
+              <div class="form-group">
+                  <label for="">{{ "type" | translate }}</label>
+                  <mat-form-field appearance="outline" class="multi-select">
+                      <mat-select formControlName="type" class="form-control">
+                          <mat-option *ngFor="let option of types_options" [value]="option.name">
+                              {{ option.name}}
+                          </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                  <div
+                      *ngIf="reportForm?.get('type')?.hasError('required') && reportForm?.get('type')?.touched">
+                      <span class="error-message">{{ "type_required" | translate }}</span>
+                  </div>
+              </div>
+          </div> -->
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="device" class="mr-2">{{ "device" | translate }}</label>
                 <mat-form-field appearance="outline" class="flex-grow-1">
-                  <mat-select multiple formControlName="device" placeholder="{{ 'choose_devices' | translate }}"
-                    class="form-control">
-                    <mat-option (click)="toggleSelectAll()" [value]="null">
-                      {{ isAllSelected() ? ('deselect_all' | translate) : ('select_all' | translate) }}
-                    </mat-option>
+                  <mat-select formControlName="device" class="form-control"
+                    placeholder="{{ 'nothing_selected' | translate }}">
+                    <mat-option></mat-option>
                     <mat-option *ngFor="let device of devices" [value]="device.id">
                       {{ device.name }}
                     </mat-option>
@@ -81,6 +103,39 @@
               </div>
               <div *ngIf="reportForm?.get('device')?.hasError('required') && reportForm?.get('device')?.touched">
                 <span class="error-message">{{"please_select_a_device" | translate}}</span>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="device" class="mr-2">{{ "filter_by_group" | translate }}</label>
+                    <mat-form-field appearance="outline" class="flex-grow-1">
+                      <mat-select class="form-control" formControlName="filter_by_group"  (selectionChange)="selectPoi($event)"
+                        placeholder="{{ 'nothing_selected' | translate }}">
+                        <mat-option></mat-option>
+                        <mat-option *ngFor="let groups of groupsData" [value]="groups">
+                          {{ groups.name }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="device" class="mr-2">{{ "filter_by_server_group" | translate }}</label>
+                    <mat-form-field appearance="outline" class="flex-grow-1">
+                      <mat-select class="form-control" formControlName="filter_by_server_group"  (selectionChange)="selectPoiServer($event)"
+                        placeholder="{{ 'nothing_selected' | translate }}">
+                        <mat-option></mat-option>
+                        <mat-option *ngFor="let groups of serverGroupsData" [value]="groups.id">
+                          {{ groups.title }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
               </div>
             </div>
 

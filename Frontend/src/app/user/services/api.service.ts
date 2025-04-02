@@ -81,5 +81,15 @@ export class ApiService {
   generateRepots(data: any) {
     return this.http.post(this.BaseUrl + 'generate-reports', data );
   }
-
+  getServerGroup(){
+    return this.http.get(this.BaseUrl + 'server-group');
+  }
+  //get types
+  getTypes(){
+    return this.http.get(this.BaseUrl + 'get-types');
+    
+  }
+  getServerGroupList(){
+    return this.http.get(this.BaseUrl + 'get-server-group');
+  }
 }

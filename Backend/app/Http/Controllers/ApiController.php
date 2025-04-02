@@ -50,7 +50,7 @@ class ApiController extends Controller
             'password' => 'required|string|min:8',
             'address' => 'required|string|max:255',
             // 'history_duration' => 'required|in:30,45,60,90',  
-            'history_duration' => 'required|in:' . implode(',', $historyDurationOptions),  
+            'history_duration' => 'required|in:' . implode(',', $historyDurationOptions),
         ]);
 
         if ($validator->fails()) {
@@ -60,14 +60,14 @@ class ApiController extends Controller
         }
 
         try {
-            $getServer=Servers::find($input['server_id']);
+            $getServer = Servers::find($input['server_id']);
             $masterPortsResponse = Http::get($getServer->server_url . '/api/get_user_data', [
                 'lang' => 'en',
                 'user_api_hash' => $input['api_key'],
             ]);
             $response = $masterPortsResponse->json() ?? [];
-            
-            if(isset($response['status']) && $response['status'] === 0) {
+
+            if (isset($response['status']) && $response['status'] === 0) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Invalid Api key.',
@@ -76,9 +76,9 @@ class ApiController extends Controller
             }
             $existingUser = User::withTrashed()->where('username', $input['username'])->first();
             if ($existingUser) {
-                if($existingUser->deleted_at){
+                if ($existingUser->deleted_at) {
                     $existingUser->forceDelete();
-                }else{
+                } else {
                     return response()->json([
                         'status' => false,
                         'message' => 'Username already taken.',
@@ -88,9 +88,9 @@ class ApiController extends Controller
             }
             $existingUser = User::withTrashed()->where('api_key', $input['api_key'])->first();
             if ($existingUser) {
-                if($existingUser->deleted_at){
+                if ($existingUser->deleted_at) {
                     $existingUser->forceDelete();
-                }else{
+                } else {
                     return response()->json([
                         'status' => false,
                         'message' => 'Api key is already exiest.',
@@ -162,8 +162,10 @@ class ApiController extends Controller
 
             //     ], 200);
             // }
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password]) && 
-                in_array(Auth::user()->role, ['admin', 'superadmin'])) {
+            if (
+                Auth::attempt(['username' => $request->username, 'password' => $request->password]) &&
+                in_array(Auth::user()->role, ['admin', 'superadmin'])
+            ) {
                 $user = Auth::user();
                 if ($user->role == 'admin' && $user->is_active == 0) {
                     return response()->json([
@@ -258,7 +260,7 @@ class ApiController extends Controller
     public function UsersList(Request $request)
     {
         try {
-            $users = User::with(['server','createdby:id,username,name,email'])->where('role', 'user')->orderBy('created_at', 'desc')->get();
+            $users = User::with(['server', 'createdby:id,username,name,email'])->where('role', 'user')->orderBy('created_at', 'desc')->get();
             return response()->json([
                 'status' => true,
                 'data' => $users,
@@ -334,15 +336,15 @@ class ApiController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                    'errors' => $validator->errors(),
-                ], 400);
+                'errors' => $validator->errors(),
+            ], 400);
         }
         try {
             $user = User::find($input['id']);
             if (!$user) {
                 return response()->json([
-                        'status' => false,
-                        'message' => 'User not found!',
+                    'status' => false,
+                    'message' => 'User not found!',
                 ], 404);
             }
             if (!empty($input['password'])) {
@@ -400,7 +402,8 @@ class ApiController extends Controller
             ], 500);
         }
     }
-    public function getAdmin(){
+    public function getAdmin()
+    {
         try {
 
             $servers = User::with('assigned_servers.server')->where('role', 'admin')->get();
@@ -409,7 +412,7 @@ class ApiController extends Controller
                 'data' => $servers,
                 'message' => 'Success'
             ], 200);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while fetching users.',
@@ -438,7 +441,7 @@ class ApiController extends Controller
                 'address' => 'required|string|max:255',
                 'server_id' => 'required|numeric|max:255',
                 // 'history_duration' => 'required|in:30,45,60,90',  
-                'history_duration' => 'required|in:' . implode(',', $historyDurationOptions), 
+                'history_duration' => 'required|in:' . implode(',', $historyDurationOptions),
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -457,7 +460,7 @@ class ApiController extends Controller
                 'address' => $input['address'],
                 'server_id' => $input['server_id'],
                 'password' => $input['password'] ?? $user->password,
-                'history_duration' =>$input['history_duration']
+                'history_duration' => $input['history_duration']
             ]);
             return response()->json([
                 'status' => true,
@@ -501,7 +504,7 @@ class ApiController extends Controller
     {
         try {
             $userId = $request->input('user_id');
-            if(!$userId){
+            if (!$userId) {
                 return response()->json([
                     'status' => false,
                     'message' => 'User id is required.',
@@ -552,32 +555,45 @@ class ApiController extends Controller
             ], 500);
         }
     }
-    
+
     // Udpate status for admin and user
-    public function updateStatus(Request $request){
+    public function updateStatus(Request $request)
+    {
         try {
-        $input = $request->input('user_id');
-        if($input){
-            $user = User::find($input);
-            if (!$user) {
+            $input = $request->input('user_id');
+            if ($input) {
+                $user = User::find($input);
+                if (!$user) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'User not found.',
+                    ], 404);
+                }
+                $user->update(['is_active' => $user->is_active == 1 ? 0 : 1]);
+                if ($user->is_active == 0) {
+                    $user->sales()->update(['is_active' => 0]);
+                    $user->tokens->each(function ($token) {
+                        $token->update(['expires_at' => now()]);
+                    });
+                    foreach ($user->sales as $sale) {
+                        $sale->tokens->each(function ($token) {
+                            $token->update(['expires_at' => now()]);
+                        });
+                    }
+                } else {
+                    $user->sales()->update(['is_active' => 1]);
+                }
                 return response()->json([
-                    'status' => false,
-                    'message' => 'User not found.',
-                ], 404);
-            }
-            $user->update(['is_active' => $user->is_active == 1 ? 0 : 1]);
+                    'status' => true,
+                    'message' => 'User status Active successfully.'
+                ], 200);
 
-            return response()->json([
-                'status' => true,
-                'message' => 'User status updated successfully.'
-            ], 200);
-
-        }else{
-            return response()->json([
+            } else {
+                return response()->json([
                     'status' => false,
                     'message' => 'User id is required.',
                 ], 404);
-        }
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
@@ -587,16 +603,16 @@ class ApiController extends Controller
         }
     }
 
-    
+
 
     // Change Password for superadmin
     public function changePassword(Request $request)
     {
         $input = $request->all();
         $validator = Validator::make($input, [
-            'newpassword' => 'required|string|min:8', 
+            'newpassword' => 'required|string|min:8',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
@@ -638,7 +654,8 @@ class ApiController extends Controller
         ], 200);
     }
 
-    public function regayKarUsers(Request $request){
+    public function regayKarUsers(Request $request)
+    {
 
         $salesUser = Auth::guard('sales')->user();
         if (!$salesUser) {
@@ -658,7 +675,7 @@ class ApiController extends Controller
                 'errors' => $validator->errors(),
             ], 400);
         }
-        
+
         $regaykarUser = User::select("username")->where("server_id", $request->input('server_id'))->get();
         return response()->json([
             'status' => true,

@@ -203,6 +203,13 @@
   "ungrouped": "Bê Têkilî",
   "server_group_name": "Navê Koma Server",
   "created_on": "Afirandî li ser",
-  "please_add_description":"Ji kerema xwe, daxwaza şirove lêzêde bikî"
+  "please_add_description":"Ji kerema xwe, daxwaza şirove lêzêde bikî",
+  "filter_by_server_group": "Filter bi Koma Serverê",
+  "filter_by_group": "Filter bi Koma",
+  "server_group": "Koma Serverê",
+  "server_group_required": "Komelê serverê pêwîst e",
+  "please_select_a_distance_tolerance": "Ji kerema xwe, tolêransa derheqê hilbijêrin",
+  "type_required": "Tîpa pêwîst e",
+  "type": "Tîp"
   }
   
