@@ -16,7 +16,6 @@
               <mat-form-field appearance="outline" class="flex-grow-1">
                 <mat-select formControlName="period" class="form-control"
                   placeholder="{{ 'nothing_selected' | translate }}" (selectionChange)="periodChanged()">
-                  <mat-option></mat-option>
                   <mat-option *ngFor="let data of period" [value]="data">
                     {{ data }}
                   </mat-option>
@@ -94,7 +93,6 @@
                 <mat-form-field appearance="outline" class="flex-grow-1">
                   <mat-select formControlName="device" class="form-control"
                     placeholder="{{ 'nothing_selected' | translate }}">
-                    <mat-option></mat-option>
                     <mat-option *ngFor="let device of devices" [value]="device.id">
                       {{ device.name }}
                     </mat-option>
@@ -111,7 +109,17 @@
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label for="device" class="mr-2">{{ "filter_by_group" | translate }}</label>
-                    <mat-form-field appearance="outline" class="flex-grow-1">
+                    <p-treeSelect 
+                      class="w-full md:w-20rem" 
+                      containerStyleClass="w-full" 
+                      formControlName="filter_by_group"
+                      [options]="groupsData" 
+                      display="chip" 
+                      [metaKeySelection]="false" 
+                      selectionMode="checkbox" 
+                      placeholder="Select Group with POIs">
+                    </p-treeSelect>
+                    <!-- <mat-form-field appearance="outline" class="flex-grow-1">
                       <mat-select class="form-control" formControlName="filter_by_group"  (selectionChange)="selectPoi($event)"
                         placeholder="{{ 'nothing_selected' | translate }}">
                         <mat-option></mat-option>
@@ -119,13 +127,22 @@
                           {{ groups.name }}
                         </mat-option>
                       </mat-select>
-                    </mat-form-field>
+                    </mat-form-field> -->
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label for="device" class="mr-2">{{ "filter_by_server_group" | translate }}</label>
-                    <mat-form-field appearance="outline" class="flex-grow-1">
+                    <p-treeSelect 
+                          class="w-full md:w-20rem" 
+                          containerStyleClass="w-full" 
+                          formControlName="filter_by_server_group"
+                          [options]="serverGroupsData" 
+                          display="chip" 
+                          [metaKeySelection]="false" 
+                          selectionMode="checkbox" 
+                          placeholder="Select Item" />
+                    <!-- <mat-form-field appearance="outline" class="flex-grow-1">
                       <mat-select class="form-control" formControlName="filter_by_server_group"  (selectionChange)="selectPoiServer($event)"
                         placeholder="{{ 'nothing_selected' | translate }}">
                         <mat-option></mat-option>
@@ -133,7 +150,7 @@
                           {{ groups.title }}
                         </mat-option>
                       </mat-select>
-                    </mat-form-field>
+                    </mat-form-field> -->
                   </div>
                 </div>
               </div>
@@ -142,6 +159,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="pois" class="mr-2">{{ "pois" | translate }}</label>
+                
                 <mat-form-field appearance="outline" class="flex-grow-1">
                   <mat-select multiple formControlName="pois" placeholder="{{ 'choose_pois' | translate }}"
                     class="form-control">

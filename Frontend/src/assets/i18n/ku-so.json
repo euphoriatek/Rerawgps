@@ -124,7 +124,7 @@
     "salesagent": "فرۆشیار",
     "description_required": "ڕوونکردنەوە پێویستە",
     "filter_by_regaykar": "پاڵاوتن بەپێی بەکارهێنەری RegayKar",
-    "filter_by_url": "Filter by url",
+    "filter_by_url": "فلتەر بکە بە URL",
     "filter_by_platform": "Filter by Platform",
     "new_password": "وشەی نهێنی نوێ",
     "confirm_new_password": "دووبارە نوسینی وشەی نهێنی",
@@ -210,6 +210,7 @@
     "server_group_required": "پێویستە کۆمەڵەی خادمەکان",
     "please_select_a_distance_tolerance": "تکایە توێژینەوەی فاصلە هەڵبژێرە",
     "type_required": "پێویستە جۆر",
-    "type": "جۆر"
+    "type": "جۆر",
+    "sales_agent_updated_success":"نوێکردنەوەی ئێجەنتی فرۆشتن بە سەرکەوتوویی کۆتایی هات!"
   }
   

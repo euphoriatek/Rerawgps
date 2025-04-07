@@ -58,12 +58,19 @@ class GroupController extends Controller
                 ], 401);
             }
             $userId = $user->id;
-            $groups = Group::with('assignedPois.poi')->where('user_id', $userId)->orderBy('created_at', 'desc')->get();
+            $groups = Group::with('assignedPois.poi')->where('user_id', $userId)->whereNull('deleted_at')->orderBy('created_at', 'desc')->get();
             return response()->json([
                 'status' => true,
                 'message' => 'Groups records fetched successfully!',
                 'data' => $groups,
             ], 200);
+           
+            return response()->json([
+                'status' => true,
+                'message' => 'Groups records fetched successfully!',
+                'data' => $groups,
+            ], 200);
+
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
@@ -144,6 +151,76 @@ class GroupController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred while deleting the group.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getGroupOptions()
+    {
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not authenticated.',
+                ], 401);
+            }
+            $userId = $user->id;
+            $groups = Group::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
+            return response()->json([
+                'status' => true,
+                'message' => 'Groups records fetched successfully!',
+                'data' => $groups,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to fetch groups records.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getGroupPois()
+    {
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not authenticated.',
+                ], 401);
+            }
+            $userId = $user->id;
+
+            $groups = Group::with('assignedPois.poi')->where('user_id', $userId)->whereNull('deleted_at')->orderBy('created_at', 'desc')->get();
+
+            $formattedGroups = $groups->map(function ($group) {
+                return [
+                    'label' => $group->name,
+                    'data' => $group->id,
+                    'type' => "group",
+                    'children' => $group->assignedPois->map(function ($assignedPoi) {
+                        return [
+                            'label' => $assignedPoi->poi->name ?? 'Unnamed POI',
+                            'data' => $assignedPoi->poi->poi_id,
+                            'type' => "poi"
+                        ];
+                    })->toArray()
+                ];
+            });
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Groups records fetched successfully!',
+                'data' => $formattedGroups,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to fetch groups records.',
                 'error' => $e->getMessage(),
             ], 500);
         }

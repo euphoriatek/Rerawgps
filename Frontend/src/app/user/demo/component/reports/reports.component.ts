@@ -54,7 +54,7 @@ export class ReportsComponent {
     const currentDate = this.formatDateWithoutTime(new Date());
 
     this.reportForm = this.fb.group({
-      title: [''],
+      title: ['Visiting POIs'],
       period: [''],
       device: ['', Validators.required],
       pois: ['', Validators.required],
@@ -69,9 +69,10 @@ export class ReportsComponent {
     });
     this.setDatesByPeriod();
   }
+  
   getGroups(): void {
     this.spinner.show();
-    this.api.getGroupList().subscribe({
+    this.api.getGroupPois().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.groupsData = response.data;
@@ -84,9 +85,10 @@ export class ReportsComponent {
       }
     });
   }
+
   serverGroups(){
     this.spinner.show();
-    this.api.getServerGroup().subscribe({
+    this.api.getServerGroupPois().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.serverGroupsData = response.data;
@@ -231,9 +233,28 @@ export class ReportsComponent {
 
   submitForm() {
     if (this.reportForm.valid) {
+      var server_group_poi = [];
+      var group_poi = [];
+      const filter_by_group = this.reportForm.value.filter_by_group;
+      if(filter_by_group){
+        var filter_poi_group = filter_by_group.filter(data => data.type == "poi");
+        if(filter_poi_group){
+          group_poi = filter_poi_group.map(data => data.data);
+        }
+      }
+      
+      const filter_by_server_group = this.reportForm.value.filter_by_server_group;
+      if(filter_by_server_group){
+        var filter_poi_server = filter_by_server_group.filter(data => data.type == "poi");
+        if(filter_poi_server){
+          server_group_poi = filter_poi_server.map(data => data.data);
+        }
+      }
+      const mergedArray = server_group_poi.concat(this.reportForm.value.pois, group_poi);
+      const uniqueArray = [...new Set(mergedArray)];
       const selectedDeviceId = this.reportForm.value.device;
       const Pois = this.poisList;
-      const selectedPois = this.reportForm.value.pois;
+      const selectedPois = uniqueArray;
       const title = this.reportForm.value.title;
       const period = this.reportForm.value.period;
       const dateFrom = this.reportForm.value.dateFrom;

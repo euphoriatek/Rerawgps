@@ -22,8 +22,43 @@ export class POIsComponent implements OnInit {
     public toaster: ToasterService
   ) { }
   ngOnInit(): void {
+    this.getGroups();
+    this.serverGroups();
     this.syncData();
   }
+
+  getGroups(): void {
+    this.spinner.show();
+    this.api.getGroupOptions().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.groups = response.data;
+          console.log(this.groups);
+        }
+        this.spinner.hide();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
+  }
+  serverGroups(){
+    this.spinner.show();
+    this.api.getServerGroup().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.server_groups = response.data;
+        }
+        this.spinner.hide();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
+  }
+
   syncData(){
     this.spinner.show();
     this.api.syncPois().subscribe({
@@ -37,9 +72,9 @@ export class POIsComponent implements OnInit {
       }
     });
   }
-  getPois(): void {
+  getPois(filter=null): void {
     this.spinner.show();
-    this.api.getAllPois().subscribe({
+    this.api.getAllPois(filter).subscribe({
       next: (response: any) => {
         this.spinner.hide();
         if (response && response.status) {
@@ -51,16 +86,16 @@ export class POIsComponent implements OnInit {
               groupNames: Array.from(new Set(poi.groups.map(group => group.group ? group.group.name : null).filter(name => name))).join(', ')
               // groupNames: poi.groups.map(group => group.group ? group.group.name : null).filter(name => name).join(', ')
             }));
-            this.groups = [
-              ...new Set(
-                response.data
-                  .flatMap(item => item.groups
-                    .map(group => group.group?.name)
-                    .filter(name => name?.trim() !== '')
-                  )
-              )
-            ];
-            this.server_groups = [...new Set(this.poisList.map(item => item.group_name).filter(group_name => group_name?.trim() !== '' && group_name != null))];
+            // this.groups = [
+            //   ...new Set(
+            //     response.data
+            //       .flatMap(item => item.groups
+            //         .map(group => group.group?.name)
+            //         .filter(name => name?.trim() !== '')
+            //       )
+            //   )
+            // ];
+            // this.server_groups = [...new Set(this.poisList.map(item => item.group_name).filter(group_name => group_name?.trim() !== '' && group_name != null))];
         }
       },
       error: (err) => {
@@ -79,5 +114,15 @@ export class POIsComponent implements OnInit {
   getLng(coordinates:any){
     const data = JSON.parse(coordinates);
     return data.lng;
+  }
+
+  byServerGroup(server_id){
+    var filter = {server_grpid:server_id};
+    this.getPois(filter);
+  }
+
+  byGroup(group_id){
+    var filter = {group_id:group_id};
+    this.getPois(filter);
   }
 }

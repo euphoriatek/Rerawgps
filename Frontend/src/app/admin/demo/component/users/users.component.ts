@@ -304,6 +304,7 @@ loginAsUser(data:any){
           window.open('/dashboard/default', '_blank');
           this.toaster.success(this.translate.instant('login_success'), this.translate.instant('login'));
         } else {
+          this.toaster.error(this.translate.instant('inactive_account'));
         }
       },
       error: (err) => {

@@ -124,7 +124,7 @@
   "salesagent": "مندوب مبيعات",
   "description_required": "الوصف مطلوب",
   "filter_by_regaykar": "التصفية حسب مستخدم RegayKar",
-  "filter_by_url": "Filter by url",
+  "filter_by_url": "تصفية حسب الخادم",
   "filter_by_platform": "Filter by Platform",
   "new_password": "كلمة مرور جديدة",
   "confirm_new_password": "تأكيد كلمة المرور",
@@ -210,6 +210,7 @@
   "server_group_required": "مجموعة الخادم مطلوبة",
   "please_select_a_distance_tolerance": "يرجى تحديد تحمل المسافة",
   "type_required": "النوع مطلوب",
-  "type": "النوع"
+  "type": "النوع",
+  "sales_agent_updated_success":"تم تحديث وكيل المبيعات بنجاح!"
   }
   

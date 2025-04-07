@@ -43,8 +43,8 @@ export class ApiService {
   editPoi(data: any) {
     return this.http.post(this.BaseUrl + 'edit-poi', data);
   }
-  getAllPois() {
-    return this.http.get(this.BaseUrl + 'pois');
+  getAllPois(filter:any=null) {
+    return this.http.post(this.BaseUrl + 'pois-list', filter);
   }
   updatePoiStatus(data: any) {
     return this.http.post(this.BaseUrl + 'poi-update-status', data);;
@@ -88,5 +88,16 @@ export class ApiService {
   getTypes(){
     return this.http.get(this.BaseUrl + 'get-types');
     
+  }
+  getGroupOptions() {
+    return this.http.get(this.BaseUrl + 'get-group-options');
+  }
+
+  getServerGroupPois(){
+    return this.http.get(this.BaseUrl + 'get-server-group-pois');
+  }
+
+  getGroupPois() {
+    return this.http.get(this.BaseUrl + 'get-group-pois');
   }
 }

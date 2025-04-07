@@ -124,7 +124,7 @@
     "salesagent":"Sales Agent",
     "description_required":"Description is Required",
     "filter_by_regaykar":"Filter by RegayKar user",
-    "filter_by_url":"Filter by url",
+    "filter_by_url":"Filter by Server",
     "filter_by_platform":"Filter by Platform",
     "new_password":"New password",
     "confirm_new_password":"Confrim password",
@@ -213,7 +213,8 @@
     "type_required":"Type is Required",
     "type":"Type",
     "filter_by_server_group":"Filter by Server Group",
-    "filter_by_group":"Filter by Group"
+    "filter_by_group":"Filter by Group",
+    "sales_agent_updated_success":"Sales Agent updated successfully!"
 
 
 }

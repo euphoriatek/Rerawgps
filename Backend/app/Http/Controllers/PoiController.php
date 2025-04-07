@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
-
 class PoiController extends Controller
 {
     public function store(Request $request)
@@ -162,7 +161,7 @@ class PoiController extends Controller
         }
     }
     
-    public function getPois()
+    public function getPois(Request $request)
     {
         try {
             $user = auth()->user();
@@ -172,7 +171,22 @@ class PoiController extends Controller
                     'message' => 'Unauthorized. Please log in.',
                 ], 401);
             }
-            $pois = Poi::where('regaykar_user_id', $user->id)->where('status', 'approved')->whereNull('deleted_at')->with('groups.group')->orderBy('created_at', 'desc')->get();
+            $input = $request->all();
+            if($input && isset($input['server_grpid'])){
+                $pois = Poi::where('regaykar_user_id', $user->id)->where('group_id', $input['server_grpid'])->where('status', 'approved')->whereNull('deleted_at')->with('groups.group')->orderBy('created_at', 'desc')->get();
+            }else if($input && isset($input['group_id'])){
+                $pois = Poi::whereHas('groups', function ($query) use ($request) {
+                    $query->where('group_id', $request->group_id); // or just $group_id if passed directly
+                })
+                ->where('regaykar_user_id', $user->id)
+                ->where('status', 'approved')
+                ->whereNull('deleted_at')
+                ->with('groups.group') // eager load groups if needed
+                ->orderBy('created_at', 'desc')
+                ->get();
+            }else{
+                $pois = Poi::where('regaykar_user_id', $user->id)->where('status', 'approved')->whereNull('deleted_at')->with('groups.group')->orderBy('created_at', 'desc')->get();
+            }
             return response()->json([
                 'status' => true,
                 'data' => $pois

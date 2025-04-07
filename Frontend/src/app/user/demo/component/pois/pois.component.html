@@ -10,21 +10,22 @@
               <i class="ti ti-search"></i>
               <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="{{'global_search'|translate}}" />
           </span>
-          <p-dropdown [options]="server_groups" (onChange)="dt.filter($event.value, 'group_name', 'equals')"
-            styleClass="p-column-filter" placeholder="{{'filter_by_server_group' | translate}}" [showClear]="true">
-            <ng-template let-option pTemplate="item">
-              <span [ngClass]="'customer-badge status-' + option">
-                {{ option }}
-              </span>
-            </ng-template>
+          <p-dropdown 
+            [options]="server_groups"
+            optionLabel="title" 
+            (onChange)="byServerGroup($event.value)"
+            styleClass="p-column-filter"
+            placeholder="{{'filter_by_server_group' | translate}}"
+            [showClear]="true">
           </p-dropdown>
-          <p-dropdown [options]="groups" (onChange)="dt.filter($event.value, 'groupNames', 'contains')"
-            styleClass="p-column-filter" placeholder="{{'filter_by_group' | translate}}" [showClear]="true">
-            <ng-template let-option pTemplate="item">
-              <span [ngClass]="'customer-badge status-' + option">
-                {{ option }}
-              </span>
-            </ng-template>
+          <p-dropdown class="filter-group" 
+            [options]="groups"
+            optionLabel="name" 
+            optionValue="id"
+            (onChange)="byGroup($event.value)"
+            styleClass="p-column-filter"
+            placeholder="{{'filter_by_group' | translate}}"
+            [showClear]="true">
           </p-dropdown>
           </div>
       </div>

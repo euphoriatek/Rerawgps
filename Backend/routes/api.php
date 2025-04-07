@@ -96,7 +96,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // --------------
     // RegayKar User
     // pois
-    Route::get('/pois', [PoiController::class, 'getPois'])->middleware('role:user');
+    Route::post('/pois-list', [PoiController::class, 'getPois'])->middleware('role:user');
+    Route::get('/get-group-options', [GroupController::class, 'getGroupOptions'])->middleware('auth:users');
     // pendingrequest
     Route::get('/pending-pois', [PoiController::class, 'getPendingPois'])->middleware('role:user');
     Route::post('/edit-poi', [PoiController::class, 'updatePoi'])->middleware('role:user');
@@ -119,6 +120,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // saleagent
     Route::post('/get-sales-objects', [SalesController::class, 'getsalesObjects'])->middleware('auth:users');
     Route::get('/sync-data', [PoiController::class, 'syncData'])->middleware('auth:users');
+
+    // Reports
+    Route::get('/get-server-group-pois', [SalesController::class, 'poiswithGroups'])->middleware('auth:users');
+    Route::get('/get-group-pois', [GroupController::class, 'getGroupPois'])->middleware('auth:users');
+
     // --------------
     // Sales Agent
     Route::post('/pois', [PoiController::class, 'store'])->middleware('auth:sales');

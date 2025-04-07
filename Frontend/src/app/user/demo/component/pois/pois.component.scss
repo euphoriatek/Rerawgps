@@ -96,6 +96,15 @@
         color: #fff;
         padding-right: 27px;
     }
+    .filterwithSearch p-dropdown{
+        display: flex;
+    }
+    .filterwithSearch .filter-group{
+        margin-left: 15px;
+    }
+    .filterwithSearch .filter-group .p-dropdown {
+        border-radius: 8px;
+    }
     .filterwithSearch .p-dropdown .p-dropdown-clear-icon,
     .filterwithSearch .p-dropdown .p-dropdown-trigger{
       color:#fff;

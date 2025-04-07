@@ -124,7 +124,7 @@
   "salesagent": "Sales Agent",
   "description_required": "Danasîn Pêdivî ye",
   "filter_by_regaykar": "Filter by RegayKar user",
-  "filter_by_url": "Filter by url",
+  "filter_by_url": "Bi URL filtre bikin",
   "filter_by_platform": "Filter by Platform",
   "new_password": "Şîfreya nû",
   "confirm_new_password": "Şîfreya pejirandinê",
@@ -210,6 +210,7 @@
   "server_group_required": "Komelê serverê pêwîst e",
   "please_select_a_distance_tolerance": "Ji kerema xwe, tolêransa derheqê hilbijêrin",
   "type_required": "Tîpa pêwîst e",
-  "type": "Tîp"
+  "type": "Tîp",
+  "sales_agent_updated_success":"Ajenta firotanê bi serkeftin hate nûkirin!"
   }
   

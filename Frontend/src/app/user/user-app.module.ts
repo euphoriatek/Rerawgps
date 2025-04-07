@@ -43,6 +43,7 @@ import { PendingRequestComponent } from './demo/component/pendingrequest/pending
 import { ReportsComponent } from './demo/component/reports/reports.component';
 import { MatSelectModule } from '@angular/material/select';  // For mat-select
 import { MatOptionModule } from '@angular/material/core';
+import { TreeSelectModule } from 'primeng/treeselect';
 import { RegayKarPlanComponent } from './demo/component/regay-kar-plan/regay-kar-plan.component';
 import { HistoryComponent } from './demo/component/history/history.component'; 
 @NgModule({
@@ -67,7 +68,7 @@ import { HistoryComponent } from './demo/component/history/history.component';
     RegayKarPlanComponent,
     HistoryComponent
   ],
-  imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule],
+  imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,TreeSelectModule],
   providers: [NavigationItem,
     // {
     //   provide: HTTP_INTERCEPTORS,

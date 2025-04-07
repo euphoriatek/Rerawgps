@@ -641,6 +641,12 @@ class ApiController extends Controller
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
+        if(!$user->is_active){
+            return response()->json([
+                'status' => false,
+                'message' => 'Inactive User'
+            ], 200);
+        }
         session(['original_admin_id' => Auth::id()]);
         Auth::guard('web')->login($user);
         $token = $user->createToken('remember_token')->plainTextToken;
