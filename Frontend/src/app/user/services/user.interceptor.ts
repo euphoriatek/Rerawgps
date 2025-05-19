@@ -58,7 +58,7 @@ export class UserInterceptor implements HttpInterceptor {
       sessionStorage.clear();
       localStorage.clear();
       this.userCookies.deleteCookie('CurrentUser');
-      this.toastr.error("Session has been expired please login!", "Logout");
+      // this.toastr.error("Session has been expired please login!", "Logout");
       this.router.navigate(['/login']);
   }
 }

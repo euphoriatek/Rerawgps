@@ -91,6 +91,7 @@ class HistoryController extends Controller
             'date_to' => 'required',
             'pois' => 'required|array',
             // 'distance_tolerance'=>'required|numeric'
+            'language' => 'nullable|in:en,ar,ku-so,ku-ku',
 
         ]);
 
@@ -99,6 +100,8 @@ class HistoryController extends Controller
                 'errors' => $validator->errors(),
             ], 400);
         }
+        $language = $input['language'] ?? 'en';
+        \App::setLocale($language); 
         $visit_poi = [];
         $unvisited_poi = [];
         $user = User::with('server')->find($user->id);
@@ -168,6 +171,7 @@ class HistoryController extends Controller
             'devices' => 'required|array',
             'pois' => 'required|array',
             'distance_tolerance' => 'required|numeric',
+            'language' => 'nullable|in:en,ar,ku-so,ku-ku',
         ]);
 
         if ($validator->fails()) {
@@ -175,33 +179,84 @@ class HistoryController extends Controller
                 'errors' => $validator->errors(),
             ], 400);
         }
+        $language = $input['language'] ?? 'en';
+        \App::setLocale($language); 
+        $visit_poi = [];
+        $unvisited_poi = [];
         $user = User::with('server')->find($user->id);
         $date_from = Carbon::parse($request->input('date_from'))->toDateString();
         $date_to = Carbon::parse($request->input('date_to'))->toDateString();
-        $params = [
-            'title' => $input['title'],
-            // 'type' => $input['type'],
-            'type' => 54,
-            'date_from' => $date_from,
-            'date_to' => $date_to,
-            'from_time' => $input['from_time'] ?? '00:00',
-            'to_time' => $input['to_time'] ?? '23:59',
-            'format' => 'json',
-            'devices' => $input['devices'],
-            'stop_duration' => 4,
-            'distance_tolerance' => $input['distance_tolerance'],
-            'pois' => $input['pois']
-        ];
+        // $params = [
+        //     'title' => $input['title'],
+        //     // 'type' => $input['type'],
+        //     'type' => 54,
+        //     'date_from' => $date_from,
+        //     'date_to' => $date_to,
+        //     'from_time' => $input['from_time'] ?? '00:00',
+        //     'to_time' => $input['to_time'] ?? '23:59',
+        //     'format' => 'json',
+        //     'devices' => $input['devices'],
+        //     'stop_duration' => 4,
+        //     'distance_tolerance' => $input['distance_tolerance'],
+        //     'pois' => $input['pois']
+        // ];
       
-        $apiEndPoint = $user->server->server_url . '/api/generate_report?lang=en&user_api_hash=' . $user->api_key . '&generate=1';
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-        ])->post($apiEndPoint, $params);
+        // $apiEndPoint = $user->server->server_url . '/api/generate_report?lang=en&user_api_hash=' . $user->api_key . '&generate=1';
+        // $response = Http::withHeaders([
+        //     'Accept' => 'application/json',
+        //     'Content-Type' => 'application/json',
+        // ])->post($apiEndPoint, $params);
 
-        $reports = $response->json();
-      
-        $htmlContent = view('reports', ['data' => $reports['items'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
+        // $reports = $response->json();
+
+        $pois = $input['pois'] ?? [];
+        foreach ($pois as $poi) {
+            $params = [
+                'title' => 'Report Generate',
+                'type' => 54,
+                'date_from' => $date_from,
+                'date_to' => $date_to,
+                'from_time' => $input['from_time'] ?? '00:00',
+                'to_time' => $input['to_time'] ?? '23:59',
+                'format' => 'json',
+                'devices' => $input['devices'],
+                'stop_duration' => $input['stop_duration'] ?? 4,
+                'distance_tolerance' => 20,
+                // 'distance_tolerance' => $input['distance_tolerance'],
+                'pois' => [$poi['poi_id']]
+            ];
+
+            $apiEndPoint = $user->server->server_url . '/api/generate_report?lang=en&user_api_hash=' . $user->api_key . '&generate=1';
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ])->post($apiEndPoint, $params);
+
+            $reports = $response->json();
+
+            if (!empty($reports['items'][0])) {
+                $table = $reports['items'][0];
+                if (isset($table['table']['rows']) && count($table['table']['rows']) > 0) {
+                    $row_data = $table['table']['rows'];
+
+                    $data = [
+                        "name" => $poi['name'],
+                        "poi_id" => $poi['poi_id'],
+                        "row" => $row_data
+                    ];
+                    array_push($visit_poi, $data);
+                    unset($unvisited_poi[$poi['poi_id']]);
+                } else {
+                    array_push($unvisited_poi, $poi);
+                }
+            } else {
+                array_push($unvisited_poi, $poi);
+            }
+        }
+        // echo "<pre>";
+        // print_r($reports);exit;
+        $htmlContent = view('report', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
+        // $htmlContent = view('reports', ['data' => $reports['items'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
         return response()->json([
             'status' => true,
             'data' => $htmlContent,

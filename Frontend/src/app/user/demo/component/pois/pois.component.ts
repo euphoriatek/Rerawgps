@@ -63,6 +63,8 @@ export class POIsComponent implements OnInit {
     this.spinner.show();
     this.api.syncPois().subscribe({
       next: (response: any) => {
+        console.log(response);
+        
         this.getPois();
         // this.spinner.hide();
       },

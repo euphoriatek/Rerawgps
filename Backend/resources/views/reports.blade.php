@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="LTR">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>RegayKar</title>
@@ -1529,11 +1530,12 @@
 
         .reports header .report-logo {
             width: 171px;
-            height: 40px
+            height: 40px text-align: left;
         }
 
         .reports header .report-logo img {
-            max-width: 100%
+            max-width: 64px;
+            margin-top: -19px;
         }
 
         .reports header .report-curve {
@@ -1860,65 +1862,67 @@
             <div class="header-right"></div>
         </header>
         @foreach($data as $report_data)
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format('d-m-Y') ?? 'N/A' }} {{ $from_time}} - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }} {{ $to_time}}</span> </div>
-                <div class="report-bars"></div>
-                Report type: POI - Stop duration
-            </div>
-            <div class="panel-body">
-                <table class="table">
-                <tbody>
-                        <tr>
-                            <td>Device:</td>
-                            <td>{{ $report_data['meta']['device.name']['value'] }}</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                </tbody>
-                </table>
-            </div>
-            <div class="tab-container">
-                <div class="visited-poi">
-                    <div class="panel-body no-padding">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Start</th>
-                                    <th>End</th>
-                                    <th>Duration</th>
-                                    <th>Engine idle</th>
-                                    <th>Near</th>
-                                    <th>Stop position</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @if (isset($report_data['table']) && !empty($report_data['table']['rows']))
-                                    @forelse($report_data['table']['rows'] as $poi)
-                                        <tr>
-                                            <td>{{ \Carbon\Carbon::parse($poi['start_at'] ?? '')->format('d-m-Y H:i:s') }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($poi['end_at'] ?? '')->format('d-m-Y H:i:s') }}</td>
-                                            <td>{{ $poi['duration'] }}</td>
-                                            <td>{{ $poi['engine_idle'] }}</td>
-                                            <td>{{ $poi['near'] }}</td>
-                                            <td>{!! $poi['location'] !!}</td>
-                                        </tr>
-                                    @empty
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format('d-m-Y') ?? 'N/A' }}
+                            {{ $from_time}} - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }}
+                            {{ $to_time}}</span> </div>
+                    <div class="report-bars"></div>
+                    Report type: {{ __('pdf.visiting_pois') }}
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Device:</td>
+                                <td>{{ $report_data['meta']['device.name']['value'] }}</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-container">
+                    <div class="visited-poi">
+                        <div class="panel-body no-padding">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Start</th>
+                                        <th>End</th>
+                                        <th>Duration</th>
+                                        <th>Engine idle</th>
+                                        <th>Near</th>
+                                        <th>Stop position</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($report_data['table']) && !empty($report_data['table']['rows']))
+                                        @forelse($report_data['table']['rows'] as $poi)
+                                            <tr>
+                                                <td>{{ \Carbon\Carbon::parse($poi['start_at'] ?? '')->format('d-m-Y H:i:s') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($poi['end_at'] ?? '')->format('d-m-Y H:i:s') }}</td>
+                                                <td>{{ $poi['duration'] }}</td>
+                                                <td>{{ $poi['engine_idle'] }}</td>
+                                                <td>{{ $poi['near'] }}</td>
+                                                <td>{!! $poi['location'] !!}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center">No POI data available.</td>
+                                            </tr>
+                                        @endforelse
+                                    @else
                                         <tr>
                                             <td colspan="6" class="text-center">No POI data available.</td>
                                         </tr>
-                                    @endforelse
-                                @else
-                                    <tr>
-                                        <td colspan="6" class="text-center">No POI data available.</td>
-                                    </tr>
-                            @endif
-                            </tbody>
-                        </table>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         @endforeach
     </div>
 </body>

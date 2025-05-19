@@ -192,7 +192,15 @@ class RegayKarPlansController extends Controller
         $mapIconsById = collect($mapIcons)->keyBy('id');
         $userId = $user->id;
         $Date = date("Y-m-d");
-        $Plan = RegayKarPlans::with(['group','assignedPois.poi_data'])->where('sale_agent_id', $userId)->where('activation_date', $Date)->get();
+        $Plan = RegayKarPlans::with(['group', 'assignedPois' => function ($query) {
+        $query->whereHas('poi_data', function ($query) {
+            $query->whereNull('deleted_at');
+        });
+    }])
+    ->where('sale_agent_id', $userId)
+    ->where('activation_date', $Date)
+    ->get();
+        // $Plan = RegayKarPlans::with(['group','assignedPois.poi_data'])->where('sale_agent_id', $userId)->where('activation_date', $Date)->get();
         $Plan->each(function ($plan) use ($mapIconsById) {
             $plan->assignedPois->each(function ($assignedPoi) use ($mapIconsById) {
                 if (isset($assignedPoi->poi_data)) {
@@ -202,7 +210,7 @@ class RegayKarPlansController extends Controller
             });
         });
         return response()->json([
-            'status' => true,
+            'status' => 200,
             'data' => $Plan
         ], 200);
 

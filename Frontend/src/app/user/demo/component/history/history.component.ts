@@ -24,7 +24,7 @@ export class HistoryComponent implements OnInit {
   selectedDeviceNames: string[] = [];
   devices: { label: string, value: string }[] = [];
   deviceForm = new FormGroup({
-    device: new FormControl([])
+  device: new FormControl([])
   });
 
   @ViewChild('dt') dt: Table | undefined;
@@ -129,7 +129,8 @@ export class HistoryComponent implements OnInit {
         date_to: data.activation_date,
         devices: data.device_id ? [data.device_id] : [],
         pois: data.pois,
-        selectedDeviceNames: data.device_name ? [data.device_name] : []
+        selectedDeviceNames: data.device_name ? [data.device_name] : [],
+        language: localStorage.getItem('user_language')
       };
       this.spinner.show();
       this.api.getRepots(requestData).subscribe({

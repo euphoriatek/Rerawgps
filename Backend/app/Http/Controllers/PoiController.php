@@ -377,7 +377,13 @@ class PoiController extends Controller
             ], 401);
         }
         $userId = $user->id;
-        $Poi = Poi::select('id', 'name')->where('regaykar_user_id', $userId)->get();
+        // $Poi = Poi::select('id', 'name')->where('regaykar_user_id', $userId)->get();
+        $Poi = Poi::where('regaykar_user_id', $userId)->get();
+        foreach ($Poi as $poi) {
+            if (empty($poi->group_name)) {
+                $poi->group_name = 'Ungrouped';
+            }
+        }
         return response()->json([
             'status' => true,
             'message' => 'Poi records fetched successfully!',

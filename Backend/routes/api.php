@@ -121,10 +121,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/get-sales-objects', [SalesController::class, 'getsalesObjects'])->middleware('auth:users');
     Route::get('/sync-data', [PoiController::class, 'syncData'])->middleware('auth:users');
 
-    // Reports
-    Route::get('/get-server-group-pois', [SalesController::class, 'poiswithGroups'])->middleware('auth:users');
-    Route::get('/get-group-pois', [GroupController::class, 'getGroupPois'])->middleware('auth:users');
-
     // --------------
     // Sales Agent
     Route::post('/pois', [PoiController::class, 'store'])->middleware('auth:sales');

@@ -211,6 +211,8 @@
   "please_select_a_distance_tolerance": "يرجى تحديد تحمل المسافة",
   "type_required": "النوع مطلوب",
   "type": "النوع",
-  "sales_agent_updated_success":"تم تحديث وكيل المبيعات بنجاح!"
+  "sales_agent_updated_success":"تم تحديث وكيل المبيعات بنجاح!",
+  "visiting_pois": "زيارة النقاط"
+
   }
   

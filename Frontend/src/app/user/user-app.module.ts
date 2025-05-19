@@ -46,6 +46,13 @@ import { MatOptionModule } from '@angular/material/core';
 import { TreeSelectModule } from 'primeng/treeselect';
 import { RegayKarPlanComponent } from './demo/component/regay-kar-plan/regay-kar-plan.component';
 import { HistoryComponent } from './demo/component/history/history.component'; 
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { CheckboxModule } from 'primeng/checkbox';
+import { NgSelectModule } from '@ng-select/ng-select';
+
+
+
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -68,7 +75,9 @@ import { HistoryComponent } from './demo/component/history/history.component';
     RegayKarPlanComponent,
     HistoryComponent
   ],
-  imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,TreeSelectModule],
+  imports: [TranslateModule,UserAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,TreeSelectModule,MatIconModule,MatCheckboxModule,CheckboxModule,
+    NgSelectModule
+  ],
   providers: [NavigationItem,
     // {
     //   provide: HTTP_INTERCEPTORS,

@@ -1,39 +1,91 @@
+.form-group label {
+  margin-right: 10px;
+}
 
-  
-  .form-group label {
-    margin-right: 10px;
-  }
-  
-  .form-group mat-form-field {
-    flex-grow: 1;
-  }
+.form-group mat-form-field {
+  flex-grow: 1;
+}
 
-::ng-deep{
-  mat-form-field{
+::ng-deep {
+  mat-form-field {
+    width: 100%;
+
+    .mdc-text-field--outlined {
+      padding: 0px;
+    }
+
+    .mat-mdc-form-field-infix {
       width: 100%;
-        .mdc-text-field--outlined{
-            padding: 0px;
-        }
-        .mat-mdc-form-field-infix{
-              width: 100%;
-              padding: 0px !important;
-              min-height: auto;
-              
-        }
-        .mdc-text-field--outlined{
-          --mdc-outlined-text-field-outline-width:0px;
-        }
+      padding: 0px !important;
+      min-height: auto;
+
+    }
+
+    .mdc-text-field--outlined {
+      --mdc-outlined-text-field-outline-width: 0px;
+    }
   }
+
   .cdk-overlay-container {
     z-index: 1200;
   }
-  .mat-mdc-form-field-subscript-wrapper{
+
+  .mat-mdc-form-field-subscript-wrapper {
     display: none;
   }
-.w-full{
-  width:100%;
+
+  .w-full {
+    width: 100%;
+  }
+
+  .p-tree-wrapper .p-tree-container {
+    padding-left: 0;
+  }
 }
-.p-tree-wrapper .p-tree-container {
-  padding-left: 0;
+
+::ng-deep .select-actions {
+  display: flex;
+  justify-content: space-between;
 }
+
+::ng-deep .select-actions mat-option {
+  flex: 1;
+  max-width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+::ng-deep {
+  mat-form-field.search-field {
+    height: 42px;
+
+    .mat-mdc-text-field-wrapper {
+      background: #efefef;
+      padding: 10px
+    }
+
+    mat-icon {
+      padding: 0px !important;
+    }
+
+  }
+
+  .selectinput .btn-link {
+    background: #ffffff;
+    border-radius: 0px;
+    color: #000000;
+    padding: 11px;
+    font-weight: 500;
+    transition: 0.5s;
+    border-right: solid 1px #dfdfdf;
+  }
+  .selectinput .btn-link:last-child{
+    border-right:0px;
+  }
+  .selectinput  .btn-link:hover {
+    background: #f1f1f1;
+    text-decoration: none;
+  }
+
 }

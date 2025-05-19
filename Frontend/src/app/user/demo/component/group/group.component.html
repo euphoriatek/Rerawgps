@@ -1,160 +1,187 @@
 <form class="add-group-form" [formGroup]="groupForm" (ngSubmit)="addGroup()" *ngIf="showgroup">
-  <div class="row">
-     <div class="col-lg-6">
-        <div class="row">
-           <div class="col-lg-12">
-              <div class="form-group">
-                 <label for="">{{ "pois" | translate }}</label>
-                 <mat-form-field appearance="outline" class="multi-select">
-                    <mat-select multiple formControlName="pois_id" class="form-control">
-                       <mat-option *ngFor="let poi of pois_options" [value]="poi.id">
-                       {{ poi.name }}
-                       </mat-option>
-                    </mat-select>
-                 </mat-form-field>
-                 <div *ngIf="
-                    groupForm?.get('pois_id')?.hasError('required') &&
-                    groupForm?.get('pois_id')?.touched
-                    ">
-                    <span class="error-message">{{
-                    "pois_required" | translate
-                    }}</span>
-                 </div>
-              </div>
-           </div>
-           <div class="col-lg-12">
-              <div class="form-group">
-                 <label for="name">{{ 'name' | translate }}</label>
-                 <input id="name" formControlName="name" class="form-control" />
-                 <div *ngIf="groupForm.get('name').invalid && groupForm.get('name').touched" class="error-message">
-                    {{ 'name_required' | translate }}
-                 </div>
-              </div>
-           </div>
-           <div class="col-lg-12">
-              <div class="form-group">
-                 <label for="description">{{ 'description' | translate }}</label>
-                 <textarea id="description" formControlName="description" class="form-control"></textarea>
-                 <div *ngIf="groupForm.get('description').invalid && groupForm.get('description').touched"
-                    class="error-message">
-                    {{ 'description_required' | translate }}
-                 </div>
-              </div>
-           </div>
-           <div class="col-lg-12">
-              <div class="form-group">
-                 <div class="d-flex gap-2 from-button">
-                    <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
-                    <input (click)="resetForm()" type="button" class="btn grey-btn" value="{{ 'reset' | translate }}">
-                 </div>
-              </div>
-           </div>
-  
-        </div>
-     </div>
-  </div>
-  </form>
-  <p-table #dt [value]="groupsData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="25"
-  [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
-  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries " [filterDelay]="0"
-  [globalFilterFields]="['name','poisNames','created_at']">
-  <ng-template pTemplate="caption">
-     <div class="table-header mb-4">
-        <h3>{{ 'group_list' | translate}}</h3>
-        <div>
-           <span class="p-input-icon-left">
-           <i class="ti ti-search"></i>
-           <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
-              placeholder="{{'global_search'|translate}}" />
-           </span>
-           <button *ngIf="!showgroup" class="btn add_user_btn" (click)="addUserForm()">{{"add_new_groups" | translate
-           }}</button>
-           <button *ngIf="showgroup" class="btn addclose_btn" (click)="closeForm()"><i
-              class="fa-solid fa-xmark"></i></button>
-        </div>
-     </div>
-  </ng-template>
-  <ng-template pTemplate="header">
-     <tr>
-        <th pSortableColumn="name">
-           {{ "name" | translate }} 
-           <p-sortIcon field="name"></p-sortIcon>
-        </th>
-        <th pSortableColumn="poisNames">
-         {{ "pois" | translate }} 
-           <p-sortIcon field="poisNames"></p-sortIcon>
-        </th>
-        <th pSortableColumn="created_at">
-          {{ "created_at" | translate }} 
-          <p-sortIcon field="created_at"></p-sortIcon>
-       </th>
-        <th>{{ "actions" | translate }}</th>
-     </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-data>
-     <tr class="p-selectable-row">
-        <td>{{data.name}}</td>
-        <td>{{data.poisNames}}</td>
-        <td>{{data.created_at | date}}</td>
-        <td>
-           <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i class="fa-solid fa-pen"></i></button>
-           <button class="btn deletebtn" (click)="deleteRecords(data)" title="Delete"><i class="fa-solid fa-trash"></i></button>
-        </td>
-     </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
-     <tr>
-        <td colspan="5">{{"no_data_record" | translate }}.</td>
-     </tr>
-  </ng-template>
-  </p-table>
-  <p-dialog id="dialog" header="{{ 'edit' | translate }}" [(visible)]="visible" [style]="{ width: '32vw' }"
-  [modal]="true">
-  <form action="" [formGroup]="groupEditForm" (ngSubmit)="EditGroupUser()">
-  <div class="row">
-     <div class="col-lg-12">
-        <div class="form-group">
-           <label for="">{{ "pois" | translate }}</label>
-           <mat-form-field appearance="outline" class="multi-select">
-              <mat-select multiple formControlName="pois_id" class="form-control">
-                 <mat-option *ngFor="let poi of pois_options" [value]="poi.id">
-                 {{ poi.name }}
-                 </mat-option>
-              </mat-select>
-           </mat-form-field>
-           <div *ngIf="
+   <div class="row">
+      <div class="col-lg-6">
+         <div class="row">
+
+            <div class="col-lg-12">
+               <div class="form-group">
+                  <label for="">{{ "pois" | translate }}</label>
+                  <ng-select [items]="pois_options" [multiple]="true" bindLabel="name" groupBy="group_name"
+                     [selectableGroup]="true" [selectableGroupAsModel]="false" [closeOnSelect]="false" bindValue="id"
+                     formControlName="pois_id" [virtualScroll]="true">
+                     <ng-template ng-header-tmp>
+                        <div class="d-flex justify-content-between flex-wrap selectinput">
+                           <button type="button" class="btn btn-link w-50" (click)="selectAll()">Select All</button>
+                           <button type="button" class="btn btn-link w-50" (click)="deselectAll()">Deselect
+                              All</button>
+                        </div>
+                     </ng-template>
+
+                     <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                        <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }"/> {{ item.group_name }}
+                     </ng-template>
+                     <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                        <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }"/> {{ item.name }}
+                     </ng-template>
+                  </ng-select>
+                     <div *ngIf="
+                 groupForm?.get('pois_id')?.hasError('required') &&
+                 groupForm?.get('pois_id')?.touched
+                 ">
+                        <span class="error-message">{{
+                           "pois_required" | translate
+                           }}</span>
+                     </div>
+               </div>
+            </div>
+
+            <div class="col-lg-12">
+               <div class="form-group">
+                  <label for="name">{{ 'name' | translate }}</label>
+                  <input id="name" formControlName="name" class="form-control" />
+                  <div *ngIf="groupForm.get('name').invalid && groupForm.get('name').touched" class="error-message">
+                     {{ 'name_required' | translate }}
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-12">
+               <div class="form-group">
+                  <label for="description">{{ 'description' | translate }}</label>
+                  <textarea id="description" formControlName="description" class="form-control"></textarea>
+                  <div *ngIf="groupForm.get('description').invalid && groupForm.get('description').touched"
+                     class="error-message">
+                     {{ 'description_required' | translate }}
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-12">
+               <div class="form-group">
+                  <div class="d-flex gap-2 from-button">
+                     <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
+                     <input (click)="resetForm()" type="button" class="btn grey-btn" value="{{ 'reset' | translate }}">
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+</form>
+<p-table #dt [value]="groupsData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="25"
+   [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries " [filterDelay]="0"
+   [globalFilterFields]="['name','poisNames','created_at']">
+   <ng-template pTemplate="caption">
+      <div class="table-header mb-4">
+         <h3>{{ 'group_list' | translate}}</h3>
+         <div>
+            <span class="p-input-icon-left">
+               <i class="ti ti-search"></i>
+               <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                  placeholder="{{'global_search'|translate}}" />
+            </span>
+            <button *ngIf="!showgroup" class="btn add_user_btn" (click)="addUserForm()">{{"add_new_groups" | translate
+               }}</button>
+            <button *ngIf="showgroup" class="btn addclose_btn" (click)="closeForm()"><i
+                  class="fa-solid fa-xmark"></i></button>
+         </div>
+      </div>
+   </ng-template>
+   <ng-template pTemplate="header">
+      <tr>
+         <th pSortableColumn="name">
+            {{ "name" | translate }}
+            <p-sortIcon field="name"></p-sortIcon>
+         </th>
+         <th pSortableColumn="poisNames">
+            {{ "pois" | translate }}
+            <p-sortIcon field="poisNames"></p-sortIcon>
+         </th>
+         <th pSortableColumn="created_at">
+            {{ "created_at" | translate }}
+            <p-sortIcon field="created_at"></p-sortIcon>
+         </th>
+         <th>{{ "actions" | translate }}</th>
+      </tr>
+   </ng-template>
+   <ng-template pTemplate="body" let-data>
+      <tr class="p-selectable-row">
+         <td>{{data.name}}</td>
+         <td>{{data.poisNames}}</td>
+         <td>{{data.created_at | date}}</td>
+         <td>
+            <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i
+                  class="fa-solid fa-pen"></i></button>
+            <button class="btn deletebtn" (click)="deleteRecords(data)" title="Delete"><i
+                  class="fa-solid fa-trash"></i></button>
+         </td>
+      </tr>
+   </ng-template>
+   <ng-template pTemplate="emptymessage">
+      <tr>
+         <td colspan="5">{{"no_data_record" | translate }}.</td>
+      </tr>
+   </ng-template>
+</p-table>
+<p-dialog id="dialog" header="{{ 'edit' | translate }}" [(visible)]="visible" [style]="{ width: '32vw' }"
+   [modal]="true">
+   <form action="" [formGroup]="groupEditForm" (ngSubmit)="EditGroupUser()">
+      <div class="row">
+         <div class="col-lg-12">
+            <div class="form-group">
+               <label for="">{{ "pois" | translate }}</label>
+
+               <ng-select [items]="pois_options" [multiple]="true" bindLabel="name" groupBy="group_name"
+                     [selectableGroup]="true" [selectableGroupAsModel]="false" [closeOnSelect]="false" bindValue="id"
+                     formControlName="pois_id" [virtualScroll]="true">
+                     <ng-template ng-header-tmp>
+                        <div class="d-flex justify-content-between flex-wrap selectinput">
+                           <button type="button" class="btn btn-link w-50" (click)="selectAllEdit()">Select All</button>
+                           <button type="button" class="btn btn-link w-50" (click)="deselectAllEdit()">Deselect
+                              All</button>
+                        </div>
+                     </ng-template>
+
+                     <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                        <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }"/> {{ item.group_name }}
+                     </ng-template>
+                     <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                        <input id="item-{{ index }}" type="checkbox" [ngModel]="item$.selected" [ngModelOptions]="{ standalone: true }"/> {{ item.name }}
+                     </ng-template>
+                  </ng-select>
+               <div *ngIf="
            groupEditForm?.get('pois_id')?.hasError('required') &&
            groupEditForm?.get('pois_id')?.touched
                     ">
-                    <span class="error-message">{{
-                    "pois_required" | translate
-                    }}</span>
-                 </div>
-        </div>
-     </div>
-     <div class="col-lg-12">
-        <div class="form-group">
-           <label for="name">{{ "name" | translate }}</label>
-           <input type="text" formControlName="name" class="form-control" autocomplete="false" />
-           <div *ngIf="groupEditForm?.get('name')?.hasError('required') && groupEditForm?.get('name')?.touched">
-              <span class="error-message">{{ "username_required" | translate }}</span>
-           </div>
-        </div>
-     </div>
-     <div class="col-lg-12">
-        <div class="form-group">
-           <label for="description">{{ "description" | translate }}</label>
-           <input type="text" formControlName="description" class="form-control" autocomplete="false" />
-           <div
-              *ngIf="groupEditForm?.get('description')?.hasError('required') && groupEditForm?.get('description')?.touched">
-              <span class="error-message">{{ "description_required" | translate }}</span>
-           </div>
-        </div>
-     </div>
-  </div>
-  <!-- Submit and Cancel buttons (optional) -->
-  <div class="d-flex gap-2 from-button mt-4">
-     <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
-  </div>
-  </form>
-  </p-dialog>
+                  <span class="error-message">{{
+                     "pois_required" | translate
+                     }}</span>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-12">
+            <div class="form-group">
+               <label for="name">{{ "name" | translate }}</label>
+               <input type="text" formControlName="name" class="form-control" autocomplete="false" />
+               <div *ngIf="groupEditForm?.get('name')?.hasError('required') && groupEditForm?.get('name')?.touched">
+                  <span class="error-message">{{ "username_required" | translate }}</span>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-12">
+            <div class="form-group">
+               <label for="description">{{ "description" | translate }}</label>
+               <input type="text" formControlName="description" class="form-control" autocomplete="false" />
+               <div
+                  *ngIf="groupEditForm?.get('description')?.hasError('required') && groupEditForm?.get('description')?.touched">
+                  <span class="error-message">{{ "description_required" | translate }}</span>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Submit and Cancel buttons (optional) -->
+      <div class="d-flex gap-2 from-button mt-4">
+         <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
+      </div>
+   </form>
+</p-dialog>

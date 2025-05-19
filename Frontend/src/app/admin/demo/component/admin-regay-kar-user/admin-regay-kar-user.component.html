@@ -129,6 +129,7 @@
                       <th pSortableColumn="address">{{ "address" | translate }} <p-sortIcon field="address"></p-sortIcon></th> -->
       <th pSortableColumn="api_key">{{ "api_key" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
       <th pSortableColumn="created_at">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon></th>
+      <th>{{ "active" | translate }}</th>
       <th>{{ "actions" | translate }}</th>
     </tr>
   </ng-template>
@@ -152,19 +153,22 @@
                     </td> -->
       <td>
         <span class="p-column-title">{{ "api_key" | translate }}</span>
-        {{data.address}}
+        {{data.api_key}}
       </td>
       <td>
         <span class="p-column-title">{{ "created_at" | translate }}</span>
         <span class="image-text">{{ data.created_at | date }}</span>
       </td>
+      <td><mat-slide-toggle [(ngModel)]="data.is_active" (change)="updateStatus(data.id)"></mat-slide-toggle></td>
       <td>
         <span class="p-column-title">{{ "actions" | translate }}</span>
+        <div class="d-flex">
         <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i class="fa-solid fa-pen"></i></button>
-        <button class="btn viewbtn" title="View" [routerLink]="['/admin/regayuser-view', data.id]"><i
+        <button class="btn viewbtn" title="{{'sales_agents_list' | translate}}" [routerLink]="['/admin/regayuser-view', data.id]"><i
             class="fa-solid fa-eye"></i></button>
         <button class="btn deletebtn" (click)="deleteRow(data)" title="Delete"><i class="fa-solid fa-trash"></i></button>
         <button title="Login with User" class="btn deletebtn" (click)="loginAsUser(data)" title="Login with User" ><i class="fa-solid fa-mask"></i></button>
+      </div>
       </td>
     </tr>
   </ng-template>

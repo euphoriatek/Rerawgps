@@ -7,7 +7,6 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ApiService } from 'src/app/user/services/api.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Renderer2 } from '@angular/core'
-
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -24,16 +23,14 @@ export class ReportsComponent {
   formattedPoisList: any;
   times: string[] = [];
   selectedDeviceIds: number[] = [];
-  selectedPoiIds: number[] = [];
-  types_options:any[]=[];
-  groupsData:any;
-  serverGroupsData:any;
-  
+  groupsData: any;
+
   period: any = ["Today", "Yesterday", "Before 2 days", "Before 3 days", "This week", "Last week", "This month", "Last month"];
   today: Date;
   deviceForm = new FormGroup({
     device: new FormControl([])
   });
+
   constructor(private translate: TranslateService, public toaster: ToasterService, public cookie: UserCookiesService, public route: Router, private fb: FormBuilder,
     public spinner: NgxSpinnerService,
     public api: ApiService,
@@ -49,49 +46,29 @@ export class ReportsComponent {
     this.getPois();
     this.generateTimeSlots();
     this.getGroups();
-    this.serverGroups();
-    // this.getTypes();
     const currentDate = this.formatDateWithoutTime(new Date());
 
     this.reportForm = this.fb.group({
       title: ['Visiting POIs'],
       period: [''],
       device: ['', Validators.required],
-      pois: ['', Validators.required],
+      pois: [[], Validators.required],
       dateFrom: [currentDate],
       fromTime: ['00:00'],
       dateTo: [currentDate],
       toTime: ['23:59'],
-      distanceTolerance:['20', Validators.required],
-      filter_by_group:[''],
-      filter_by_server_group:[''],
-      // type:['', Validators.required]
+      distanceTolerance: ['20', Validators.required],
+      stop_duration:[4, Validators.required]
     });
     this.setDatesByPeriod();
   }
-  
+
   getGroups(): void {
     this.spinner.show();
-    this.api.getGroupPois().subscribe({
+    this.api.getGroupList().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.groupsData = response.data;
-        }
-        this.spinner.hide();
-      },
-      error: (err) => {
-        this.spinner.hide();
-        console.error(err);
-      }
-    });
-  }
-
-  serverGroups(){
-    this.spinner.show();
-    this.api.getServerGroupPois().subscribe({
-      next: (response: any) => {
-        if (response && response.status) {
-          this.serverGroupsData = response.data;
         }
         this.spinner.hide();
       },
@@ -125,7 +102,6 @@ export class ReportsComponent {
   generateTimeSlots(): void {
     const timesArray: string[] = [];
 
-    // Loop through each hour and minute
     for (let hour = 0; hour < 24; hour++) {
       for (let minute = 0; minute < 60; minute += 15) {
         const time = this.formatTime(hour, minute);
@@ -140,7 +116,6 @@ export class ReportsComponent {
     this.times = timesArray;
   }
 
-  // Helper function to format the time into HH:mm format
   private formatTime(hour: number, minute: number): string {
     const hh = hour < 10 ? `0${hour}` : `${hour}`;
     const mm = minute < 10 ? `0${minute}` : `${minute}`;
@@ -217,7 +192,7 @@ export class ReportsComponent {
 
   getPois(): void {
     this.spinner.show();
-    this.api.getAllPois().subscribe({
+    this.api.getAllPoisOptionsList().subscribe({
       next: (response: any) => {
         this.spinner.hide();
         if (response && response.status) {
@@ -230,31 +205,14 @@ export class ReportsComponent {
       }
     });
   }
+  
 
   submitForm() {
     if (this.reportForm.valid) {
-      var server_group_poi = [];
-      var group_poi = [];
-      const filter_by_group = this.reportForm.value.filter_by_group;
-      if(filter_by_group){
-        var filter_poi_group = filter_by_group.filter(data => data.type == "poi");
-        if(filter_poi_group){
-          group_poi = filter_poi_group.map(data => data.data);
-        }
-      }
-      
-      const filter_by_server_group = this.reportForm.value.filter_by_server_group;
-      if(filter_by_server_group){
-        var filter_poi_server = filter_by_server_group.filter(data => data.type == "poi");
-        if(filter_poi_server){
-          server_group_poi = filter_poi_server.map(data => data.data);
-        }
-      }
-      const mergedArray = server_group_poi.concat(this.reportForm.value.pois, group_poi);
-      const uniqueArray = [...new Set(mergedArray)];
-      const selectedDeviceId = this.reportForm.value.device;
+      const selectedDeviceId = this.reportForm.value.device.id;
       const Pois = this.poisList;
-      const selectedPois = uniqueArray;
+      const selectedPois = this.poisList.filter((data: any) => this.reportForm.value.pois.includes(data.poi_id));
+      // const selectedPois = this.reportForm.value.pois;
       const title = this.reportForm.value.title;
       const period = this.reportForm.value.period;
       const dateFrom = this.reportForm.value.dateFrom;
@@ -262,7 +220,6 @@ export class ReportsComponent {
       const dateTo = this.reportForm.value.dateTo;
       const toTime = this.reportForm.value.toTime;
       const distanceTolerance = this.reportForm.value.distanceTolerance;
-      // const type = this.reportForm.value.type;
       const requestData = {
         title: title,
         period: period,
@@ -272,8 +229,10 @@ export class ReportsComponent {
         from_time: fromTime,
         date_to: dateTo,
         to_time: toTime,
-        distance_tolerance:distanceTolerance,
-        // type:type
+        distance_tolerance: distanceTolerance,
+        language: localStorage.getItem('user_language'),
+        selectedDeviceNames: this.reportForm.value.device ? [this.reportForm.value.device.name] : [],
+
       };
       this.spinner.show();
       this.api.generateRepots(requestData).subscribe({
@@ -309,40 +268,6 @@ export class ReportsComponent {
     this.reportForm.get('device').setValue(this.selectedDeviceIds);
   }
 
-  toggleSelectAll() {
-    if (this.isAllSelected()) {
-      this.deselectAllDevices();
-    } else {
-      this.selectAllDevices();
-    }
-  }
-
-  isAllSelected(): boolean {
-    return this.selectedDeviceIds?.length === this.devices?.length;
-  }
-
-  selectAllPois() {
-    this.selectedPoiIds = this.poisList.map(poi => poi.poi_id);
-    this.reportForm.get('pois').setValue(this.selectedPoiIds);
-  }
-
-  deselectAllPois() {
-    this.selectedPoiIds = [];
-    this.reportForm.get('pois').setValue([]);
-  }
-
-  toggleSelectAllPois() {
-    if (this.isAllSelectedPois()) {
-      this.deselectAllPois();
-    } else {
-      this.selectAllPois();
-    }
-  }
-
-  isAllSelectedPois(): boolean {
-    return this.selectedPoiIds?.length === this.poisList?.length;
-  }
-
   private formatDateWithoutTime(date: Date): string {
     const localDate = new Date(date);
     localDate.setHours(0, 0, 0, 0);
@@ -352,35 +277,32 @@ export class ReportsComponent {
     return `${yyyy}-${mm}-${dd}`;
   }
 
-   getTypes(){
-    this.spinner.show();
-    this.api.getTypes().subscribe({
-      next: (response: any) => {
-        this.spinner.hide();
-        if (response && response.status) {
-          this.types_options = response.data;
-        }
-      },
-      error: (err) => {
-        this.spinner.hide();
-        console.error(err);
+  selectPoi(event) {
+    if (event.value === null) {
+      this.reportForm.get('pois').reset();
+    } else {
+      const poi_id = event.value?.assigned_pois.map(data => data.poi_id);
+      if (poi_id && poi_id.length > 0) {
+        const filteredPois = this.poisList.filter(poi => poi_id.includes(poi.id));
+        const poiIds = filteredPois.map(poi => poi.poi_id);
+        this.reportForm.get('pois').setValue(poiIds);
+
       }
-    });
-   }
-   selectPoi(event){
-    this.reportForm.get('filter_by_server_group').reset();
-    var poi_id = event.value?.assigned_pois.map(data=> data.poi_id);
-    if(poi_id && poi_id.length > 0){
-      const filteredPois = this.poisList.filter(poi => poi_id.includes(poi.id));
-      const poiIds = filteredPois.map(poi => poi.poi_id);
-      this.reportForm.get('pois').setValue(poiIds);
     }
   }
-  selectPoiServer(event){
-    this.reportForm.get('filter_by_group').reset();
-    const filteredPois = this.poisList.filter(poi => poi.group_id == event.value);
-    const poiIds = filteredPois.map(poi => poi.poi_id);
-    this.reportForm.get('pois').setValue(poiIds);
-  }
-}
 
+  selectAll() {
+    const pois = this.poisList.map(p => p.poi_id);
+    this.reportForm.controls['pois'].setValue(pois);
+  }
+  
+  deselectAll() {
+    this.reportForm.controls['pois'].reset();
+  }
+
+  filterNonNumeric(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/\D/g, '');
+  }
+
+}

@@ -157,10 +157,11 @@ class SalesController extends Controller
         $token = $sales->createToken('sales_token')->plainTextToken;
         $sales->remember_token = $token;
         $sales->save();
+        $sales->token=$token;
         return response()->json([
             'status' => true,
             'message' => 'Login successful!',
-            'token' => $token,
+            'token' => $sales,
 
         ], 200);
     }
@@ -336,61 +337,6 @@ class SalesController extends Controller
         return response()->json([
             'status' => true,
             'data' => $data,
-        ], 200);
-    }
-
-
-    public function poiswithGroups(Request $request)
-    {
-
-        $user = auth()->user();
-        if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'User is not authenticated.',
-            ], 401);
-        }
-        $user = User::with('server')->find($user->id);
-
-        $masterPortsResponse = Http::get($user->server->server_url . '/api/pois_groups', [
-            'lang' => 'en',
-            'user_api_hash' => $user->api_key,
-        ]);
-
-        $getPoisGroups = $masterPortsResponse->json() ?? [];
-
-        if (isset($getPoisGroups['pagination'])) {
-            unset($getPoisGroups['pagination']);
-        }
-
-        $groups = [];
-
-        // Iterate over the POI groups
-        foreach ($getPoisGroups as $index => $group) {
-            // Create a group structure
-            $groupStructure = [
-                'label' => $group['title'],
-                'data' => $group['id'],
-                'type' => "group",
-                'children' => [],
-            ];
-
-            // Fetch POIs from the database with matching server_id
-            $pois = Poi::where('group_id', $group['id'])->whereNull('deleted_at')->get();
-
-            // Iterate through POIs to add them as children
-            foreach ($pois as $poi) {
-                $groupStructure['children'][] = [
-                    'label' => $poi->name,
-                    'data' => $poi->poi_id,
-                    'type' => "poi"
-                ];
-            }
-            $groups[] = $groupStructure;
-        }
-        return response()->json([
-            'status' => true,
-            'data' => $groups,
         ], 200);
     }
 }

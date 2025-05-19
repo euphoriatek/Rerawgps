@@ -22,3 +22,46 @@
     }
   
   }
+  ::ng-deep .select-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  ::ng-deep .select-actions mat-option {
+    flex: 1;
+    max-width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  ::ng-deep{
+    mat-form-field.search-field{
+      height: 42px;
+    .mat-mdc-text-field-wrapper{
+    background: #efefef;
+    padding: 10px
+  }
+  mat-icon{
+    padding: 0px!important;
+  }
+ 
+}
+
+}
+
+.selectinput .btn-link {
+  background: #ffffff;
+  border-radius: 0px;
+  color: #000000;
+  padding: 11px;
+  font-weight: 500;
+  transition: 0.5s;
+  border-right: solid 1px #dfdfdf;
+}
+.selectinput .btn-link:last-child{
+  border-right:0px;
+}
+.selectinput  .btn-link:hover {
+  background: #f1f1f1;
+  text-decoration: none;
+}

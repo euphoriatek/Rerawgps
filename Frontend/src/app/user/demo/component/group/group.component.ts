@@ -11,8 +11,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Table } from 'primeng/table';
 import { ApiService } from 'src/app/user/services/api.service';
 import { Title } from '@angular/platform-browser';
-import { json } from 'stream/consumers';
-
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
@@ -26,6 +24,11 @@ export class GroupComponent implements OnInit {
   visible: boolean = false;
   pois_options: any[];
   userId: any;
+  allSelected = false;
+  poiFilter: string = '';
+
+
+searchQuery: string = '';
   @ViewChild('dt') dt: Table | undefined;
   constructor(
     public route: Router,
@@ -45,7 +48,7 @@ export class GroupComponent implements OnInit {
     this.groupForm = this.fb.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      pois_id: ['', [Validators.required]],
+      pois_id: [[], [Validators.required]],
     });
 
     this.groupEditForm = this.fb.group({
@@ -57,7 +60,7 @@ export class GroupComponent implements OnInit {
 
     this.getPois();
   }
-
+  
   addGroup(): void {
     if (this.groupForm.invalid) {
       this.groupForm.markAllAsTouched();
@@ -99,6 +102,9 @@ export class GroupComponent implements OnInit {
   }
   closeForm() {
     this.showgroup = false;
+  }
+  onSearchPOIs(query: string): void {
+    this.searchQuery = query;
   }
 
   // getGroups(): void {
@@ -246,4 +252,23 @@ export class GroupComponent implements OnInit {
       }
     });
   }
+
+  selectAll() {
+    const pois = this.pois_options.map(p => p.id);
+    this.groupForm.controls['pois_id'].setValue(pois);
+  }
+  
+  deselectAll() {
+    this.groupForm.controls['pois_id'].reset();
+  }
+
+  selectAllEdit() {
+    const pois = this.pois_options.map(p => p.id);
+    this.groupEditForm.controls['pois_id'].setValue(pois);
+  }
+  
+  deselectAllEdit() {
+    this.groupEditForm.controls['pois_id'].reset();
+  }
+  
 }

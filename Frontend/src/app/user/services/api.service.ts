@@ -92,12 +92,4 @@ export class ApiService {
   getGroupOptions() {
     return this.http.get(this.BaseUrl + 'get-group-options');
   }
-
-  getServerGroupPois(){
-    return this.http.get(this.BaseUrl + 'get-server-group-pois');
-  }
-
-  getGroupPois() {
-    return this.http.get(this.BaseUrl + 'get-group-pois');
-  }
 }

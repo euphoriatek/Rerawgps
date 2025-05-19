@@ -1527,14 +1527,15 @@
             height: 49px;
             border-top: 1px solid #cecccd
         }
-
-        .reports header .report-logo {
+          .reports header .report-logo {
             width: 171px;
             height: 40px
+            text-align: left;
         }
 
         .reports header .report-logo img {
-            max-width: 100%
+          max-width: 64px;
+          margin-top: -19px;
         }
 
         .reports header .report-curve {
@@ -1865,7 +1866,7 @@
             <div class="panel-heading">
             <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format(format: 'd-m-Y') ?? 'N/A' }} {{ $from_time}} - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }} {{ $to_time}}</span> </div>
                 <div class="report-bars"></div>
-                Report type: POI - Stop duration
+                Report type: {{ __('pdf.visiting_pois') }}
             </div>
             <div class="panel-body">
                 <table class="table">
