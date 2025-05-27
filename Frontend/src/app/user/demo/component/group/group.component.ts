@@ -44,7 +44,7 @@ searchQuery: string = '';
   ) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle('xyz');
+    // this.titleService.setTitle('xyz');
     this.groupForm = this.fb.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],

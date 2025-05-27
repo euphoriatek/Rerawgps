@@ -47,7 +47,7 @@ export class RegayKarPlanComponent {
   ) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle('xyz');
+    // this.titleService.setTitle('xyz');
     this.today = new Date();
     this.planForm = this.fb.group({
       groups_id: ['', [Validators.required]],

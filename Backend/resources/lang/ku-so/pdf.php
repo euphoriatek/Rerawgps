@@ -1,4 +1,4 @@
 <?php 
 return [
-    'visiting_pois' => 'نادرەس  خاڵە گرنگەکان',
+    'visiting_pois' => 'سەردانی خاڵە گرنگەکان',
 ];

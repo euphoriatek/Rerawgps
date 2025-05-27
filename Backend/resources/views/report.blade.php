@@ -1534,8 +1534,8 @@
         }
 
         .reports header .report-logo img {
-          max-width: 64px;
-          margin-top: -19px;
+              max-width: 167px;
+              margin-top: -6px;
         }
 
         .reports header .report-curve {
@@ -1854,7 +1854,7 @@
             <div class="header-left">
                 <div class="report-wrap">
                     <div class="report-logo" style="background: none;">
-                        <img src="{{ url('images/regayKar-logo.png') }}" class="logo" alt="Logo">
+                        <img src="{{ url('images/regaykarorangeReport.png') }}" class="logo" alt="Logo">
                     </div>
                 </div>
                 <div class="report-curve"></div>
