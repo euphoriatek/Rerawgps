@@ -48,6 +48,8 @@ export class NavigationComponent implements OnInit {
       next: (response: any) => {
         if (response.status && response.pending_pois_count > 0) {
           this.pendingPoisCount = response.pending_pois_count;
+          console.log(this.pendingPoisCount);
+          
           document.getElementById("pending_request").classList.add("pending_request");
           document.getElementById("pending_request").innerHTML = this.pendingPoisCount;
         }

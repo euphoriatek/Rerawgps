@@ -1527,15 +1527,15 @@
             height: 49px;
             border-top: 1px solid #cecccd
         }
-          .reports header .report-logo {
+
+        .reports header .report-logo {
             width: 171px;
-            height: 40px
-            text-align: left;
+            height: 40px text-align: left;
         }
 
         .reports header .report-logo img {
-              max-width: 167px;
-              margin-top: -6px;
+            max-width: 167px;
+            margin-top: -6px;
         }
 
         .reports header .report-curve {
@@ -1864,7 +1864,9 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-            <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format(format: 'd-m-Y') ?? 'N/A' }} {{ $from_time}} - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }} {{ $to_time}}</span> </div>
+                <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format(format: 'd-m-Y') ?? 'N/A' }}
+                        {{ $from_time}} - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }}
+                        {{ $to_time}}</span> </div>
                 <div class="report-bars"></div>
                 Report type: {{ __('pdf.visiting_pois') }}
             </div>
@@ -1933,19 +1935,19 @@
                             </thead>
                             <tbody>
                                 @forelse($unvisited_poi as $poi)
-                                                            <tr>
-                                                                <td>{{ $poi['name'] ?? '' }}</td>
-                                                                <td>
-                                                                    @if(isset($poi['coordinates']))
-                                                                                                        @php
-                                                                                                            $coordinates = json_decode($poi['coordinates']);
-                                                                                                        @endphp
-                                                                                                        {{ $coordinates->lat ?? '' }}, {{ $coordinates->lng ?? '' }}
-                                                                    @else
-                                                                        N/A
-                                                                    @endif
-                                                                </td>
-                                                            </tr>
+                                    <tr>
+                                        <td>{{ $poi['name'] ?? '' }}</td>
+                                        <td>
+                                            @if(isset($poi['coordinates']))
+                                                @php
+                                                    $coordinates = json_decode($poi['coordinates']);
+                                                @endphp
+                                                {{ $coordinates->lat ?? '' }}, {{ $coordinates->lng ?? '' }}
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @empty
                                     <tr>
                                         <td colspan="2" class="text-center">No unvisited records</td>

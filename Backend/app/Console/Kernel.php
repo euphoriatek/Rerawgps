@@ -9,6 +9,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\UpdatePlans::class,
         \App\Console\Commands\ClearHistoryRecords::class,
+        \App\Console\Commands\SyncPoisDaily::class,
     ];
 
     /**
@@ -25,6 +26,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('history-records')
         ->everyMinute()
         ->sendOutputTo(storage_path('logs/command_output.log'));
+
+        $schedule->command('sync:pois')->dailyAt('00:00')
+          ->sendOutputTo(storage_path('logs/synch_pois.log'));
     }
 
     /**

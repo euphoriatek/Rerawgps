@@ -23,7 +23,7 @@ class HistoryController extends Controller
                     'message' => 'User is not authenticated.',
                 ], 401);
             }
-            $history = History::with(['group', 'salesAgent'])
+            $history = History::with(['group', 'salesAgent'])->where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
                 ->get()
                 ->map(function ($item) {
@@ -101,7 +101,7 @@ class HistoryController extends Controller
             ], 400);
         }
         $language = $input['language'] ?? 'en';
-        \App::setLocale($language); 
+        \App::setLocale($language);
         $visit_poi = [];
         $unvisited_poi = [];
         $user = User::with('server')->find($user->id);
@@ -118,7 +118,6 @@ class HistoryController extends Controller
                 'devices' => $input['devices'],
                 'stop_duration' => 4,
                 'distance_tolerance' => 20,
-                // 'distance_tolerance' => $input['distance_tolerance'],
                 'pois' => [$poi['poi_id']]
             ];
 
@@ -166,7 +165,7 @@ class HistoryController extends Controller
             ], 401);
         }
         $input = $request->all();
-    
+
         $validator = Validator::make($input, [
             'devices' => 'required|array',
             'pois' => 'required|array',
@@ -180,7 +179,7 @@ class HistoryController extends Controller
             ], 400);
         }
         $language = $input['language'] ?? 'en';
-        \App::setLocale($language); 
+        \App::setLocale($language);
         $visit_poi = [];
         $unvisited_poi = [];
         $user = User::with('server')->find($user->id);
@@ -200,7 +199,7 @@ class HistoryController extends Controller
         //     'distance_tolerance' => $input['distance_tolerance'],
         //     'pois' => $input['pois']
         // ];
-      
+
         // $apiEndPoint = $user->server->server_url . '/api/generate_report?lang=en&user_api_hash=' . $user->api_key . '&generate=1';
         // $response = Http::withHeaders([
         //     'Accept' => 'application/json',
@@ -221,8 +220,8 @@ class HistoryController extends Controller
                 'format' => 'json',
                 'devices' => $input['devices'],
                 'stop_duration' => $input['stop_duration'] ?? 4,
-                'distance_tolerance' => 20,
-                // 'distance_tolerance' => $input['distance_tolerance'],
+                // 'distance_tolerance' => 20,
+                'distance_tolerance' => $input['distance_tolerance'],
                 'pois' => [$poi['poi_id']]
             ];
 
@@ -255,7 +254,7 @@ class HistoryController extends Controller
         }
         // echo "<pre>";
         // print_r($reports);exit;
-        $htmlContent = view('report', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
+        $htmlContent = view('reports', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
         // $htmlContent = view('reports', ['data' => $reports['items'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
         return response()->json([
             'status' => true,
@@ -275,13 +274,13 @@ class HistoryController extends Controller
                 ], 401);
             }
             $user = User::with('server')->find($user->id);
-         
+
             $masterPortsResponse = Http::get($user->server->server_url . '/api/get_reports_types', [
                 'lang' => 'en',
                 'user_api_hash' => $user->api_key,
             ]);
             $data = $masterPortsResponse->json();
-            $dataType = collect($data['items'])->map(function($item) {
+            $dataType = collect($data['items'])->map(function ($item) {
                 return [
                     'type' => $item['type'],
                     'name' => $item['name'],
@@ -298,5 +297,5 @@ class HistoryController extends Controller
             ], 500);
         }
     }
-  
+
 }

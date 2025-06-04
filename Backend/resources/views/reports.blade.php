@@ -1534,7 +1534,7 @@
         }
 
         .reports header .report-logo img {
-             max-width: 167px;
+            max-width: 167px;
             margin-top: -6px;
         }
 
@@ -1861,70 +1861,117 @@
             </div>
             <div class="header-right"></div>
         </header>
-        @foreach($data as $report_data)
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format('d-m-Y') ?? 'N/A' }}
-                            {{ $from_time}} - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }}
-                            {{ $to_time}}</span> </div>
-                    <div class="report-bars"></div>
-                    Report type: {{ __('pdf.visiting_pois') }}
-                </div>
-                <div class="panel-body">
-                    <table class="table">
-                        <tbody>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="pull-right"><span>{{ \Carbon\Carbon::parse($date_from)->format(format: 'd-m-Y') ?? 'N/A' }}
+                        {{ $from_time}} - {{ \Carbon\Carbon::parse($date_to)->format('d-m-Y') ?? 'N/A' }}
+                        {{ $to_time}}</span> </div>
+                <div class="report-bars"></div>
+                Report type: {{ __('pdf.visiting_pois') }}
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tbody>
+                        @foreach ($selectedDeviceNames as $deviceName)
                             <tr>
                                 <td>Device:</td>
-                                <td>{{ $report_data['meta']['device.name']['value'] }}</td>
+                                <td>{{ $deviceName }}</td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="tab-container">
-                    <div class="visited-poi">
-                        <div class="panel-body no-padding">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Start</th>
-                                        <th>End</th>
-                                        <th>Duration</th>
-                                        <th>Engine idle</th>
-                                        <th>Near</th>
-                                        <th>Stop position</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (isset($report_data['table']) && !empty($report_data['table']['rows']))
-                                        @forelse($report_data['table']['rows'] as $poi)
-                                            <tr>
-                                                <td>{{ \Carbon\Carbon::parse($poi['start_at'] ?? '')->format('d-m-Y H:i:s') }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($poi['end_at'] ?? '')->format('d-m-Y H:i:s') }}</td>
-                                                <td>{{ $poi['duration'] }}</td>
-                                                <td>{{ $poi['engine_idle'] }}</td>
-                                                <td>{{ $poi['near'] }}</td>
-                                                <td>{!! $poi['location'] !!}</td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center">No POI data available.</td>
-                                            </tr>
-                                        @endforelse
-                                    @else
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-container">
+                <!-- Start of visited POI section -->
+                <div class="visited-poi">
+                    <h3>Visited POI's: {{ count($visit_poi) }}</h3>
+                    <div class="panel-body no-padding">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Duration</th>
+                                    <th>Engine idle</th>
+                                    <th>Near</th>
+                                    <th>Stop position</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($visit_poi as $poi)
+                                    @foreach($poi['row'] as $row)
                                         <tr>
-                                            <td colspan="6" class="text-center">No POI data available.</td>
+                                            <td>{{ \Carbon\Carbon::parse($row['start_at'])->format('d-m-Y H:i:s') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($row['end_at'])->format('d-m-Y H:i:s') }}</td>
+                                            <td>{{ $row['duration'] }}</td>
+                                            <td>{{ $row['engine_idle'] }}</td>
+                                            <td>{{ $row['near'] }}</td>
+                                            <td>{!! $row['location'] !!}</td>
                                         </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
+                                    @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">No Any visited POI's Records</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Start of unvisited POI section -->
+                <div class="unvisited-poi">
+                    <h3>Unvisited POI's : {{ count($unvisited_poi) }}</h3>
+                    <div class="panel-body no-padding">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Coordinates</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($unvisited_poi as $poi)
+                                    <tr>
+                                        <td>{{ $poi['name'] ?? '' }}</td>
+                                        <td>
+                                            @if(isset($poi['coordinates']))
+                                                @php
+                                                    $coordinates = json_decode($poi['coordinates']);
+                                                @endphp
+                                                {{ $coordinates->lat ?? '' }}, {{ $coordinates->lng ?? '' }}
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="2" class="text-center">No unvisited records</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        @endforeach
+        </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.tab-a').click(function () {
+                $(".tab").removeClass('tab-active');
+                $(".tab[data-id='" + $(this).attr('data-id') + "']").addClass("tab-active");
+                $(".tab-a").removeClass('active-a');
+                $(this).parent().find(".tab-a").addClass('active-a');
+            });
+        }); 
+    </script>
 </body>
 
 </html>

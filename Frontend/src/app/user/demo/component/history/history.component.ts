@@ -5,7 +5,8 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ApiService } from 'src/app/user/services/api.service';
 import { DatashareService } from 'src/app/user/services/datashare.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Renderer2 } from '@angular/core'
+import { Renderer2 } from '@angular/core';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
@@ -24,7 +25,7 @@ export class HistoryComponent implements OnInit {
   selectedDeviceNames: string[] = [];
   devices: { label: string, value: string }[] = [];
   deviceForm = new FormGroup({
-  device: new FormControl([])
+    device: new FormControl([])
   });
 
   @ViewChild('dt') dt: Table | undefined;
@@ -55,6 +56,8 @@ export class HistoryComponent implements OnInit {
       next: (response: any) => {
         if (response && response.status) {
           this.historyData = response.data.history || [];
+          console.log(this.historyData);
+
           if (this.pois_options && this.pois_options.length > 0) {
             this.historyData.forEach((data: any) => {
               if (data.pois_id) {
@@ -63,7 +66,7 @@ export class HistoryComponent implements OnInit {
                   data.pois = poiIds.map((poiId: number) => {
                     const poi = this.pois_options.find(p => p.id === poiId);
                     return poi ? poi.name : '';
-                  }).join(', ')
+                  }).join(', ');
                 } catch (error) {
                   console.error('Error parsing pois_id:', error);
                 }
@@ -119,41 +122,41 @@ export class HistoryComponent implements OnInit {
     });
   }
 
-  generateReport(data:any){
+  generateReport(data: any) {
     this.submitForm(data);
   }
 
-  submitForm(data:any) {
-      const requestData = {
-        date_from: data.activation_date,
-        date_to: data.activation_date,
-        devices: data.device_id ? [data.device_id] : [],
-        pois: data.pois,
-        selectedDeviceNames: data.device_name ? [data.device_name] : [],
-        language: localStorage.getItem('user_language')
-      };
-      this.spinner.show();
-      this.api.getRepots(requestData).subscribe({
-        next: (response: any) => {
-          if (response && response.status) {
-            const date = new Date();
-            let time = date.getTime();
-            var blob = new Blob([response.data], {type: "text/plain"});
-            var url = window.URL.createObjectURL(blob);
-            var a = document.createElement("a");
-            a.href = url;
-            a.download = 'report_'+time+'.html';
-            a.click();
-          }
-          this.spinner.hide();
-        },
-        error: (err) => {
-          console.error('Error fetching report:', err);
-          this.spinner.hide();
+  submitForm(data: any) {
+    const requestData = {
+      date_from: data.activation_date,
+      date_to: data.activation_date,
+      devices: data.device_id ? [data.device_id] : [],
+      pois: data.pois,
+      selectedDeviceNames: data.device_name ? [data.device_name] : [],
+      language: localStorage.getItem('user_language')
+    };
+    this.spinner.show();
+    this.api.getRepots(requestData).subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          const date = new Date();
+          let time = date.getTime();
+          var blob = new Blob([response.data], { type: "text/plain" });
+          var url = window.URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = 'report_' + time + '.html';
+          a.click();
         }
-      });
+        this.spinner.hide();
+      },
+      error: (err) => {
+        console.error('Error fetching report:', err);
+        this.spinner.hide();
+      }
+    });
   }
-  
+
   openDialog() {
     this.dialogVisible = true;
   }
@@ -182,4 +185,34 @@ export class HistoryComponent implements OnInit {
       }
     });
   }
+
+  downloadReport(reportPath: string) {
+    this.spinner.show();
+    const fullUrl = environment.apiBaseUrl + '/storage/' + reportPath;
+   // const fullUrl = environment.apiBaseUrl + '/storage/app/public/' + reportPath;
+    fetch(fullUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not OK');
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = reportPath.split('/').pop() || 'report.html';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.error('Download failed:', error);
+      })
+      .finally(() => {
+        this.spinner.hide();
+      });
+  }
+
 }

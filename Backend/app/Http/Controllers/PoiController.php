@@ -272,8 +272,8 @@ class PoiController extends Controller
             }
             foreach($allPois as $poi) {
                 if (!in_array($poi->poi_id, $existingPoiIds)) {
-                    $poi->deleted_at = now();
-                    $poi->save();
+                    $poi->delete();
+                    AssignedPoi::where('poi_id', $poi->id)->delete();
                 }
             }
             return response()->json([
@@ -389,5 +389,88 @@ class PoiController extends Controller
             'message' => 'Poi records fetched successfully!',
             'data' => $Poi,
         ], 200);
+    }
+
+    public function syncPois()
+    {
+        try {
+            $users = User::with('server')->where('role', 'user')->get();
+            foreach($users as $user){
+                $masterPortsResponse = Http::get($user->server->server_url . '/api/get_user_map_icons', [
+                    'lang' => 'en',
+                    'user_api_hash' => $user->api_key,
+                ]);
+                $mapIcons = $masterPortsResponse->json()['items']['mapIcons'] ?? [];
+                $groupResponse = Http::get($user->server->server_url . '/api/pois_groups', [
+                    'lang' => 'en',
+                    'user_api_hash' => $user->api_key,
+                ]);
+                $groups = $groupResponse->json() ?? [];
+                $allPois = Poi::where('regaykar_user_id', $user->id)->get();
+                $existingPoiIds = [];
+                foreach ($mapIcons as $mapIcon) {
+                    $group_id = isset($mapIcon['group_id']) ? $mapIcon['group_id'] : 0;
+                    $groupTitle = null;
+                    foreach ($groups as $group) {
+                        if (isset($group['id']) && $group['id'] == $group_id) {
+                            $groupTitle = $group['title'];
+                            break;
+                        }
+                    }
+                    if (!isset($mapIcon['id'])) {
+                        continue;
+                    }
+                    $existingPoi = Poi::where('poi_id',$mapIcon['id'])->first();
+                    $existingPoiIds[] = $mapIcon['id'];
+                    if ($existingPoi) {
+                        if ($existingPoi['updated_at'] != $mapIcon['updated_at']) {
+                            $data = [
+                                'poi_id' => $mapIcon['id'],
+                                'regaykar_user_id' => $user->id,
+                                'map_icon_id' => $mapIcon['map_icon_id'],
+                                'group_id' => $group_id,
+                                'group_name' => $groupTitle,
+                                'name' => $mapIcon['name'],
+                                'description' => $mapIcon['description'],
+                                'coordinates' => $mapIcon['coordinates'],
+                                'active' => $mapIcon['active'],
+                                'created_at' => $mapIcon['created_at'],
+                                'updated_at' => $mapIcon['updated_at'],
+                            ];
+                            $existingPoi->update($data);
+                        }
+                    } else {
+                        Poi::create([
+                            'poi_id' => $mapIcon['id'],
+                            'regaykar_user_id' => $user->id,
+                            'map_icon_id' => $mapIcon['map_icon_id'],
+                            'group_id' => $group_id,
+                            'group_name' => $groupTitle,
+                            'name' => $mapIcon['name'],
+                            'description' => $mapIcon['description'],
+                            'coordinates' => $mapIcon['coordinates'],
+                            'active' => $mapIcon['active'],
+                            'status' => 'approved',
+                            'created_at' => $mapIcon['created_at'],
+                            'updated_at' => $mapIcon['updated_at'],
+                        ]);
+                    }
+                }
+                foreach($allPois as $poi) {
+                    if (!in_array($poi->poi_id, $existingPoiIds)) {
+                        $poi->delete();
+                        AssignedPoi::where('poi_id', $poi->id)->delete();
+                    }
+                }
+            }
+            return response()->json([
+                'status' => true,
+                'message' => 'Data sync successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while fetching POIs: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

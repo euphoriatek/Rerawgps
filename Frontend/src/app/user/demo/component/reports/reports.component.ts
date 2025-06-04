@@ -281,12 +281,13 @@ export class ReportsComponent {
     if (event.value === null) {
       this.reportForm.get('pois').reset();
     } else {
-      const poi_id = event.value?.assigned_pois.map(data => data.poi_id);
+      // const poi_id = event.value?.assigned_pois.map(data => data.poi_id);
+      const poi_id = event.value?.assigned_pois.map(data => Number(data.poi_id));
+    
       if (poi_id && poi_id.length > 0) {
         const filteredPois = this.poisList.filter(poi => poi_id.includes(poi.id));
         const poiIds = filteredPois.map(poi => poi.poi_id);
         this.reportForm.get('pois').setValue(poiIds);
-
       }
     }
   }

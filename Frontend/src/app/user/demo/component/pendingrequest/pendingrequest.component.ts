@@ -105,15 +105,10 @@ export class PendingRequestComponent {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         const data = { poi_id: id, status: action };
-        console.log(data);
-
         this.spinner.show();
         this.api.updatePoiStatus(data).subscribe({
           next: (response: any) => {
-            console.log(response);
-
             if (response.status) {
-
               this.loadPendingPois();
               this.toaster.success(this.translate.instant(actionText), this.translate.instant('poi'));
             } else {
@@ -225,6 +220,7 @@ export class PendingRequestComponent {
     });
   }
   getGroups(): void {
+    this.spinner.show();
     this.api.getGroupList().subscribe({
       next: (response: any) => {
         if (response && response.status) {

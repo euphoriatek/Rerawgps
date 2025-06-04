@@ -19,7 +19,10 @@ class History extends Model
         'plan_id',
         'activation_date',
         'device_id',
-        'device_name'
+        'device_name',
+        'visited_count',
+        'unvisited_count',
+        'report_path'
     ];
     public function pois()
     {

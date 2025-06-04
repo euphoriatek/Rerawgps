@@ -27,6 +27,10 @@
             placeholder="{{'filter_by_group' | translate}}"
             [showClear]="true">
           </p-dropdown>
+                <!-- 🔁 Sync Button -->
+          <button class="btn orange-btn ms-2" (click)="syncData()">
+            <i class="ti ti-refresh"></i> {{ 'sync_now' | translate }}
+          </button>
           </div>
       </div>
   </ng-template>

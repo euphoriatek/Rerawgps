@@ -1,7 +1,7 @@
 <p-table #dt [value]="historyData" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="25"
    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries " [filterDelay]="0"
-   [globalFilterFields]="['group.name','sales_agent.name','pois','activation_date']">
+   [globalFilterFields]="['group.name','sales_agent.name','pois','activation_date','unvisited_count',]">
    <ng-template pTemplate="caption">
       <div class="table-header mb-4">
          <h3>{{ 'history_list' | translate}}</h3>
@@ -25,7 +25,7 @@
             <p-sortIcon field="sales_agent.name"></p-sortIcon>
          </th>
          <th pSortableColumn="pois">
-            {{ "pois" | translate }}
+            {{ "planed_visiting_pois" | translate }}
             <p-sortIcon field="pois"></p-sortIcon>
          </th>
          <th pSortableColumn="device_name">
@@ -35,6 +35,12 @@
          <th pSortableColumn="activation_date">
             {{ "activation_date" | translate }}
             <p-sortIcon field="activation_date"></p-sortIcon>
+         </th>
+         <th>
+            {{ "unvisited_count" | translate }}
+         </th>
+         <th>
+            {{ "visited_count" | translate }}
          </th>
          <th>{{ "actions" | translate }} </th>
       </tr>
@@ -53,11 +59,17 @@
           </td>
           <td>{{data.device_name}}</td>
          <td>{{data.activation_date | date}}</td>
+           <td>{{data.unvisited_count }}</td>
+             <td>{{data.visited_count }}</td>
          <td>
             <button class="btn editbtn" (click)="ReActivePlan(data)" title="Re-activate plan">
                <i class="fas fa-undo"></i>
              </button>
-            <button class="btn editbtn" (click)="generateReport(data)" title="Generate Report"><i class="fa-solid fa-clipboard"></i></button>
+             <button class="btn editbtn" (click)="downloadReport(data.report_path)" title="Report Link">
+              <i class="fa-solid fa-clipboard"></i>
+             </button>
+
+            <!-- <button class="btn editbtn" (click)="generateReport(data)" title="Generate Report"><i class="fa-solid fa-clipboard"></i></button> -->
          </td>
       </tr>
    </ng-template>

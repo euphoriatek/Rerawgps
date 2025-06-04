@@ -24,7 +24,8 @@ export class POIsComponent implements OnInit {
   ngOnInit(): void {
     this.getGroups();
     this.serverGroups();
-    this.syncData();
+    
+    // this.syncData();
   }
 
   getGroups(): void {
@@ -35,7 +36,7 @@ export class POIsComponent implements OnInit {
           this.groups = response.data;
           console.log(this.groups);
         }
-        this.spinner.hide();
+        // this.spinner.hide();
       },
       error: (err) => {
         this.spinner.hide();
@@ -50,7 +51,8 @@ export class POIsComponent implements OnInit {
         if (response && response.status) {
           this.server_groups = response.data;
         }
-        this.spinner.hide();
+        this.getPois();
+        // this.spinner.hide();
       },
       error: (err) => {
         this.spinner.hide();
@@ -127,4 +129,6 @@ export class POIsComponent implements OnInit {
     var filter = {group_id:group_id};
     this.getPois(filter);
   }
+
+
 }
