@@ -169,7 +169,7 @@ export class POIsComponent implements OnInit {
             this.toaster.success("Add Pois Suceessfully ");
             this.visible = false;
             this.addPoisForm.reset();
-            window.location.reload();
+            this.getPois();
           } else {
             this.spinner.hide();
           }

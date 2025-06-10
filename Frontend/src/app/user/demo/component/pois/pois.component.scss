@@ -172,3 +172,17 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+.refreshbtn {
+    background: #3a434b;
+    padding: 0px;
+    width: 38px;
+    height: 37px;
+    margin-top: 4px;
+    color: #fff;
+    &:hover{
+        background-color: #ff4c04;
+    }
+}
+.addpoibtn{
+padding: 7px 31px;
+}
