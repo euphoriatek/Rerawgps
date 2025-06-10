@@ -30,7 +30,8 @@ class User extends Authenticatable
         'name',
         'created_by',
         'is_active',
-        'history_duration'
+        'history_duration',
+        'code'
     ];
 
     /**

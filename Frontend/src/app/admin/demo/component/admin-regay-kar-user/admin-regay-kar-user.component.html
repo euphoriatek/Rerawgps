@@ -90,6 +90,36 @@
             </div>
           </div>
         </div>
+
+        <!-- Time Duration Fields -->
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="">{{'history_duration' | translate}}</label>
+            <mat-form-field appearance="outline" class="multi-select">
+
+              <mat-select formControlName="history_duration" class="form-control">
+                <mat-option *ngFor="let option of getHistoryDurationOptions()" [value]="option">
+                  {{ option }} {{ "days" | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div
+              *ngIf="UserForm?.get('history_duration')?.hasError('required') && UserForm?.get('history_duration')?.touched">
+              <span class="error-message">{{ "history_duration_required" | translate }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="">{{ 'code' | translate }}</label>
+            <input type="text" class="form-control" formControlName="code" readonly>
+            <div *ngIf="
+                UserForm?.get('code')?.hasError('required') &&
+                UserForm?.get('code')?.touched">
+              <span class="error-message">{{ 'code_required' | translate }}</span>
+            </div>
+          </div>
+        </div>
         <div class="col-lg-12">
           <div class="form-group">
             <div class="d-flex gap-2 from-button">
@@ -163,12 +193,15 @@
       <td>
         <span class="p-column-title">{{ "actions" | translate }}</span>
         <div class="d-flex">
-        <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i class="fa-solid fa-pen"></i></button>
-        <button class="btn viewbtn" title="{{'sales_agents_list' | translate}}" [routerLink]="['/admin/regayuser-view', data.id]"><i
-            class="fa-solid fa-eye"></i></button>
-        <button class="btn deletebtn" (click)="deleteRow(data)" title="Delete"><i class="fa-solid fa-trash"></i></button>
-        <button title="Login with User" class="btn deletebtn" (click)="loginAsUser(data)" title="Login with User" ><i class="fa-solid fa-mask"></i></button>
-      </div>
+          <button class="btn editbtn" (click)="openEditDialog(data)" title="Edit"><i
+              class="fa-solid fa-pen"></i></button>
+          <button class="btn viewbtn" title="{{'sales_agents_list' | translate}}"
+            [routerLink]="['/admin/regayuser-view', data.id]"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn deletebtn" (click)="deleteRow(data)" title="Delete"><i
+              class="fa-solid fa-trash"></i></button>
+          <button title="Login with User" class="btn deletebtn" (click)="loginAsUser(data)" title="Login with User"><i
+              class="fa-solid fa-mask"></i></button>
+        </div>
       </td>
     </tr>
   </ng-template>
@@ -182,94 +215,115 @@
   [modal]="true">
   <form action="" [formGroup]="UserEditForm" (ngSubmit)="EditUser()">
     <div class="row">
-      <div class="col-lg-7">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="">{{ "server" | translate }}</label><br />
-              <mat-form-field appearance="outline" class="multi-select">
-                <!-- <mat-label>Select Server</mat-label> -->
-                <mat-select formControlName="server_id" class="form-control">
-                  <mat-option *ngFor="let option of server_options" [value]="option.server.id">
-                    {{ option.server.server_url }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div
-                *ngIf="UserEditForm?.get('server_id')?.hasError('required') && UserEditForm?.get('server_id')?.touched">
-                <span class="error-message">{{ "server_required" | translate }}</span>
-              </div>
-            </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="">{{ "server" | translate }}</label><br />
+          <mat-form-field appearance="outline" class="multi-select">
+            <!-- <mat-label>Select Server</mat-label> -->
+            <mat-select formControlName="server_id" class="form-control">
+              <mat-option *ngFor="let option of server_options" [value]="option.server.id">
+                {{ option.server.server_url }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="UserEditForm?.get('server_id')?.hasError('required') && UserEditForm?.get('server_id')?.touched">
+            <span class="error-message">{{ "server_required" | translate }}</span>
           </div>
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="username">{{ "username" | translate }}</label>
-              <input type="text" formControlName="username" class="form-control" autocomplete="false" />
-              <div
-                *ngIf="UserEditForm?.get('username')?.hasError('required') && UserEditForm?.get('username')?.touched">
-                <span class="error-message">{{ "username_required" | translate }}</span>
-              </div>
-            </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="username">{{ "username" | translate }}</label>
+          <input type="text" formControlName="username" class="form-control" autocomplete="false" />
+          <div *ngIf="UserEditForm?.get('username')?.hasError('required') && UserEditForm?.get('username')?.touched">
+            <span class="error-message">{{ "username_required" | translate }}</span>
           </div>
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="password">{{ "password" | translate }}</label>
-              <input type="password" formControlName="password" class="form-control" autocomplete="false"
-                placeholder="{{ 'set_new_password' | translate }}" />
-              <div
-                *ngIf="UserEditForm?.get('password')?.hasError('required') && UserEditForm?.get('password')?.touched">
-                <span class="error-message">{{ "password_required" | translate }}</span>
-              </div>
-              <div *ngIf="UserEditForm?.get('password')?.hasError('minlength')">
-                <span class="error-message">{{
-                  "password_length_error" | translate
-                  }}</span>
-              </div>
-              <div *ngIf="UserEditForm?.get('password')?.hasError('pattern')">
-                <span class="error-message">{{
-                  "strong_password_error" | translate
-                  }}</span>
-              </div>
-            </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="password">{{ "password" | translate }}</label>
+          <input type="password" formControlName="password" class="form-control" autocomplete="false"
+            placeholder="{{ 'set_new_password' | translate }}" />
+          <div *ngIf="UserEditForm?.get('password')?.hasError('required') && UserEditForm?.get('password')?.touched">
+            <span class="error-message">{{ "password_required" | translate }}</span>
           </div>
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="mobile_number">{{ "mobile_number" | translate }}</label>
-              <input type="text" formControlName="mobile_number" class="form-control" autocomplete="false" />
-              <div
-                *ngIf="UserEditForm?.get('mobile_number')?.hasError('required') && UserEditForm?.get('mobile_number')?.touched">
-                <span class="error-message">{{ "mobile_required" | translate }}</span>
-              </div>
-              <div *ngIf="
+          <div *ngIf="UserEditForm?.get('password')?.hasError('minlength')">
+            <span class="error-message">{{
+              "password_length_error" | translate
+              }}</span>
+          </div>
+          <div *ngIf="UserEditForm?.get('password')?.hasError('pattern')">
+            <span class="error-message">{{
+              "strong_password_error" | translate
+              }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="mobile_number">{{ "mobile_number" | translate }}</label>
+          <input type="text" formControlName="mobile_number" class="form-control" autocomplete="false" />
+          <div
+            *ngIf="UserEditForm?.get('mobile_number')?.hasError('required') && UserEditForm?.get('mobile_number')?.touched">
+            <span class="error-message">{{ "mobile_required" | translate }}</span>
+          </div>
+          <div *ngIf="
                   UserEditForm?.get('mobile_number')?.hasError('pattern')">
-                <span class="error-message">{{'mobile_length_required' | translate}}</span>
-              </div>
-            </div>
+            <span class="error-message">{{'mobile_length_required' | translate}}</span>
           </div>
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="address">{{ "address" | translate }}</label>
-              <input type="text" formControlName="address" class="form-control" autocomplete="false" />
-              <div *ngIf="UserEditForm?.get('address')?.hasError('required') && UserEditForm?.get('address')?.touched">
-                <span class="error-message">{{ "address_required" | translate }}</span>
-              </div>
-            </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="address">{{ "address" | translate }}</label>
+          <input type="text" formControlName="address" class="form-control" autocomplete="false" />
+          <div *ngIf="UserEditForm?.get('address')?.hasError('required') && UserEditForm?.get('address')?.touched">
+            <span class="error-message">{{ "address_required" | translate }}</span>
           </div>
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="api_key">{{ "api_key" | translate }}</label>
-              <input type="text" formControlName="api_key" class="form-control" autocomplete="false" />
-              <div *ngIf="UserEditForm?.get('api_key')?.hasError('required') && UserEditForm?.get('api_key')?.touched">
-                <span class="error-message">{{ "api_key_required" | translate }}</span>
-              </div>
-            </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="api_key">{{ "api_key" | translate }}</label>
+          <input type="text" formControlName="api_key" class="form-control" autocomplete="false" />
+          <div *ngIf="UserEditForm?.get('api_key')?.hasError('required') && UserEditForm?.get('api_key')?.touched">
+            <span class="error-message">{{ "api_key_required" | translate }}</span>
           </div>
-          <div class="col-lg-12">
-            <div class="form-group">
-              <div class="d-flex gap-2 from-button">
-                <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
-              </div>
-            </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="">{{'history_duration' | translate}}</label>
+          <mat-form-field appearance="outline" class="multi-select">
+            <mat-select formControlName="history_duration" class="form-control">
+              <mat-option *ngFor="let option of getHistoryDurationOptions()" [value]="option">
+                {{ option }} {{ "days" | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div
+            *ngIf="UserEditForm?.get('history_duration')?.hasError('required') && UserEditForm?.get('history_duration')?.touched">
+            <span class="error-message">{{ "history_duration_required" | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="">{{ 'code' | translate }}</label>
+          <input type="text" class="form-control text-uppercase" formControlName="code" maxlength="20"
+            (input)="onCodeInput($event)">
+          <div *ngIf="
+                UserEditForm?.get('code')?.hasError('required') &&
+                UserEditForm?.get('code')?.touched">
+            <span class="error-message">{{ 'code_required' | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <div class="d-flex gap-2 from-button">
+            <input type="submit" class="btn btn-primary" value="{{ 'save' | translate }}">
           </div>
         </div>
       </div>

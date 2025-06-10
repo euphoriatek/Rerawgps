@@ -218,5 +218,11 @@
     "sync_now": "Sync Now",
     "unvisited_count" :"Unvisited Count",
     "visited_count" :"Visited Count",
-    "planed_visiting_pois" :"Planed Visiting POIs"
+    "planed_visiting_pois" :"Planed Visiting POIs",
+    "list_of_server":"List of Servers",
+    "map_icon_id_required":"MapIcon Id Required",
+    "pois_name_required":"POI's Name Required",
+    "map_icon_id":"MapIcon Id",
+    "add_pois":"Add POI's",
+    "code_required":"Code Required"
 }

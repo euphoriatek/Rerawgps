@@ -212,7 +212,8 @@
   "type_required": "النوع مطلوب",
   "type": "النوع",
   "sales_agent_updated_success":"تم تحديث وكيل المبيعات بنجاح!",
-  "visiting_pois": "زيارة النقاط"
+  "visiting_pois": "زيارة النقاط",
+  "list_of_server": "قائمة الخوادم"
 
   }
   

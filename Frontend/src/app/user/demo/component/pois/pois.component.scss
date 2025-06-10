@@ -4,142 +4,171 @@
             margin-left: auto;
         }
     }
-    
+
     .p-progressbar {
         height: .5rem;
         background-color: #D8DADC;
-    
+
         .p-progressbar-value {
             background-color: #607D8B;
         }
     }
-    
+
     .table-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        input.form-control{
-          padding-left: 43px;
-          height: 40px;
+
+        input.form-control {
+            padding-left: 43px;
+            height: 40px;
         }
-        .ti-search{
-          margin-top: -13px;
+
+        .ti-search {
+            margin-top: -13px;
         }
-        h3{
-          font-size: 20px;
-          font-weight: 400;
+
+        h3 {
+            font-size: 20px;
+            font-weight: 400;
         }
     }
-    
+
     .p-calendar .p-datepicker {
         min-width: 25rem;
-    
+
         td {
             font-weight: 400;
         }
     }
-    
+
     .p-datatable.p-datatable-customers {
         .p-datatable-header {
-          padding: 0;
-          text-align: left;
-          font-size: 1.5rem;
-          background: #cf242400;
-          border: none;
+            padding: 0;
+            text-align: left;
+            font-size: 1.5rem;
+            background: #cf242400;
+            border: none;
         }
-    
+
         .p-paginator {
             padding: 1rem;
         }
-    
-        .p-datatable-thead > tr > th {
-          text-align: left;
-          font-weight: 400;
-          font-size: 14px;
-          font-family: "Poppins", serif;
-          background: #ebf0fb;
+
+        .p-datatable-thead>tr>th {
+            text-align: left;
+            font-weight: 400;
+            font-size: 14px;
+            font-family: "Poppins", serif;
+            background: #ebf0fb;
         }
-    
-        .p-datatable-tbody > tr > td {
+
+        .p-datatable-tbody>tr>td {
             cursor: auto;
             padding: 0.5rem 1rem;
             font-size: 14px;
         }
-    
+
         // .p-dropdown-label:not(.p-placeholder) {
         //     text-transform: uppercase;
         // }
     }
-    
+
     /* Responsive */
-    .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
+    .p-datatable-customers .p-datatable-tbody>tr>td .p-column-title {
         display: none;
     }
-  }
-  ::ng-deep {
+}
+
+::ng-deep {
     .filterwithSearch {
         display: flex;
         justify-content: flex-end;
         flex-wrap: wrap;
     }
+
     .filterwithSearch input {
         padding-left: 43px;
         height: 40px;
         font-size: 13px;
     }
+
     .filterwithSearch .p-input-icon-left .ti-search {
         font-size: 20px;
         top: 18px;
     }
+
     .filterwithSearch .p-dropdown.p-dropdown-clearable .p-dropdown-label {
         font-size: 12px;
         color: #fff;
         padding-right: 27px;
     }
-    .filterwithSearch p-dropdown{
+
+    .filterwithSearch p-dropdown {
         display: flex;
     }
-    .filterwithSearch .filter-group{
+
+    .filterwithSearch .filter-group {
         margin-left: 15px;
     }
+
     .filterwithSearch .filter-group .p-dropdown {
         border-radius: 8px;
     }
+
     .filterwithSearch .p-dropdown .p-dropdown-clear-icon,
-    .filterwithSearch .p-dropdown .p-dropdown-trigger{
-      color:#fff;
+    .filterwithSearch .p-dropdown .p-dropdown-trigger {
+        color: #fff;
     }
+
     .filterwithSearch .p-dropdown .p-dropdown-label {
         padding: 10px;
     }
+
     .filterwithSearch .p-dropdown {
         background: #3A434B;
         border: 1px solid #3A434B;
         transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
         border-radius: 0 8px 8px 0px;
     }
+
     .filterwithSearch input {
         background: #fff;
         border-radius: 8px 0 0 8px;
         border: solid 1px #D3DBEB;
         border-right: none;
     }
+
     .filterwithSearch .p-dropdown-items {
         padding: 0px;
         font-size: 13px;
         margin-bottom: 0;
     }
+
     .filterwithSearch .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
         padding: 0.6rem 0.8rem;
         font-size: 12px;
         background: #fff;
     }
-  }
-  .orange-btn{
-  background-color: #ff4c04;
-  color: #fff;
 }
-.orange-btn:hover{
-  background-color: #ec4b0c;
-  color: #fff;
+
+.orange-btn {
+    background-color: #ff4c04;
+    color: #fff;
+    margin-top: 4px;
+}
+
+.orange-btn:hover {
+    background-color: #ec4b0c;
+    color: #fff;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
 }

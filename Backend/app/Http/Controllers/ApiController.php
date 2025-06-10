@@ -126,7 +126,7 @@ class ApiController extends Controller
             'api_key' => $data['api_key'],
             'created_by' => $data['created_by'] ?? null,
             'history_duration' => $data['history_duration'],
-
+            'code' =>$data['code']
         ]);
 
         return $user;
@@ -442,6 +442,7 @@ class ApiController extends Controller
                 'server_id' => 'required|numeric|max:255',
                 // 'history_duration' => 'required|in:30,45,60,90',  
                 'history_duration' => 'required|in:' . implode(',', $historyDurationOptions),
+                'code' => 'required|max:20',
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -460,7 +461,8 @@ class ApiController extends Controller
                 'address' => $input['address'],
                 'server_id' => $input['server_id'],
                 'password' => $input['password'] ?? $user->password,
-                'history_duration' => $input['history_duration']
+                'history_duration' => $input['history_duration'],
+                'code' => $input['code']
             ]);
             return response()->json([
                 'status' => true,
@@ -542,7 +544,7 @@ class ApiController extends Controller
                 ], 401);
             }
             $serverIds = AssigendServer::where('user_id', $user->id)->pluck('server_id')->toArray();
-            $users = User::with('server')->whereIn('server_id', $serverIds)->where('role', 'user')->get();
+            $users = User::with('server')->whereIn('server_id', $serverIds)->where('role', 'user')->orderBy('created_at', 'desc')->get();
             return response()->json([
                 'status' => true,
                 'data' => $users,

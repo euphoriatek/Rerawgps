@@ -8,6 +8,7 @@ import { Title } from '@angular/platform-browser';
 // project import
 import { NavigationItem } from 'src/app/admin/theme/layouts/admin/navigation/navigation';
 import { TranslateModule } from '@ngx-translate/core'; 
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
@@ -27,6 +28,7 @@ export class BreadcrumbComponent {
     private _router: Router,
     public nav: NavigationItem,
     private titleService: Title,
+    private translate: TranslateService,
     public cookie:AdminCookiesService
   ) {
     const role = this.cookie.getCookie('AdminUser')?.role;
@@ -130,6 +132,9 @@ export class BreadcrumbComponent {
       }
     });
     this.navigationList = result;
-    this.titleService.setTitle(title + ' ReRaw GPS');
+     if (title) {
+    this.titleService.setTitle(this.translate.instant(title));
+  }
+    // this.titleService.setTitle(title);
   }
 }

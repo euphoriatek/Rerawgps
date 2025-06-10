@@ -473,4 +473,63 @@ class PoiController extends Controller
             ], 500);
         }
     }
+
+    public function poisStore(Request $request)
+    {
+        try {
+            $user = auth()->user();
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+                'description' => 'nullable|string',
+                'coordinates.lat' => 'required|numeric|min:-90|max:90',
+                'coordinates.lng' => 'required|numeric|min:-180|max:180',
+                'map_icon_id' => 'required|integer',
+                'regaykar_user_id' => 'required|numeric',
+                'group_id' => 'nullable|numeric',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'errors' => $validator->errors(),
+                ], 400);
+            }
+            $input = $request->all();
+            $input['coordinates'] = json_encode($input['coordinates']);
+            $Server = Servers::find($user->server_id);
+            $poi = Poi::create($input);
+            $mapIconId = 9;
+            $url = $Server->server_url . '/api/add_map_icon?lang=en&user_api_hash=' . $user->api_key;
+    
+            $response = Http::accept('application/json')
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                ])
+                ->post($url, array_merge($poi->toArray(), ['map_icon_id' => $mapIconId]));
+            $CreatemapIcons = $response->json() ?? [];
+
+            if ($CreatemapIcons['status'] && $CreatemapIcons['status'] == 1) {
+
+                $mapIconsResponse = Http::get($Server->server_url . '/api/get_user_map_icons', [
+                    'lang' => 'en',
+                    'user_api_hash' => $user->api_key,
+                ]);
+                $mapIcons = $mapIconsResponse->json()['items']['mapIcons'] ?? [];
+                $filteredData = end($mapIcons);
+                if ($filteredData) {
+                    $poi->update(['created_at' => $filteredData['created_at'], 'updated_at' => $filteredData['updated_at'], 'poi_id' => $filteredData['id']]);
+                }
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Poi added successfully!',
+                'data' => $poi,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }

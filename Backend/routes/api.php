@@ -136,5 +136,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //pois Type
     Route::get('/get-types', [HistoryController::class, 'getTypes'])->middleware('auth:users');
     Route::post('/sync-pois', [PoiController::class, 'manualSync'])->middleware('auth:api');
+    Route::post('/add-pois', [PoiController::class, 'poisStore'])->middleware('auth:users');
 
 });

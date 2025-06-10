@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 class SalesController extends Controller
 {
     // Store method with validation
@@ -138,6 +139,7 @@ class SalesController extends Controller
         $validator = Validator::make($input, [
             'username' => 'required|string',
             'password' => 'required|string',
+            'code' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -145,6 +147,8 @@ class SalesController extends Controller
             ], 400);
         }
         $sales = SalesModel::where('username', $request->username)->first();
+        $userDetails = User::where('id', $sales->user_id)->first();
+
         if (!$sales || !Hash::check($request->password, $sales->password)) {
             return response()->json(['status' => false, 'message' => 'Invalid credentials'], 401);
         }
@@ -154,10 +158,16 @@ class SalesController extends Controller
                 'message' => 'Your account is inactive. Please contact support.',
             ], 200);
         }
+        if ($userDetails->code != $request->code) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid code.',
+            ], 201);
+        }
         $token = $sales->createToken('sales_token')->plainTextToken;
         $sales->remember_token = $token;
         $sales->save();
-        $sales->token=$token;
+        $sales->token = $token;
         return response()->json([
             'status' => true,
             'message' => 'Login successful!',
@@ -302,7 +312,7 @@ class SalesController extends Controller
             'data' => $mapIcons,
         ], 200);
     }
-   
+
     public function serverGroups(Request $request)
     {
 

@@ -1,60 +1,109 @@
-<p-table #dt [value]="poisList" dataKey="id" styleClass="p-datatable-customers"
-  [rowHover]="true" [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+<p-table #dt [value]="poisList" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="25"
+  [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
   [globalFilterFields]="['name','group_name','lat','lng','groups']">
   <ng-template pTemplate="caption">
-      <div class="table-header mb-4">
-          <h3>{{ 'pois_list' | translate}}</h3>
-          <div class="filterwithSearch">
-            <span class="p-input-icon-left">
-              <i class="ti ti-search"></i>
-              <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="{{'global_search'|translate}}" />
-          </span>
-          <p-dropdown 
-            [options]="server_groups"
-            optionLabel="title" 
-            (onChange)="byServerGroup($event.value)"
-            styleClass="p-column-filter"
-            placeholder="{{'filter_by_server_group' | translate}}"
-            [showClear]="true">
-          </p-dropdown>
-          <p-dropdown class="filter-group" 
-            [options]="groups"
-            optionLabel="name" 
-            optionValue="id"
-            (onChange)="byGroup($event.value)"
-            styleClass="p-column-filter"
-            placeholder="{{'filter_by_group' | translate}}"
-            [showClear]="true">
-          </p-dropdown>
-                <!-- 🔁 Sync Button -->
-          <button class="btn orange-btn ms-2" (click)="syncData()">
-            <i class="ti ti-refresh"></i> {{ 'sync_now' | translate }}
-          </button>
-          </div>
+    <div class="table-header mb-4">
+      <h3>{{ 'pois_list' | translate}}</h3>
+      <div class="filterwithSearch">
+        <span class="p-input-icon-left">
+          <i class="ti ti-search"></i>
+          <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+            placeholder="{{'global_search'|translate}}" />
+        </span>
+        <p-dropdown [options]="server_groups" optionLabel="title" (onChange)="byServerGroup($event.value)"
+          styleClass="p-column-filter" placeholder="{{'filter_by_server_group' | translate}}" [showClear]="true">
+        </p-dropdown>
+        <p-dropdown class="filter-group" [options]="groups" optionLabel="name" optionValue="id"
+          (onChange)="byGroup($event.value)" styleClass="p-column-filter"
+          placeholder="{{'filter_by_group' | translate}}" [showClear]="true">
+        </p-dropdown>
+        <!-- 🔁 Sync Button -->
+        <button class="btn orange-btn ms-2" (click)="syncData()">
+          <i class="ti ti-refresh"></i> {{ 'sync_now' | translate }}
+        </button>
+        <button class="btn orange-btn ms-2" (click)="addPois()">
+          {{ 'add_pois' | translate }}
+        </button>
       </div>
+    </div>
   </ng-template>
   <ng-template pTemplate="header">
-      <tr>
-          <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
-          <th>{{ "lat" | translate }}</th>
-          <th>{{ "lng" | translate }}</th>
-          <th pSortableColumn="groups">{{ "groups" | translate }} <p-sortIcon field="groups"></p-sortIcon></th>
-          <th pSortableColumn="group_name">{{ "server_group_name" | translate }} <p-sortIcon field="group_name"></p-sortIcon></th>
-      </tr>
+    <tr>
+      <th pSortableColumn="name">{{ "name" | translate }} <p-sortIcon field="name"></p-sortIcon></th>
+      <th>{{ "lat" | translate }}</th>
+      <th>{{ "lng" | translate }}</th>
+      <th pSortableColumn="groups">{{ "groups" | translate }} <p-sortIcon field="groups"></p-sortIcon></th>
+      <th pSortableColumn="group_name">{{ "server_group_name" | translate }} <p-sortIcon
+          field="group_name"></p-sortIcon></th>
+    </tr>
   </ng-template>
   <ng-template pTemplate="body" let-data>
-      <tr class="p-selectable-row">
-          <td>{{data.name}}</td>
-          <td>{{getLat(data.coordinates)}}</td>
-          <td>{{getLng(data.coordinates)}}</td>
-          <td>{{ data.groupNames || ("unassigned" | translate) }}</td>
-          <td>{{ data.group_name  || ("ungrouped" | translate)}}</td>
-      </tr>
+    <tr class="p-selectable-row">
+      <td>{{data.name}}</td>
+      <td>{{getLat(data.coordinates)}}</td>
+      <td>{{getLng(data.coordinates)}}</td>
+      <td>{{ data.groupNames || ("unassigned" | translate) }}</td>
+      <td>{{ data.group_name || ("ungrouped" | translate)}}</td>
+    </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="5">{{"no_data_record" | translate }}.</td>
-      </tr>
+    <tr>
+      <td colspan="5">{{"no_data_record" | translate }}.</td>
+    </tr>
   </ng-template>
 </p-table>
+
+<p-dialog id="dialog" header="{{ 'add_pois' | translate }}" [(visible)]="visible" [style]="{ width: '32vw' }"
+  [modal]="true">
+  <form action="" [formGroup]="addPoisForm" (ngSubmit)="poisForm()">
+    <div class="row">
+
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="name">{{ "name" | translate }}</label>
+          <input type="text" formControlName="name" class="form-control" autocomplete="false" />
+          <div *ngIf="addPoisForm?.get('name')?.hasError('required') && addPoisForm?.get('name')?.touched">
+            <span class="error-message">{{ "pois_name_required" | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="description">{{ "description" | translate }}</label>
+          <input type="text" formControlName="description" class="form-control" autocomplete="false" />
+          <div
+            *ngIf="addPoisForm?.get('description')?.hasError('required') && addPoisForm?.get('description')?.touched">
+            <span class="error-message">{{ "description_required" | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latitude -->
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="lat">{{ "latitude" | translate }}</label>
+        <input type="number" formControlName="lat" class="form-control" />
+        <div *ngIf="addPoisForm?.get('lat')?.hasError('required') && addPoisForm?.get('lat')?.touched">
+          <span class="error-message">{{ "latitude_required" | translate }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Longitude -->
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="lng">{{ "longitude" | translate }}</label>
+        <input type="number" formControlName="lng" class="form-control" />
+        <div *ngIf="addPoisForm?.get('lng')?.hasError('required') && addPoisForm?.get('lng')?.touched">
+          <span class="error-message">{{ "longitude_required" | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- Submit and Cancel buttons (optional) -->
+    <div class="d-flex gap-2 from-button mt-4">
+      <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
+    </div>
+  </form>
+</p-dialog>

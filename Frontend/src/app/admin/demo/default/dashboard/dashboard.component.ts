@@ -20,7 +20,7 @@ export default class DashboardComponent {
   constructor(private api: ApiService, public adminCookieService:AdminCookiesService,private titleService: Title) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle('RegayKar | Dashboard');
+    // this.titleService.setTitle('RegayKar | Dashboard');
     this.role = this.adminCookieService.getCookie('AdminUser')?.role;
     if(this.role === "superadmin"){
       this.loadDashboard();

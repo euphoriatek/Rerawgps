@@ -76,5 +76,4 @@ export default class LoginComponent {
     localStorage.setItem("admin_language", selectedLanguage);
   }
   
-
 }

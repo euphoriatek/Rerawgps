@@ -92,4 +92,7 @@ export class ApiService {
   getGroupOptions() {
     return this.http.get(this.BaseUrl + 'get-group-options');
   }
+   addPoi(data: any) {
+    return this.http.post(this.BaseUrl + 'add-pois', data);
+  }
 }

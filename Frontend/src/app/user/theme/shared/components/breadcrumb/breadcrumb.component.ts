@@ -7,12 +7,12 @@ import { Title } from '@angular/platform-browser';
 
 // project import
 import { NavigationItem } from 'src/app/user/theme/layouts/admin/navigation/navigation';
-import { TranslateModule } from '@ngx-translate/core'; 
-
+import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
-  imports: [CommonModule, RouterModule,TranslateModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss']
 })
@@ -22,12 +22,14 @@ export class BreadcrumbComponent {
   navigation;
   breadcrumbList: Array<string> = [];
   navigationList;
- 
+
   // Constructor
   constructor(
     private _router: Router,
     public nav: NavigationItem,
-    private titleService: Title
+    private titleService: Title,
+    private translate: TranslateService
+
   ) {
     this.navigation = this.nav.get();
     this.setBreadcrumb();
@@ -129,6 +131,9 @@ export class BreadcrumbComponent {
       }
     });
     this.navigationList = result;
-    this.titleService.setTitle(title);
+    if (title) {
+      this.titleService.setTitle(this.translate.instant(title));
+    }
+    // this.titleService.setTitle(title);
   }
 }
