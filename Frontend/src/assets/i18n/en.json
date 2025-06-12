@@ -224,5 +224,7 @@
     "pois_name_required":"POI's Name Required",
     "map_icon_id":"MapIcon Id",
     "add_pois":"Add POI's",
-    "code_required":"Code Required"
+    "code_required":"Code Required",
+    "code_exiest":"Code is already exiest",
+    "code_must_characters":"Code must be 2–4 alphanumeric characters"
 }

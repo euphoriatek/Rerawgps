@@ -37,7 +37,9 @@ export class POIsComponent implements OnInit {
       map_icon_id: [9, [Validators.required]],
       lat: ['', [Validators.required]],
       lng: ['', [Validators.required]],
-      status:['approved']
+      status:['approved'],
+      server_group:[''],
+      group_id:['']
     });
   }
   getGroups(): void {
@@ -158,10 +160,12 @@ export class POIsComponent implements OnInit {
           lng: parseFloat(formValue.lng)
         },
         regaykar_user_id: parseInt(user_id, 10),
-        status: formValue.status
+        status: formValue.status,
+        server_group:formValue.server_group,
+        group_id:formValue.group_id
       };
-      console.log(requestData);
-      
+
+
       this.spinner.show();
       this.api.addPoi(requestData).subscribe({
         next: (response: any) => {

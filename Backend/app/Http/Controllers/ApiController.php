@@ -98,6 +98,14 @@ class ApiController extends Controller
                     ], 200);
                 }
             }
+            $checkCode = User::where('code', $input['code'])->first();
+            if($checkCode){
+                return response()->json([
+                    'message' => "Code is already taken.",
+                    'type' => "code",
+                    'status' => false
+                ]);
+            }
             $user = $this->createUser($input);
 
             return response()->json([
@@ -448,6 +456,14 @@ class ApiController extends Controller
                 return response()->json([
                     'errors' => $validator->errors(),
                 ], 400);
+            }
+            $checkCode = User::where('code', $input['code'])->where('id', '!=', $input['id'])->first();
+            if($checkCode){
+                return response()->json([
+                    'message' => "Code is already taken.",
+                    'type' => "code",
+                    'status' => false
+                ]);
             }
             if (!empty($input['password'])) {
                 $input['password'] = Hash::make($input['password']);

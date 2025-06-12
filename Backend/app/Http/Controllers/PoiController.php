@@ -495,17 +495,25 @@ class PoiController extends Controller
                 ], 400);
             }
             $input = $request->all();
+            $input['server_group_id'] = $input['server_group']['id'] ?? null;
             $input['coordinates'] = json_encode($input['coordinates']);
             $Server = Servers::find($user->server_id);
             $poi = Poi::create($input);
+            if($input['group_id']){
+                    AssignedPoi::create([
+                    'group_id' => $input['group_id'],
+                    'poi_id' => $poi->id
+                ]);
+            }
             $mapIconId = 9;
             $url = $Server->server_url . '/api/add_map_icon?lang=en&user_api_hash=' . $user->api_key;
-    
+            $poi_data = $poi->toArray();
+            $poi_data['group_id'] = $input['server_group_id'];
             $response = Http::accept('application/json')
                 ->withHeaders([
                     'Content-Type' => 'application/json',
                 ])
-                ->post($url, array_merge($poi->toArray(), ['map_icon_id' => $mapIconId]));
+                ->post($url, array_merge($poi_data, ['map_icon_id' => $mapIconId]));
             $CreatemapIcons = $response->json() ?? [];
 
             if ($CreatemapIcons['status'] && $CreatemapIcons['status'] == 1) {
@@ -517,7 +525,7 @@ class PoiController extends Controller
                 $mapIcons = $mapIconsResponse->json()['items']['mapIcons'] ?? [];
                 $filteredData = end($mapIcons);
                 if ($filteredData) {
-                    $poi->update(['created_at' => $filteredData['created_at'], 'updated_at' => $filteredData['updated_at'], 'poi_id' => $filteredData['id']]);
+                    $poi->update(['created_at' => $filteredData['created_at'], 'updated_at' => $filteredData['updated_at'], 'poi_id' => $filteredData['id'], 'group_id' => $filteredData['group_id'],  'group_name' => $input['server_group']['title'] ?? null]);
                 }
             }
 

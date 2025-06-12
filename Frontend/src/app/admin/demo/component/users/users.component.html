@@ -21,11 +21,14 @@
           <div class="form-group">
             <label for="">{{'username' | translate}}</label>
             <input type="text" class="form-control" formControlName="username">
-            <div *ngIf="
+            <div class="error" *ngIf="UserForm.get('username')?.hasError('serverError')">
+  {{ UserForm.get('username')?.getError('serverError') }}
+</div>
+            <!-- <div *ngIf="
                       UserForm?.get('username')?.hasError('required') &&
                       UserForm?.get('username')?.touched">
               <span class="error-message">{{'username_required' | translate}}</span>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="col-lg-12">
@@ -110,12 +113,15 @@
         <div class="col-lg-12">
           <div class="form-group">
             <label for="">{{ 'code' | translate }}</label>
-            <input type="text" class="form-control" formControlName="code" readonly>
+            <input type="text" class="form-control text-uppercase" formControlName="code" maxlength="4">
             <div *ngIf="
                 UserForm?.get('code')?.hasError('required') &&
                 UserForm?.get('code')?.touched">
               <span class="error-message">{{ 'code_required' | translate }}</span>
             </div>
+             <div *ngIf="UserForm?.get('code')?.hasError('pattern') && UserForm?.get('code')?.touched">
+                <span class="error-message">{{'code_must_characters' | translate}}</span>
+              </div>
           </div>
         </div>
         <div class="col-lg-12">
@@ -171,7 +177,8 @@
       <!-- <th pSortableColumn="mobile_number">{{ "mobile_number" | translate }} <p-sortIcon field="mobile_number"></p-sortIcon></th>
                     <th pSortableColumn="address">{{ "address" | translate }} <p-sortIcon field="address"></p-sortIcon></th> -->
       <th pSortableColumn="api_key">{{ "api_key" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
-      <th pSortableColumn="api_key">{{ "created_by" | translate }} <p-sortIcon field="api_key"></p-sortIcon></th>
+      <th pSortableColumn="code">{{ "code" | translate }} <p-sortIcon field="code"></p-sortIcon></th>
+      <th pSortableColumn="created_by">{{ "created_by" | translate }} <p-sortIcon field="created_by"></p-sortIcon></th>
       <th pSortableColumn="createdby.name">{{ "created_at" | translate }} <p-sortIcon field="created_at"></p-sortIcon>
       </th>
       <th>{{ "active" | translate }}</th>
@@ -199,6 +206,10 @@
       <td>
         <span class="p-column-title">{{ "api_key" | translate }}</span>
         {{data.api_key}}
+      </td>
+      <td>
+        <span class="p-column-title">{{ "code" | translate }}</span>
+        {{data.code}}
       </td>
       <td>
         <span class="p-column-title">{{ "created_by" | translate }}</span>
@@ -330,7 +341,7 @@
       <div class="col-lg-12">
         <div class="form-group">
           <label for="">{{ 'code' | translate }}</label>
-          <input type="text" class="form-control text-uppercase" formControlName="code" maxlength="20" (input)="onCodeInput($event)">
+          <input type="text" class="form-control text-uppercase" formControlName="code" maxlength="4" (input)="onCodeInput($event)">
           <div *ngIf="
                 UserEditForm?.get('code')?.hasError('required') &&
                 UserEditForm?.get('code')?.touched">

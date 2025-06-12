@@ -103,6 +103,35 @@
         </div>
       </div>
     </div>
+
+    <!-- Server Group -->
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="lng">{{ "server_group" | translate }}</label>
+        <mat-form-field appearance="outline" class="multi-select">
+            <mat-select formControlName="server_group" class="form-control">
+              <mat-option *ngFor="let option of server_groups" [value]="option">
+                {{ option.title }}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Regaykar Group -->
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="lng">{{ "group" | translate }}</label>
+        <mat-form-field appearance="outline" class="multi-select">
+            <!-- <mat-label>Select Server</mat-label> -->
+            <mat-select formControlName="group_id" class="form-control">
+              <mat-option *ngFor="let option of groups" [value]="option.id">
+                {{ option.name }}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
     <!-- Submit and Cancel buttons (optional) -->
     <div class="d-flex gap-2 from-button mt-4">
       <input type="submit" class="btn orange-btn" value="{{ 'save' | translate }}">
