@@ -21,14 +21,11 @@
           <div class="form-group">
             <label for="">{{'username' | translate}}</label>
             <input type="text" class="form-control" formControlName="username">
-            <div class="error" *ngIf="UserForm.get('username')?.hasError('serverError')">
-  {{ UserForm.get('username')?.getError('serverError') }}
-</div>
-            <!-- <div *ngIf="
+            <div *ngIf="
                       UserForm?.get('username')?.hasError('required') &&
                       UserForm?.get('username')?.touched">
               <span class="error-message">{{'username_required' | translate}}</span>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="col-lg-12">
