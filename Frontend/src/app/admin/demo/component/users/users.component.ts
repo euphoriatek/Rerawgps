@@ -88,7 +88,11 @@ export class UsersComponent implements OnInit {
       address: ['', Validators.required],
       api_key: ['', Validators.required],
       history_duration: ['', Validators.required],
-      code: ['', Validators.required]
+      code: ['',
+         [
+          Validators.required,  Validators.pattern(/^[a-zA-Z0-9]{2,4}$/)
+        ],
+      ]
     });
     this.getServers();
     this.getUsers();

@@ -20,53 +20,122 @@ class RegayKarPlansController extends Controller
     {
         $input = $request->all();
         $user = auth()->user();
+
         if (!$user) {
             return response()->json([
                 'status' => false,
                 'message' => 'User is not authenticated.',
             ], 401);
         }
+
         $userId = $user->id;
         $request->validate([
-            'groups_id' => 'required|array',
-            'groups_id.*' => 'exists:groups,id',
+            'groups_id' => 'required|exists:groups,id',
             'startdate' => 'required|date',
             'sale_agent_id' => 'required|exists:sales,id',
             'device' => 'required|array',
             'device.label' => 'required|string',
             'device.value' => 'required|numeric',
         ]);
+
         $startdate = Carbon::parse($request->input('startdate'))->toDateString();
-        foreach($input['groups_id'] as $data){
-            $checkExiest = RegayKarPlans::where('group_id', $data)->where('sale_agent_id', $input['sale_agent_id'])->where('activation_date', $startdate)->first();
-            if(!$checkExiest){
-                $createPlan = RegayKarPlans::create([
-                    'group_id' => $data,
-                    'user_id' => $userId,
-                    'activation_date' => $startdate,
-                    'sale_agent_id' => $input['sale_agent_id'],
-                    'device_id' => $input['device']['value'],
-                    'device_name' => $input['device']['label'],
-                ]);
-                // $groupFind = Group::find($data);
-                // if($groupFind){
-                //     $group_ids = json_decode($groupFind->pois_id); 
-                //     foreach($group_ids as $id){
-                //         AssignedPoi::create([
-                //             'group_id' => $groupFind->id,
-                //             'poi_id' => $id,
-                //             'plan_id' => $createPlan->id
-                //         ]);
-                //     }
-                // }
-            }
+        $saleAgentId = $input['sale_agent_id'];
+        // $deviceId = $input['device']['value'];
+        $exists = RegayKarPlans::where('sale_agent_id', $saleAgentId)
+            ->where('activation_date', $startdate)
+            ->first();
+
+        if ($exists) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Sales agent already has a plan on this activation date.',
+            ], 422);
         }
+        
+        $groupId = $input['groups_id'];
+        $exists = RegayKarPlans::where('group_id', $groupId)
+            ->where('sale_agent_id', $input['sale_agent_id'])
+            ->where('activation_date', $startdate)
+            ->first();
+        // $deviceExists = RegayKarPlans::where('device_id', $deviceId)
+        //         ->where('activation_date', $startdate)
+        //         ->first();
+
+        // if ($deviceExists) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'This device is already assigned for the selected activation date.',
+        //     ], 422);
+        // }
+        if (!$exists) {
+            $createPlan = RegayKarPlans::create([
+                'group_id' => $groupId,
+                'user_id' => $userId,
+                'activation_date' => $startdate,
+                'sale_agent_id' => $input['sale_agent_id'],
+                'device_id' => $input['device']['value'],
+                'device_name' => $input['device']['label'],
+            ]);
+        }
+
         return response()->json([
             'status' => true,
             'message' => 'Plan created successfully!',
             'data' => $createPlan ?? '',
         ], 200);
     }
+
+    // public function store(Request $request)
+    // {
+    //     $input = $request->all();
+    //     $user = auth()->user();
+    //     if (!$user) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'User is not authenticated.',
+    //         ], 401);
+    //     }
+    //     $userId = $user->id;
+    //     $request->validate([
+    //         'groups_id' => 'required|array',
+    //         'groups_id.*' => 'exists:groups,id',
+    //         'startdate' => 'required|date',
+    //         'sale_agent_id' => 'required|exists:sales,id',
+    //         'device' => 'required|array',
+    //         'device.label' => 'required|string',
+    //         'device.value' => 'required|numeric',
+    //     ]);
+    //     $startdate = Carbon::parse($request->input('startdate'))->toDateString();
+    //     foreach($input['groups_id'] as $data){
+    //         $checkExiest = RegayKarPlans::where('group_id', $data)->where('sale_agent_id', $input['sale_agent_id'])->where('activation_date', $startdate)->first();
+    //         if(!$checkExiest){
+    //             $createPlan = RegayKarPlans::create([
+    //                 'group_id' => $data,
+    //                 'user_id' => $userId,
+    //                 'activation_date' => $startdate,
+    //                 'sale_agent_id' => $input['sale_agent_id'],
+    //                 'device_id' => $input['device']['value'],
+    //                 'device_name' => $input['device']['label'],
+    //             ]);
+    //             // $groupFind = Group::find($data);
+    //             // if($groupFind){
+    //             //     $group_ids = json_decode($groupFind->pois_id); 
+    //             //     foreach($group_ids as $id){
+    //             //         AssignedPoi::create([
+    //             //             'group_id' => $groupFind->id,
+    //             //             'poi_id' => $id,
+    //             //             'plan_id' => $createPlan->id
+    //             //         ]);
+    //             //     }
+    //             // }
+    //         }
+    //     }
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Plan created successfully!',
+    //         'data' => $createPlan ?? '',
+    //     ], 200);
+    // }
 
     public function getCurrentPlans()
     {
@@ -79,7 +148,7 @@ class RegayKarPlansController extends Controller
                 ], 401);
             }
             $userId = $user->id;
-            $plans = RegayKarPlans::with(['group','sales'])->where('user_id', $userId)->where('status', 1)->orderBy('created_at', 'desc')->get();
+            $plans = RegayKarPlans::with(['group', 'sales'])->where('user_id', $userId)->where('status', 1)->orderBy('created_at', 'desc')->get();
             return response()->json([
                 'status' => true,
                 'message' => 'plans records fetched successfully!',
@@ -129,6 +198,33 @@ class RegayKarPlansController extends Controller
                 ], 404);
             }
             $startdate = Carbon::parse($request->input('startdate'))->toDateString();
+            $saleAgentId = $input['sale_agent_id'];
+            // $deviceId = $input['device']['value'];
+
+            $agentExists = RegayKarPlans::where('sale_agent_id', $saleAgentId)
+                ->where('activation_date', $startdate)
+                ->where('id', '!=', $plan->id)
+                ->first();
+
+            if ($agentExists) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Sales agent already has a plan on this activation date.',
+                ], 422);
+            }
+
+            // $deviceExists = RegayKarPlans::where('device_id', $deviceId)
+            //     ->where('activation_date', $startdate)
+            //     ->where('id', '!=', $plan->id)
+            //     ->first();
+
+            // if ($deviceExists) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'This device is already assigned for the selected activation date.',
+            //     ], 422);
+            // }
+
             $plan->update([
                 'user_id' => $userId,
                 'activation_date' => $startdate,
@@ -172,10 +268,10 @@ class RegayKarPlansController extends Controller
             ], 500);
         }
     }
-    
+
     public function activePlan()
     {
-        
+
         $user = auth()->user();
         if (!$user) {
             return response()->json([
@@ -192,14 +288,17 @@ class RegayKarPlansController extends Controller
         $mapIconsById = collect($mapIcons)->keyBy('id');
         $userId = $user->id;
         $Date = date("Y-m-d");
-        $Plan = RegayKarPlans::with(['group', 'assignedPois' => function ($query) {
-        $query->whereHas('poi_data', function ($query) {
-            $query->whereNull('deleted_at');
-        });
-    }])
-    ->where('sale_agent_id', $userId)
-    ->where('activation_date', $Date)
-    ->get();
+        $Plan = RegayKarPlans::with([
+            'group',
+            'assignedPois' => function ($query) {
+                $query->whereHas('poi_data', function ($query) {
+                    $query->whereNull('deleted_at');
+                });
+            }
+        ])
+            ->where('sale_agent_id', $userId)
+            ->where('activation_date', $Date)
+            ->get();
         // $Plan = RegayKarPlans::with(['group','assignedPois.poi_data'])->where('sale_agent_id', $userId)->where('activation_date', $Date)->get();
         $Plan->each(function ($plan) use ($mapIconsById) {
             $plan->assignedPois->each(function ($assignedPoi) use ($mapIconsById) {

@@ -50,7 +50,7 @@ export class RegayKarPlanComponent {
     // this.titleService.setTitle('xyz');
     this.today = new Date();
     this.planForm = this.fb.group({
-      groups_id: ['', [Validators.required]],
+      groups_id: ['', Validators.required],
       startdate: ['', [Validators.required]],
       sale_agent_id: ['', [Validators.required]],
       device:['',[Validators.required]]
@@ -105,9 +105,13 @@ export class RegayKarPlanComponent {
           this.spinner.hide();
         },
         error: (err) => {
-          this.spinner.hide();
-          this.toaster.error(this.translate.instant('group_added_error_ex') || this.translate.instant('try_again'), this.translate.instant('group'));
-          console.error(err);
+            this.spinner.hide();
+            if (err?.status === 422 && err.error?.message) {
+              this.toaster.error(err.error.message, this.translate.instant('group'));
+            } else {
+              this.toaster.error(this.translate.instant('group_added_error_ex') || this.translate.instant('try_again'), this.translate.instant('group'));
+              console.error(err);
+            }
         }
       });
     } else {
@@ -185,9 +189,13 @@ export class RegayKarPlanComponent {
           this.spinner.hide();
         },
         error: (err) => {
-          this.spinner.hide();
-          this.toaster.error(this.translate.instant('group_updated_error_ex') || this.translate.instant('try_again'), this.translate.instant('group'));
-          console.error(err);
+           this.spinner.hide();
+            if (err?.status === 422 && err.error?.message) {
+              this.toaster.error(err.error.message, this.translate.instant('group'));
+            } else {
+             this.toaster.error(this.translate.instant('group_updated_error_ex') || this.translate.instant('try_again'), this.translate.instant('group'));
+             console.error(err);
+            }
         }
       });
     }
