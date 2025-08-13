@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToasterService } from 'src/app/services/toster.service';
 import { ConfirmDialogComponent } from 'src/app/user/services/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import * as L from 'leaflet';
 @Component({
   selector: 'app-pendingrequest',
   templateUrl: './pendingrequest.component.html',
@@ -24,6 +25,7 @@ export class PendingRequestComponent {
   @ViewChild('dt') dt: Table | undefined;
   group_options: any[] = [];
   groups: any;
+  private map;
   constructor(private api: ApiService, public spinner: NgxSpinnerService, private translate: TranslateService, public toaster: ToasterService, private dialog: MatDialog, public fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -138,7 +140,14 @@ export class PendingRequestComponent {
     });
 
     this.visible = true;
+    setTimeout(() => {
+      const lat = this.getLat(data.coordinates);
+      const lng = this.getLng(data.coordinates);
+      const poiName = data.name;
+      this.initMap(lat, lng, poiName);
+    }, 100);
   }
+  
   EditPoi() {
     if (this.poiEditForm.invalid) {
       this.poiEditForm.markAllAsTouched();
@@ -171,38 +180,7 @@ export class PendingRequestComponent {
       });
     }
   }
-  // EditPoi() {
-  //   if (this.poiEditForm.invalid) {
-  //     this.poiEditForm.markAllAsTouched();
-  //     return;
-  //   }
-  //   if (this.poiEditForm.valid) {
-  //     this.spinner.show();
-  //     const formData = this.poiEditForm.value;
-  //     const selectedGroup = this.group_options.find(option => option.id === formData.group_id);
-  //     if (selectedGroup) {
-  //       formData.group_name = selectedGroup.title;
-  //     }
-  //     this.api.editPoi(formData).subscribe({
-  //       next: (response: any) => {
-  //         if (response.status === true) {
-  //           this.visible = false;
-  //           this.poiEditForm.reset();
-  //           this.loadPendingPois();
-  //           this.toaster.success(this.translate.instant('poi_updated_success'), this.translate.instant('poi'));
-  //         } else {
-  //           this.toaster.error(this.translate.instant('poi_updated_error') || this.translate.instant('try_again'), this.translate.instant('poi'));
-  //         }
-  //         this.spinner.hide();
-  //       },
-  //       error: (err) => {
-  //         this.spinner.hide();
-  //         this.toaster.error(this.translate.instant('poi_updated_error_ex') || this.translate.instant('try_again'), this.translate.instant('poi'));
-  //         console.error(err);
-  //       }
-  //     });
-  //   }
-  // }
+ 
 
   getServerGroup(): void {
     this.spinner.show();
@@ -233,4 +211,29 @@ export class PendingRequestComponent {
       }
     });
   }
+  private initMap(lat: number, lng: number,poiName: string): void {
+    if (this.map) {
+      this.map.remove();
+    }
+
+    this.map = L.map('map', {
+      center: [lat, lng],
+      zoom: 13
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
+
+    const customIcon = L.icon({
+      iconUrl: 'assets/images/gps.png',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]
+    });
+
+    const marker = L.marker([lat, lng], { icon: customIcon }).addTo(this.map);
+    marker.bindPopup(`<b>${poiName}</b>`).openPopup();
+  }
+
 }

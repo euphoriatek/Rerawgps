@@ -50,9 +50,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CheckboxModule } from 'primeng/checkbox';
 import { NgSelectModule } from '@ng-select/ng-select';
-
-
-
 @NgModule({
   declarations: [
     UserAppComponent,

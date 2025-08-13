@@ -24,6 +24,9 @@ export class ApiService {
   deleteGroupUser(id: number) {
     return this.http.delete(this.BaseUrl + 'delete-group/' + id);
   }
+  checkPlans(id: number) {
+    return this.http.delete(this.BaseUrl + 'delete-group-confirmation/' + id);
+  }
   getSalesOptionsList() {
     return this.http.get(this.BaseUrl + 'get-sales-options');
   }

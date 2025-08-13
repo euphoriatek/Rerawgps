@@ -188,8 +188,8 @@ export class HistoryComponent implements OnInit {
 
   downloadReport(reportPath: string) {
     this.spinner.show();
-    const fullUrl = environment.apiBaseUrl + '/storage/' + reportPath;
-   // const fullUrl = environment.apiBaseUrl + '/storage/app/public/' + reportPath;
+    // const fullUrl = environment.apiBaseUrl + '/storage/' + reportPath;
+    const fullUrl = environment.apiBaseUrl + '/storage/app/public/' + reportPath;
     fetch(fullUrl)
       .then(response => {
         if (!response.ok) {

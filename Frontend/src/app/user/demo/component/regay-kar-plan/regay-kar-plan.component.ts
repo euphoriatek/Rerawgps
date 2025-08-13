@@ -51,7 +51,7 @@ export class RegayKarPlanComponent {
     this.today = new Date();
     this.planForm = this.fb.group({
       groups_id: ['', Validators.required],
-      startdate: ['', [Validators.required]],
+      startdate: [[], [Validators.required]],
       sale_agent_id: ['', [Validators.required]],
       device:['',[Validators.required]]
     });
@@ -67,11 +67,12 @@ export class RegayKarPlanComponent {
         window.scrollTo(0, 0);
         this.showplan = true;
         this.planForm.patchValue({
-          groups_id:[data.group_id],
-          sale_agent_id:data.sale_agent_id,
+          groups_id:+data.group_id,
+          sale_agent_id:+data.sale_agent_id,
         }); 
       }
     });
+    this.spinner.show();
     this.getGroups();
     this.getSales();
     this.getPlans();
@@ -86,10 +87,17 @@ export class RegayKarPlanComponent {
     } else if (this.planForm.valid) {
       this.spinner.show();
       const data = this.planForm.value;
-      if (data.startdate) {
-        const adjustedDate = new Date(data.startdate);
-        adjustedDate.setDate(adjustedDate.getDate() + 1);
-        data.startdate = adjustedDate;
+      // if (data.startdate) {
+      //   const adjustedDate = new Date(data.startdate);
+      //   adjustedDate.setDate(adjustedDate.getDate() + 1);
+      //   data.startdate = adjustedDate;
+      // }
+      if (data.startdate && Array.isArray(data.startdate)) {
+        data.startdate = data.startdate.map(date => {
+          const adjusted = new Date(date);
+          adjusted.setDate(adjusted.getDate() + 1);
+          return adjusted;
+        });
       }
       this.api.createPlan(data).subscribe({
         next: (response: any) => {
@@ -270,7 +278,9 @@ export class RegayKarPlanComponent {
           }));
           this.dataShareService.data.subscribe(data => { 
             if(data){
-              const device = this.devices.find((data_:any) => data_.value === data.device_id);
+              const device = this.devices.find((data_:any) => data_.value === +data.device_id);
+              console.log(device);
+              console.log(this.devices);
               this.planForm.patchValue({
                 device:device
               });
@@ -285,5 +295,7 @@ export class RegayKarPlanComponent {
       }
     });
   }
-  
+  ngOnDestroy() {
+    this.dataShareService.updateData(null);
+  }
 }

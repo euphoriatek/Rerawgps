@@ -114,10 +114,10 @@
                 <span>{{ task.title }}</span>
               </a>
             </div>
-            <div>
+            <div (click)="logOut()">
               <a class="dropdown-item">
                 <i class="ti ti-power"></i>
-                <span (click)="logOut()">{{ "logout" | translate }}</span>
+                <span>{{ "logout" | translate }}</span>
               </a>
             </div>
           </ng-template>

@@ -1879,6 +1879,8 @@
                                 <td>{{ $deviceName }}</td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
+                                <td>Distance tolerance : {{ $distance }}</td>
+                                <td>Stop duration : {{ $stop_duration }}</td>
                             </tr>
                         @endforeach
                     </tbody>

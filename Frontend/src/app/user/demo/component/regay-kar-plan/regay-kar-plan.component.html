@@ -26,11 +26,14 @@
             <div class="col-lg-12">
                <div class="form-group">
                   <label for="startDate">{{ 'activation_date' | translate }}</label>
-                  <mat-form-field appearance="fill" class="form-calendar form-control">
+                  <!-- <p-datepicker formControlName="startdate" selectionMode="multiple"></p-datepicker> -->
+                  <p-calendar formControlName="startdate" selectionMode="multiple" dateFormat="yy-mm-dd"
+                   [showIcon]="true" placeholder="Select activation dates" class="form-calendar" [minDate]="today"></p-calendar>
+                  <!-- <mat-form-field appearance="fill" class="form-calendar form-control">
                      <input matInput [matDatepicker]="startDatePicker" formControlName="startdate" [min]="today" />
                      <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                      <mat-datepicker #startDatePicker></mat-datepicker>
-                  </mat-form-field>
+                  </mat-form-field> -->
                   <div *ngIf="planForm.get('startdate').invalid && planForm.get('startdate').touched"
                      class="error-message">
                      {{ 'activation_date_required' | translate }}

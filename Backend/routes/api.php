@@ -106,6 +106,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/get-group-list', [GroupController::class, 'getGroupList'])->middleware('auth:users');
     Route::post('/create-group', [GroupController::class, 'store'])->middleware('auth:users');
     Route::post('/edit-group', [GroupController::class, 'editGroup'])->middleware('auth:users');
+    Route::delete('/delete-group-confirmation/{id}', [GroupController::class, 'checkPlans'])->middleware('auth:users');
     Route::delete('/delete-group/{id}', [GroupController::class, 'deleteGroupUser'])->middleware('auth:users');
     Route::get('/get-sales-options', [SalesController::class, 'getSalesOptions'])->middleware('auth:users');
     Route::get('/get-pois-options', [PoiController::class, 'getPoisOptions'])->middleware('auth:users');

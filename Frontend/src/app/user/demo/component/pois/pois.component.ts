@@ -31,17 +31,33 @@ export class POIsComponent implements OnInit {
   ngOnInit(): void {
     this.getGroups();
     this.serverGroups();
+    this.buildAddPoisForm();
+    // this.addPoisForm = this.fb.group({
+    //   name: ['', [Validators.required]],
+    //   description: ['', [Validators.required]],
+    //   map_icon_id: [9, [Validators.required]],
+    //   // lat: ['', [Validators.required]],
+    //   // lng: ['', [Validators.required]],
+    //   position: ['', Validators.required],
+    //   status:['approved'],
+    //   server_group:[''],
+    //   group_id:['']
+    // });
+  }
+   buildAddPoisForm(): void {
     this.addPoisForm = this.fb.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       map_icon_id: [9, [Validators.required]],
-      lat: ['', [Validators.required]],
-      lng: ['', [Validators.required]],
-      status:['approved'],
-      server_group:[''],
-      group_id:['']
+      // lat: ['', [Validators.required]],
+      // lng: ['', [Validators.required]],
+      position: ['', Validators.required],
+      status: ['approved'],
+      server_group: [''],
+      group_id: ['']
     });
   }
+
   getGroups(): void {
     this.spinner.show();
     this.api.getGroupOptions().subscribe({
@@ -141,6 +157,7 @@ export class POIsComponent implements OnInit {
   }
 
   addPois() {
+    this.buildAddPoisForm();
     this.visible = true;
   }
   poisForm(): void {
@@ -151,21 +168,29 @@ export class POIsComponent implements OnInit {
       }
       const user_id = this.userCookiesService.getCookie('CurrentUser')?.id;
       const formValue = this.addPoisForm.value;
+       // Parse the combined position string
+      const [latStr, lngStr] = formValue.position.split(',').map(s => s.trim());
+      const lat = parseFloat(latStr);
+      const lng = parseFloat(lngStr);
+
+      if (isNaN(lat) || isNaN(lng)) {
+        this.toaster.error("Invalid latitude and longitude format.");
+        return;
+      }
       const requestData = {
         name: formValue.name,
         description: formValue.description,
         map_icon_id: parseInt(formValue.map_icon_id, 10),
-        coordinates: {
-          lat: parseFloat(formValue.lat),
-          lng: parseFloat(formValue.lng)
-        },
+        // coordinates: {
+        //   lat: parseFloat(formValue.lat),
+        //   lng: parseFloat(formValue.lng)
+        // },
+        coordinates: { lat, lng },
         regaykar_user_id: parseInt(user_id, 10),
         status: formValue.status,
         server_group:formValue.server_group,
         group_id:formValue.group_id
       };
-
-
       this.spinner.show();
       this.api.addPoi(requestData).subscribe({
         next: (response: any) => {
@@ -173,7 +198,8 @@ export class POIsComponent implements OnInit {
             this.toaster.success("Add Pois Suceessfully ");
             this.visible = false;
             this.addPoisForm.reset();
-            this.getPois();
+            this.getPois()
+            this.buildAddPoisForm();
           } else {
             this.spinner.hide();
           }

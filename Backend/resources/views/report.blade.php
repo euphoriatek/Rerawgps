@@ -1869,7 +1869,7 @@
                         {{ $to_time}}</span> </div>
                 <div class="report-bars"></div>
                 Report type: {{ __('pdf.visiting_pois') }}
-            </div>
+            </div> 
             <div class="panel-body">
                 <table class="table">
                     <tbody>
@@ -1879,6 +1879,8 @@
                                 <td>{{ $deviceName }}</td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
+                                <td>Distance tolerance : {{ $distance }}</td>
+                                <td>Stop duration : {{ $stop_duration }}</td>
                             </tr>
                         @endforeach
                     </tbody>

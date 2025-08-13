@@ -221,7 +221,7 @@ class HistoryController extends Controller
                 'devices' => $input['devices'],
                 'stop_duration' => $input['stop_duration'] ?? 4,
                 // 'distance_tolerance' => 20,
-                'distance_tolerance' => $input['distance_tolerance'],
+                'distance_tolerance' => $input['distance_tolerance'] ?? 20,
                 'pois' => [$poi['poi_id']]
             ];
 
@@ -254,7 +254,7 @@ class HistoryController extends Controller
         }
         // echo "<pre>";
         // print_r($reports);exit;
-        $htmlContent = view('reports', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
+        $htmlContent = view('reports', ['visit_poi' => $visit_poi, 'unvisited_poi' => $unvisited_poi, 'selectedDeviceNames' => $input['selectedDeviceNames'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59', 'distance' => $input['distance_tolerance'], 'stop_duration' => $input['stop_duration']])->render();
         // $htmlContent = view('reports', ['data' => $reports['items'], 'date_from' => $input['date_from'], 'date_to' => $input['date_to'], 'from_time' => $input['from_time'] ?? '00:00', 'to_time' => $input['to_time'] ?? '23:59'])->render();
         return response()->json([
             'status' => true,

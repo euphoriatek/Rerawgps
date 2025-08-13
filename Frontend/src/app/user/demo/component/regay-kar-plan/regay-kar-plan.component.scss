@@ -20,5 +20,23 @@
     .mat-mdc-form-field-subscript-wrapper{
       display: none;
     }
+
+
+
+
+.p-calendar {
+    width: 100%;
+}
+.p-button-icon-only {
+    background: #ff4c04;
+    border: none;
+    border-radius: 0px 5px 5px 0px;
+}
+.p-datepicker.p-component{
+    min-width: auto !important;
+    z-index: 99999 !important;
+}
+
   
   }
+

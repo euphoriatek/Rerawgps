@@ -220,6 +220,7 @@ export class ReportsComponent {
       const dateTo = this.reportForm.value.dateTo;
       const toTime = this.reportForm.value.toTime;
       const distanceTolerance = this.reportForm.value.distanceTolerance;
+      const stop_duration = this.reportForm.value.stop_duration;
       const requestData = {
         title: title,
         period: period,
@@ -230,6 +231,7 @@ export class ReportsComponent {
         date_to: dateTo,
         to_time: toTime,
         distance_tolerance: distanceTolerance,
+        stop_duration:stop_duration,
         language: localStorage.getItem('user_language'),
         selectedDeviceNames: this.reportForm.value.device ? [this.reportForm.value.device.name] : [],
 

@@ -105,7 +105,9 @@ class UpdatePlans extends Command
                 'date_from' => $plan->activation_date,
                 'date_to' => $plan->activation_date,
                 'from_time' => '00:00',
-                'to_time' => '23:59'
+                'to_time' => '23:59',
+                'distance' => 20,
+                'stop_duration' => 4
             ])->render();
 
             $filename = 'report_' . $history->id . '_' . time() . '.html';

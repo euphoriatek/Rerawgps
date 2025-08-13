@@ -167,7 +167,7 @@ searchQuery: string = '';
   }
 
   openEditDialog(data: any): void {
-    const poisIds = data.assigned_pois.map(item => item.poi_id);
+    const poisIds = data.assigned_pois.map(item => +item.poi_id);
     this.groupEditForm.patchValue({
       name: data.name,
       description: data.description,
@@ -207,13 +207,27 @@ searchQuery: string = '';
     }
   }
 
-  deleteRecords(data: any): void {
+  checkPlans(data: any){
+    this.api.checkPlans(data.id).subscribe({
+        next: (response: any) => {
+          if (response.status) {
+            this.deleteRecords(data, "are_you_sure_want_to_delete_related_palns");
+          } else {
+            this.deleteRecords(data, "are_you_sure_want_to_delete");
+          }
+        },
+        error: (err) => {
+        }
+    });
+  }
 
+  deleteRecords(data: any, message_type:string): void {
+      
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
         title: this.translate.instant('Delete_confirmation'),
-        message: this.translate.instant('are_you_sure_want_to_delete'),
+        message: this.translate.instant(message_type),
       },
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {

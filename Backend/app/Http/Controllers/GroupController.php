@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\AssignedPoi;
+use App\Models\RegayKarPlans;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -143,6 +144,12 @@ class GroupController extends Controller
                 ], 404);
             }
             $group->delete();
+            $plans = RegayKarPlans::where('group_id', $id)->get();
+            if($plans){
+                foreach ($plans as $plan) {
+                    $plan->delete();
+                }
+            }
             return response()->json([
                 'status' => true,
                 'message' => 'Groups records deleted successfully.',
@@ -156,6 +163,24 @@ class GroupController extends Controller
         }
     }
 
+    public function checkPlans(Request $request, $id)
+    {
+        $group = Group::find($id);
+
+        if (!$group) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Group record not found.',
+            ], 404);
+        }
+
+        $hasActivePlans = RegayKarPlans::where('group_id', $id)->exists();
+
+        return response()->json([
+            'status' => $hasActivePlans,
+        ], 200);
+    }
+    
     public function getGroupOptions()
     {
         try {

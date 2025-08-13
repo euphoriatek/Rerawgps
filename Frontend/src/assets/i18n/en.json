@@ -227,5 +227,7 @@
     "add_pois":"Add POI's",
     "code_required":"Code Required",
     "code_exiest":"Code is already exiest",
-    "code_must_characters":"Code must be 2–4 alphanumeric characters"
+    "code_must_characters":"Code must be 2–4 alphanumeric characters",
+    "are_you_sure_want_to_delete_related_palns":"Do you want to delete related plans?",
+    "coordinates_required":"latitude and longitude is Required"
 }

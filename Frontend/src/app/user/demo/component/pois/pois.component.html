@@ -83,7 +83,7 @@
     </div>
 
     <!-- Latitude -->
-    <div class="col-lg-12">
+    <!-- <div class="col-lg-12">
       <div class="form-group">
         <label for="lat">{{ "latitude" | translate }}</label>
         <input type="number" formControlName="lat" class="form-control" />
@@ -93,7 +93,7 @@
       </div>
     </div>
 
-    <!-- Longitude -->
+   
     <div class="col-lg-12">
       <div class="form-group">
         <label for="lng">{{ "longitude" | translate }}</label>
@@ -102,8 +102,19 @@
           <span class="error-message">{{ "longitude_required" | translate }}</span>
         </div>
       </div>
+    </div> -->
+    <div class="col-lg-12">
+      <div class="form-group">
+         <label for="position" matTooltip="Example: 36.16508473140399, 44.03376189903483">
+          {{ "coordinates" | translate }}
+          </label>
+        <input type="text" formControlName="position" class="form-control"
+          placeholder=" 36.16508473140399, 44.03376189903483" />
+        <div *ngIf="addPoisForm?.get('position')?.hasError('required') && addPoisForm?.get('position')?.touched">
+          <span class="error-message">{{ "coordinates_required" | translate }}</span>
+        </div>
+      </div>
     </div>
-
     <!-- Server Group -->
     <div class="col-lg-12">
       <div class="form-group">
