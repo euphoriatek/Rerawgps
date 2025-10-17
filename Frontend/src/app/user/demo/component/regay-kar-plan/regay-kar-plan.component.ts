@@ -158,11 +158,11 @@ export class RegayKarPlanComponent {
   }
 
   openEditDialog(data: any): void {
-    const device = this.devices.find((data_:any) => data_.value === data.device_id);
+    const device = this.devices.find((data_:any) => data_.value == data.device_id);
     this.planEditForm.patchValue({
       startdate:data.activation_date,
       id: data.id,
-      sale_agent_id:data.sale_agent_id,
+      sale_agent_id:+data.sale_agent_id,
       device:device
     });
 

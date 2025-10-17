@@ -153,7 +153,7 @@ addUser(): void {
 
   openEditDialog(data: any) {
     this.edit_data = data;
-    const serverIds = data.assigned_servers?.map(server => server.server_id) || [];
+    const serverIds = data.assigned_servers?.map(server => Number(server.server_id)) || [];
     if (this.server_options && this.server_options.length > 0) {
       this.EditAdminUsr.patchValue({
         id:data.id,

@@ -196,7 +196,7 @@ export class UsersComponent implements OnInit {
         mobile_number: data.mobile_number,
         address: data.address,
         api_key: data.api_key,
-        history_duration: data.history_duration,
+        history_duration: +data.history_duration,
         code: data.code
       });
       this.visible = true;

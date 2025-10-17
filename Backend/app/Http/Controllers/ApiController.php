@@ -258,7 +258,7 @@ class ApiController extends Controller
                 'message' => 'success'
             ], 200);
         } catch (\Exception $e) {
-            return response()->json([
+            return response()->json([   
                 'message' => 'An error occurred while logging out.',
                 'error' => $e->getMessage(),
             ], 500);
